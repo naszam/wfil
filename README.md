@@ -1,2 +1,2 @@
-# wfil
-Wrapped Filecoin
+# WFIL
+> Wrapped Filecoin
