@@ -107,7 +107,7 @@ Deploy
    ```
 
 ## Project deployed on Kovan
-[WETH.sol](https://kovan.etherscan.io/address/)
+[WFIL.sol](https://kovan.etherscan.io/address/)
 
 About
 ============
