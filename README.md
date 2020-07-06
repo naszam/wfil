@@ -17,7 +17,6 @@
 * [Building Blocks](#building-blocks)
 * [Setup](#setup)
 * [Deploy](#deploy)
-* [Front-end](#front-end)
 * [About](#about)
 
 ## Building Blocks
