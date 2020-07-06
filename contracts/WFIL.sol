@@ -30,7 +30,7 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
 
   }
 
-  function mint(address to, uint256 amount) external whenNotPaused() {
+  function mint(address to, uint256 amount) external {
       require(hasRole(MINTER_ROLE, msg.sender), "WFIL: must have minter role to mint");
       _mint(to, amount);
   }
