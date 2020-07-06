@@ -118,6 +118,7 @@ About
 - [Chai](https://github.com/dapphub/chai)
 - [EIP 712](https://eips.ethereum.org/EIPS/eip-712)
 - [Add ERC20 permit() function to OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts/issues/2206)
+- [Understanding Wrapped Bitcoin and the Wrapped Tokens Framework](https://medium.com/@mutheevincent/understanding-wrapped-bitcoin-and-the-wrapped-tokens-framework-6ed45e52acdb)
 
 ## Authors
 
