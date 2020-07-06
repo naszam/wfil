@@ -44,7 +44,7 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
 
   /// @notice Unpause all the functions
   /// @dev the caller must have the 'PAUSER_ROLE'
-  function unpause() public virtual {
+  function unpause() external {
       require(hasRole(PAUSER_ROLE, msg.sender), "WFIL: must have pauser role to unpause");
       _unpause();
   }
