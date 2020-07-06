@@ -17,6 +17,7 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
+ const path = require("path");
 
  // const HDWalletProvider = require('@truffle/hdwallet-provider');
  // const infuraKey = '';
@@ -35,6 +36,8 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
+
+  contracts_build_directory: path.join(__dirname, "app/src/contracts"),
 
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
