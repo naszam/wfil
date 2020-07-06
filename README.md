@@ -122,5 +122,5 @@ About
 
 ## Authors
 
-Project created by [Nazzareno Massari](https://nazzarenomassari.com) and Cristiam Da Silva.  
+Project created by [Nazzareno Massari](https://nazzarenomassari.com) and [Cristiam Da Silva](https://cristiamdasilva.com/).  
 Team WrappedFS for HackFS ETHGlobal Virtual Hackathon.
