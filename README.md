@@ -121,4 +121,4 @@ About
 ## Authors
 
 Project created by [Nazzareno Massari](https://nazzarenomassari.com) and Cristiam Da Silva.  
-Team MetaFS for HackFS ETHGlobal Virtual Hackathon.
+Team MetaFS for WrappedFS ETHGlobal Virtual Hackathon.
