@@ -117,6 +117,7 @@ About
 - [WETH](https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2#code)
 - [Chai](https://github.com/dapphub/chai)
 - [EIP 712](https://eips.ethereum.org/EIPS/eip-712)
+- [Add ERC20 permit() function to OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts/issues/2206)
 
 ## Authors
 
