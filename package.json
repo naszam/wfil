@@ -18,6 +18,7 @@
   "homepage": "https://github.com/naszam/wfil#readme",
   "devDependencies": {
     "@openzeppelin/test-environment": "^0.1.4",
+    "husky": "^4.2.5",
     "jest": "^26.1.0"
   },
   "dependencies": {
