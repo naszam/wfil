@@ -68,7 +68,7 @@ Clone this GitHub repository.
      ```
    - Test the smart contracts using Jest & OpenZeppelin Test Environment with the following command:
      ```sh
-     $ npx jest ./test
+     $ npm test
      ```
    - Analyze the smart contracts using Slither with the following command (optional):
       ```
