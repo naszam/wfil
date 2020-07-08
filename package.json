@@ -4,7 +4,7 @@
   "description": "Wrapped Filecoin",
   "main": "truffle-config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest ./test"
   },
   "repository": {
     "type": "git",
