@@ -66,9 +66,9 @@ Clone this GitHub repository.
      ```sh
      $ truffle migrate
      ```
-   - Test the smart contracts using Truffle & Ganache with the following command:
+   - Test the smart contracts using Jest & OpenZeppelin Test Environment with the following command:
      ```sh
-     $ truffle test
+     $ npx jest ./test
      ```
    - Analyze the smart contracts using Slither with the following command (optional):
       ```
