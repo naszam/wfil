@@ -106,6 +106,29 @@ Deploy
    ```sh
    $ truffle migrate --network kovan
    ```
+   
+## Using the DApp
+  - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
+  - Change Ganache GUI port to 8545.
+  - Import Ganache GUI mnemonic into MetaMask.
+  - Connect MetaMask to Ganache GUI, adding a custom RPC specifing the Ganache GUI's RPC server URL.
+  - Deploy the smart contracts to Ganache GUI:
+    ```
+    $ truffle migrate
+    ```
+  - Move to client directory on the project:
+    ```
+    $ cd client
+    ```
+  - Install dependencies:
+    ```
+    $ npm install
+    $ yarn install
+    ```
+  - Start the Local Web Server:
+    ```sh
+    $ npm run start
+    ```
 
 ## Project deployed on Kovan
 [WFIL.sol](https://kovan.etherscan.io/address/)
