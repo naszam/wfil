@@ -118,11 +118,10 @@ Deploy
     ```
   - Move to client directory on the project:
     ```
-    $ cd client
+    $ cd app
     ```
   - Install dependencies:
     ```
-    $ npm install
     $ yarn install
     ```
   - Start the Local Web Server:
