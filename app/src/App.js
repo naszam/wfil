@@ -4,6 +4,7 @@ import { Drizzle } from "@drizzle/store";
 import {ThemeProvider} from 'styled-components'
 import {theme} from 'rimble-ui'
 
+import Loading from './components/Loading';
 import drizzleOptions from "./drizzleOptions";
 import Routes from './Routes';
 import customTheme from './theme';
@@ -19,8 +20,7 @@ const App = () => {
           {drizzleContext => {
             const { initialized } = drizzleContext;
 
-            if (!initialized) return "Loading..."
-            return <Routes />
+            return initialized ? <Routes /> : <Loading />;
           }}
         </DrizzleContext.Consumer>
       </DrizzleContext.Provider>
