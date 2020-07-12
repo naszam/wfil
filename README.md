@@ -19,6 +19,7 @@
 * [Building Blocks](#building-blocks)
 * [Setup](#setup)
 * [Deploy](#deploy)
+* [Using the DApp](#using-the-dapp)
 * [Back-end](#back-end)
 * [About](#about)
 
@@ -135,6 +136,8 @@ Deploy
 [WFIL.sol](https://kovan.etherscan.io/address/)
 
 ## Back-end
+
+[WFIL-Backend](https://github.com/cristiam86/wfil-backend)
 
 About
 ============
