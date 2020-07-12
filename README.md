@@ -10,6 +10,8 @@
 
 ## Mentors
 
+- Andrew Hill (Textile), @andrewxhill  
+
 [Demo]()  
 [HackFS]()  
 
