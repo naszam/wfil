@@ -4,6 +4,7 @@ import { Drizzle } from "@drizzle/store";
 import {ThemeProvider} from 'styled-components'
 import {theme} from 'rimble-ui'
 
+import { Reset } from './components/ResetStyles';
 import Loading from './components/Loading';
 import drizzleOptions from "./drizzleOptions";
 import Routes from './Routes';
@@ -15,6 +16,7 @@ const appTheme = { ...theme, ...customTheme };
 const App = () => {
   return (
     <ThemeProvider theme={appTheme}>
+      <Reset />
       <DrizzleContext.Provider drizzle={drizzle}>
         <DrizzleContext.Consumer>
           {drizzleContext => {
