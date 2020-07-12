@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Loader } from 'rimble-ui';
 
 const CenteredLoading = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ const CenteredLoading = styled.div`
 
 const Loading = () => {
   return (
-    <CenteredLoading>Loading...</CenteredLoading>
+    <CenteredLoading><Loader color="primary" size="80px"/></CenteredLoading>
   )
 }
  
