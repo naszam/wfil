@@ -10,6 +10,8 @@
 
 ## Mentors
 
+- Andrew W. Hill (Textile), @andrewxhill  
+
 [Demo]()  
 [HackFS]()  
 
@@ -17,6 +19,7 @@
 * [Building Blocks](#building-blocks)
 * [Setup](#setup)
 * [Deploy](#deploy)
+* [Using the DApp](#using-the-dapp)
 * [Back-end](#back-end)
 * [About](#about)
 
@@ -31,7 +34,7 @@ Setup
 
 Clone this GitHub repository.
 
-# Steps to compile and test
+## Steps to compile and test
 
   - Local dependencies:
     - Truffle
@@ -107,7 +110,11 @@ Deploy
    $ truffle migrate --network kovan
    ```
    
-## Using the DApp
+## Project deployed on Kovan
+[WFIL.sol](https://kovan.etherscan.io/address/)
+
+Using the DApp
+==============
   - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
   - Change Ganache GUI port to 8545.
   - Import Ganache GUI mnemonic into MetaMask.
@@ -118,22 +125,21 @@ Deploy
     ```
   - Move to client directory on the project:
     ```
-    $ cd client
+    $ cd app
     ```
   - Install dependencies:
     ```
-    $ npm install
     $ yarn install
     ```
   - Start the Local Web Server:
     ```sh
     $ npm run start
     ```
+ 
+Back-end
+============
 
-## Project deployed on Kovan
-[WFIL.sol](https://kovan.etherscan.io/address/)
-
-## Back-end
+[WFIL-Backend](https://github.com/cristiam86/wfil-backend)
 
 About
 ============
