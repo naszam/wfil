@@ -34,7 +34,7 @@ Setup
 
 Clone this GitHub repository.
 
-# Steps to compile and test
+## Steps to compile and test
 
   - Local dependencies:
     - Truffle
