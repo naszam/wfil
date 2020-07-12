@@ -16,7 +16,7 @@ const Input = styled.input`
   outline: none;
   font-size: 52px;
   text-align: center;
-  color: ${props => { console.log(props.theme); return props.theme.colors.primary}};
+  color: ${props => props.theme.colors.primary};
 
   ::-webkit-input-placeholder { /* Edge */
     color: ${props => props.theme.colors['moon-gray']};
@@ -51,7 +51,6 @@ const Home = () => {
     const inputAmount = !isNaN(amountNumber) && amountNumber > 0 ? `${amountNumber} FIL` : ''
     setAmount(inputAmount);
   }
-  console.log("VALUE: ", parseAmount(amount));
 
   return (
     <MainLayout>
