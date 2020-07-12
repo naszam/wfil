@@ -2,8 +2,7 @@ import React from "react";
 import { DrizzleContext } from "@drizzle/react-plugin";
 import { Drizzle } from "@drizzle/store";
 import drizzleOptions from "./drizzleOptions";
-import MyComponent from "./MyComponent";
-import "./App.css";
+import Routes from './Routes';
 
 const drizzle = new Drizzle(drizzleOptions);
 
@@ -12,15 +11,10 @@ const App = () => {
     <DrizzleContext.Provider drizzle={drizzle}>
       <DrizzleContext.Consumer>
         {drizzleContext => {
-          const { drizzle, drizzleState, initialized } = drizzleContext;
+          const { initialized } = drizzleContext;
 
-          if (!initialized) {
-            return "Loading..."
-          }
-
-          return (
-            <MyComponent drizzle={drizzle} drizzleState={drizzleState} />
-          )
+          if (!initialized) return "Loading..."
+          return <Routes />
         }}
       </DrizzleContext.Consumer>
     </DrizzleContext.Provider>
