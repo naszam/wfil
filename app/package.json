@@ -10,7 +10,9 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "rimble-ui": "^0.14.0",
+    "styled-components": "^5.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
