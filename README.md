@@ -110,7 +110,11 @@ Deploy
    $ truffle migrate --network kovan
    ```
    
-## Using the DApp
+## Project deployed on Kovan
+[WFIL.sol](https://kovan.etherscan.io/address/)
+
+Using the DApp
+==============
   - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
   - Change Ganache GUI port to 8545.
   - Import Ganache GUI mnemonic into MetaMask.
@@ -131,11 +135,9 @@ Deploy
     ```sh
     $ npm run start
     ```
-
-## Project deployed on Kovan
-[WFIL.sol](https://kovan.etherscan.io/address/)
-
-## Back-end
+ 
+Back-end
+============
 
 [WFIL-Backend](https://github.com/cristiam86/wfil-backend)
 
