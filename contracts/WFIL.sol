@@ -7,6 +7,14 @@ pragma solidity 0.6.11;
 ///@dev All function calls are currently implemented without side effects through TDD approach
 ///@dev OpenZeppelin library is used for secure contract development
 
+/*
+██     ██ ███████ ██ ██ 
+██     ██ ██      ██ ██ 
+██  █  ██ █████   ██ ██ 
+██ ███ ██ ██      ██ ██ 
+ ███ ███  ██      ██ ███████ 
+*/
+
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
