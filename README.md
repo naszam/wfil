@@ -160,5 +160,5 @@ About
 ## Authors
 
 Project created by [Nazzareno Massari](https://nazzarenomassari.com) and [Cristiam Da Silva](https://cristiamdasilva.com/).  
-Team WrapFS for HackFS ETHGlobal Virtual Hackathon.
+Team WrapFS for HackFS ETHGlobal Virtual Hackathon.  
 Logo by Cristiam Da Silva.
