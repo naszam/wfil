@@ -4,7 +4,7 @@
 [![#solc 0.6.11](https://img.shields.io/badge/solc-v0.6.11-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.11)
 [![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)]()
 
-<img src="wfil.png" width="20%">
+<img src="wfil.svg" width="20%">
 
 # WFIL
 
