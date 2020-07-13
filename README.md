@@ -15,7 +15,7 @@
 - Andrew W. Hill (Textile), @andrewxhill  
 
 [Demo]()  
-[HackFS]()  
+[HackFS](hack.ethglobal.co/showcase/wfil-recCwbCnY2rnipjcR)  
 
 ## Sections
 * [Building Blocks](#building-blocks)
