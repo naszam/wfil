@@ -5,7 +5,7 @@ const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 const { BN, constants, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
-let bigNumberEq = require("./helpers").bigNumberEq
+const { bigNumberEq } = require("./helpers");
 
 const WFIL = contract.fromArtifact('WFIL');
 
