@@ -48,6 +48,14 @@ Clone this GitHub repository.
     $ npm i
     ```
   - Global dependencies:
+    - Truffle (recommended):
+    ```
+    npm install -g truffle
+    ```
+    - Ganache CLI (recommended):
+    ```
+    npm install -g ganache-cli
+    ```
     - Slither (optional): 
     ```
     pip3 install slither-analyzer
@@ -59,15 +67,15 @@ Clone this GitHub repository.
     ```
 ## Running the project with local test network (ganache-cli)
 
-   - Start ganache-cli with the following command:
+   - Start ganache-cli with the following command (global dependency):
      ```sh
      $ ganache-cli
      ```
-   - Compile the smart contract using Truffle with the following command:
+   - Compile the smart contract using Truffle with the following command (global dependency):
      ```sh
      $ truffle compile
      ```
-   - Deploy the smart contracts using Truffle & Ganache with the following command:
+   - Deploy the smart contracts using Truffle & Ganache with the following command (global dependency):
      ```sh
      $ truffle migrate
      ```
