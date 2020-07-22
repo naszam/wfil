@@ -1,3 +1,5 @@
+// based on https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/test/presets/ERC20PresetMinterPauser.test.js
+
 // test/WFIL.test.js
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
