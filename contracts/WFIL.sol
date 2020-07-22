@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.6.11;
+pragma solidity 0.6.12;
 
 ///@title WFIL
 ///@author Nazzareno Massari @naszam
