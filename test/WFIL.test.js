@@ -53,6 +53,15 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
     expect(await wfil.getRoleAdmin(PAUSER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
   });
 
+  describe('WFIL metadata', function () {
+    it("has a name", async () => {
+        expect(await wfil.name({from:other})).to.equal(name)
+    })
+    it("has a symbol", async () => {
+        expect(await wfil.symbol({from:other})).to.equal(symbol)
+    })
+  });
+
   describe('minting', function () {
     it('owner can mint tokens', async function () {
       const receipt = await wfil.mint(other, amount, { from: owner });
