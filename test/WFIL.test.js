@@ -7,7 +7,7 @@ const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 const { BN, constants, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
-const { bigNumberEq } = require("./helpers");
+const { expect } = require('chai');
 
 const WFIL = contract.fromArtifact('WFIL');
 
@@ -30,27 +30,27 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
   });
 
   it('the deployer is the owner', async function () {
-    expect(await wfil.owner()).toEqual(owner);
+    expect(await wfil.owner()).to.equal(owner);
   });
 
   it('owner has the default admin role', async function () {
-    expect(await wfil.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).bigNumberEq(new BN(1));
-    expect(await wfil.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).toEqual(owner);
+    expect(await wfil.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal(new BN(1));
+    expect(await wfil.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
   });
 
   it('owner has the minter role', async function () {
-    expect(await wfil.getRoleMemberCount(MINTER_ROLE)).bigNumberEq(new BN(1));
-    expect(await wfil.getRoleMember(MINTER_ROLE, 0)).toEqual(owner);
+    expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal(new BN(1));
+    expect(await wfil.getRoleMember(MINTER_ROLE, 0)).to.equal(owner);
   });
 
   it('owner has the pauser role', async function () {
-    expect(await wfil.getRoleMemberCount(PAUSER_ROLE)).bigNumberEq(new BN(1));
-    expect(await wfil.getRoleMember(PAUSER_ROLE, 0)).toEqual(owner);
+    expect(await wfil.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal(new BN(1));
+    expect(await wfil.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
   });
 
   it('minter and pauser role admin is the default admin', async function () {
-    expect(await wfil.getRoleAdmin(MINTER_ROLE)).toEqual(DEFAULT_ADMIN_ROLE);
-    expect(await wfil.getRoleAdmin(PAUSER_ROLE)).toEqual(DEFAULT_ADMIN_ROLE);
+    expect(await wfil.getRoleAdmin(MINTER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
+    expect(await wfil.getRoleAdmin(PAUSER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
   });
 
   describe('minting', function () {
@@ -58,7 +58,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       const receipt = await wfil.mint(other, amount, { from: owner });
       expectEvent(receipt, 'Transfer', { from: ZERO_ADDRESS, to: other, value: amount });
 
-      expect(await wfil.balanceOf(other)).bigNumberEq(amount);
+      expect(await wfil.balanceOf(other)).to.be.bignumber.equal(amount);
     });
 
     it('other accounts cannot mint tokens', async function () {
@@ -71,7 +71,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         const receipt = await wfil.pause({ from: owner });
         expectEvent(receipt, 'Paused', { account: owner });
 
-        expect(await wfil.paused()).toEqual(true);
+        expect(await wfil.paused()).to.equal(true);
       });
 
       it('owner can unpause', async function () {
@@ -80,7 +80,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         const receipt = await wfil.unpause({ from: owner });
         expectEvent(receipt, 'Unpaused', { account: owner });
 
-        expect(await wfil.paused()).toEqual(false);
+        expect(await wfil.paused()).to.equal(false);
       });
 
       it('cannot mint while paused', async function () {
@@ -104,7 +104,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         const receipt = await wfil.burn(amount.subn(1), { from: other });
         expectEvent(receipt, 'Transfer', { from: other, to: ZERO_ADDRESS, value: amount.subn(1) });
 
-        expect(await wfil.balanceOf(other)).bigNumberEq(new BN(1));
+        expect(await wfil.balanceOf(other)).to.be.bignumber.equal(new BN(1));
       });
     });
 
