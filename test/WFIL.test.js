@@ -34,17 +34,17 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
   });
 
   it('owner has the default admin role', async function () {
-    expect(await wfil.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal(new BN(1));
+    expect(await wfil.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
     expect(await wfil.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
   });
 
   it('owner has the minter role', async function () {
-    expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal(new BN(1));
+    expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal('1');
     expect(await wfil.getRoleMember(MINTER_ROLE, 0)).to.equal(owner);
   });
 
   it('owner has the pauser role', async function () {
-    expect(await wfil.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal(new BN(1));
+    expect(await wfil.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
     expect(await wfil.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
   });
 
@@ -104,7 +104,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         const receipt = await wfil.burn(amount.subn(1), { from: other });
         expectEvent(receipt, 'Transfer', { from: other, to: ZERO_ADDRESS, value: amount.subn(1) });
 
-        expect(await wfil.balanceOf(other)).to.be.bignumber.equal(new BN(1));
+        expect(await wfil.balanceOf(other)).to.be.bignumber.equal('1');
       });
     });
 
