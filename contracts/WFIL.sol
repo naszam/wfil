@@ -38,9 +38,45 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
 
   }
 
-  function mint(address to, uint256 amount) external {
-      require(hasRole(MINTER_ROLE, msg.sender), "WFIL: must have minter role to mint");
+  /// @dev Modifiers
+  modifier onlyAdmin() {
+     require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
+     _;
+  }
+
+  modifier onlyMinter() {
+      require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
+      _;
+  }
+
+  /// @notice Mint new WFIL
+  /// @dev Access restricted only for Minters
+  /// @param to Address of the recipient
+  /// @param amount Amount of WFIL issued
+  /// @return True if WFIL is successfully minted
+  function mint(address to, uint256 amount) external onlyMinter returns (bool) {
       _mint(to, amount);
+      return true;
+  }
+
+  /// @notice Add a new Minter
+  /// @dev Access restricted only for Admins
+  /// @param account Address of the new Minter
+  /// @return True if the account address is added as Minter
+  function addMinter(address account) external onlyAdmin returns (bool) {
+    require(!hasRole(MINTER_ROLE, account), "Account is already a minter");
+    grantRole(MINTER_ROLE, account);
+    return true;
+  }
+
+  /// @notice Remove a Minter
+  /// @dev Access restricted only for Admins
+  /// @param account Address of the Minter
+  /// @return True if the account address is removed as Minter
+  function removeMinter(address account) external onlyAdmin returns (bool) {
+    require(hasRole(MINTER_ROLE, account), "Account is not a minter");
+    revokeRole(MINTER_ROLE, account);
+    return true;
   }
 
   /// @notice Pause all the functions
