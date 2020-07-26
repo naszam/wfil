@@ -19,7 +19,7 @@ const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
     initContract(CONTRACT_ADDRESS, abi).then(() => {
       console.log("MainHeader -> CONTRACT_ADDRESS", CONTRACT_ADDRESS)
     });
-  }, [CONTRACT_ADDRESS, abi])
+  }, [initContract])
 
   const handleConnectAccount = () => {
     connectAndValidateAccount(result => {
