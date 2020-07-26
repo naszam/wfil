@@ -41,7 +41,7 @@ const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
               <Logo style={{ width: '30px', height: '30px' }} />
             </Box>
             <Box>
-              <Text ml={1} color="white" fontFamily="sansSerif">WFil</Text>
+              <Text ml={1} color="white" fontFamily="sansSerif">WFIL</Text>
             </Box>
           </Flex>
         </Box>

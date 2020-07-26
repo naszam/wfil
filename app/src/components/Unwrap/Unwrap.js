@@ -34,8 +34,8 @@ const Unwrap = () => {
           <AmountInput
             name="amount"
             onChange={onWrapValueChange}
-            unit="ETH"
-            value={formData.amount ? `${formData.amount} ETH` : ''}
+            unit="WFIL"
+            value={formData.amount ? `${formData.amount} WFIL` : ''}
           />
         </Box>
         <Box px={4} mb={2}>

@@ -43,7 +43,7 @@ const Wrap = () => {
             <Input
               name="destination"
               onChange={onWrapValueChange}
-              placeholder="Wallet to receive WFil"
+              placeholder="Wallet to receive WFIL"
               required={true}
               type="text"
               value={formData.destination}
