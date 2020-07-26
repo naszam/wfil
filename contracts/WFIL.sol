@@ -30,6 +30,8 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
 
+  event Unwrapped (string filaddress, uint amount);
+
   constructor() public ERC20("Wrapped Filecoin", "WFIL"){
     _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
@@ -57,6 +59,17 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
   function mint(address to, uint256 amount) external onlyMinter returns (bool) {
       _mint(to, amount);
       return true;
+  }
+
+  /// @notice Burn WFIL
+  /// @dev Emit the Filecoin Address to send the Filecoin
+  /// @param filaddress The Filecoin Address to uwrap WFIL
+  /// @param amount The amount of WFIL to unwrap
+  /// @return True if WFIL is successfully unwrapped
+  function uwrap(string calldata filaddress, uint amount) external returns (bool) {
+    burn(amount);
+    emit Unwrapped(filaddress, amount);
+    return true;
   }
 
   /// @notice Add a new Minter
