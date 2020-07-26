@@ -1,22 +1,61 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Flex, Box, MetaMaskButton } from 'rimble-ui';
+import { Flex, Box, MetaMaskButton, Text, Pill, EthAddress } from 'rimble-ui';
 
 import { ReactComponent as Logo } from '../../Icon/logo.svg';
+
+import contract from '../../../contracts/WFIL.json';
+const { contractAbi } = contract;
+const CONTRACT_ADDRESS = process.env.REACT_APP_WFIL_CONTRACT_ADDRESS;
 
 const HeaderBg = styled.div`
   background-color: ${props => props.theme.colors.primary};
 `;
 
-const MainHeader = () => {
+const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
+  console.log("MainHeader -> account", account)
+  useEffect(() => {
+    initContract(CONTRACT_ADDRESS, contractAbi).then(() => {
+      console.log("MainHeader -> CONTRACT_ADDRESS", CONTRACT_ADDRESS)
+    });
+  }, [CONTRACT_ADDRESS, contractAbi])
+
+  const handleConnectAccount = () => {
+    connectAndValidateAccount(result => {
+      if (result === "success") {
+        // success
+        console.log("Callback SUCCESS");
+      } else if (result === "error") {
+        // error
+        console.log("Callback ERROR");
+      }
+    })
+  }
+
   return (
     <HeaderBg>
       <Flex>
         <Box p={3} width={1 / 2}>
-          <Logo style={{ width: '45px', height: '45px' }} />
+          <Flex alignItems="center" justifyContent="flex-start">
+            <Box>
+              <Logo style={{ width: '30px', height: '30px' }} />
+            </Box>
+            <Box>
+              <Text ml={1} color="white" fontFamily="sansSerif">WFil</Text>
+            </Box>
+          </Flex>
         </Box>
         <Box p={3} width={1 / 2} textAlign="right">
-          <MetaMaskButton.Outline>Connect with MetaMask</MetaMaskButton.Outline>
+          {account
+            ? (
+              <Pill color="green">
+                <Text fontFamily="sansSerif" fontSize={1}>Connected: {account}</Text>
+              </Pill>
+            )
+            : (
+              <MetaMaskButton.Outline size="small" onClick={handleConnectAccount}>Connect with MetaMask</MetaMaskButton.Outline>
+            )
+          }
         </Box>
       </Flex>
     </HeaderBg>
