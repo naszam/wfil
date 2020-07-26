@@ -62,7 +62,7 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
   }
 
   /// @notice Burn WFIL
-  /// @dev Emit the Filecoin Address to send the Filecoin
+  /// @dev Emit an event with the Filecoin Address and amount to UI
   /// @param filaddress The Filecoin Address to uwrap WFIL
   /// @param amount The amount of WFIL to unwrap
   /// @return True if WFIL is successfully unwrapped
