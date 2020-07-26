@@ -30,7 +30,7 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
 
-  event Unwrapped (string filaddress, uint amount);
+  event Unwrapped(string filaddress, uint amount);
 
   constructor() public ERC20("Wrapped Filecoin", "WFIL"){
     _setupRole(DEFAULT_ADMIN_ROLE, owner());
@@ -65,7 +65,7 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
   /// @dev Emit the Filecoin Address to send the Filecoin
   /// @param filaddress The Filecoin Address to uwrap WFIL
   /// @param amount The amount of WFIL to unwrap
-  /// @return True if WFIL is successfully unwrapped
+  /// @return True If WFIL is successfully unwrapped
   function uwrap(string calldata filaddress, uint amount) external returns (bool) {
     burn(amount);
     emit Unwrapped(filaddress, amount);
