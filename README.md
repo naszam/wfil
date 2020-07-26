@@ -58,7 +58,7 @@ Clone this GitHub repository.
     ```
     - Slither (optional): 
     ```
-    $ git clone https://github.com/crytic/slither && cd slither
+    $ git clone https://github.com/crytic/slither.git && cd slither
     $ sudo python3 setup.py install
     ```
     - MythX CLI (optional):
