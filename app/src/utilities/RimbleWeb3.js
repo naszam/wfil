@@ -359,7 +359,9 @@ class RimbleTransaction extends React.Component {
           console.log(successMessage, signature);
           window.toastProvider.addMessage(successMessage, {
             variant: "success",
-            secondaryMessage: "Welcome to the WFil App 🎉"
+            secondaryMessage: "Welcome to the WFil App 🎉",
+            colorTheme: "light",
+            fontFamily: "sansSerif"
           });
 
           this.closeValidationPendingModal();
