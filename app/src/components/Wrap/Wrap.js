@@ -8,22 +8,22 @@ import AmountInput from '../AmountInput';
 const WFIL_ADDRESS = process.env.REACT_APP_FIL_WALLET;
 
 const Wrap = () => {
-  const [wrapModalOpen, setWrapModalOpen] = useState(false)
-  const [wrapFormData, setWrapFormData] = useState({ amount: '', destination: '', origin: '' });
+  const [modalOpen, setModalOpen] = useState(false)
+  const [formData, setFormData] = useState({ amount: '', destination: '', origin: '' });
 
   const onWrapValueChange = ({ target }) => {
     const { name, value } = target;
-    setWrapFormData({
-      ...wrapFormData,
+    setFormData({
+      ...formData,
       [name]: value
     });
   }
 
   const handleWrap = () => {
-    console.log("WRAPPPP!!")
-    const { amount } = wrapFormData;
+    const { amount, destination, origin } = formData;
+    console.log("WRAPPPP!!", amount, destination, origin)
     if (amount > 0) {
-      setWrapModalOpen(true)
+      setModalOpen(true)
     }
   }
 
@@ -35,7 +35,7 @@ const Wrap = () => {
             name="amount"
             onChange={onWrapValueChange}
             unit="FIL"
-            value={wrapFormData.amount ? `${wrapFormData.amount} FIL` : ''}
+            value={formData.amount ? `${formData.amount} FIL` : ''}
           />
         </Box>
         <Box px={4} mb={1}>
@@ -46,7 +46,7 @@ const Wrap = () => {
               placeholder="Wallet to receive WFil"
               required={true}
               type="text"
-              value={wrapFormData.destination}
+              value={formData.destination}
               width="100%"
             />
           </Field>
@@ -59,7 +59,7 @@ const Wrap = () => {
               placeholder="Wallet sending FIL"
               required={true}
               type="text"
-              value={wrapFormData.origin}
+              value={formData.origin}
               width="100%"
             />
           </Field>
@@ -68,7 +68,7 @@ const Wrap = () => {
           <Button onClick={handleWrap} width="100%">WRAP</Button>
         </Box>
       </Flex>
-      <Modal isOpen={wrapModalOpen}>
+      <Modal isOpen={modalOpen}>
         <Card width={"420px"} p={0}>
           <Button.Text
             icononly
@@ -79,12 +79,12 @@ const Wrap = () => {
             right={0}
             mt={3}
             mr={3}
-            onClick={() => setWrapModalOpen(false)}
+            onClick={() => setModalOpen(false)}
           />
 
           <Box p={4} mb={3}>
             <Heading.h3>Wrapping FIL into WFIL</Heading.h3>
-            <Text mt={4}>Send {wrapFormData.amount} to:</Text>
+            <Text mt={4}>Send {formData.amount} to:</Text>
             <Clipboard text={WFIL_ADDRESS}>
               {isCopied => (
                 <Box
@@ -123,7 +123,7 @@ const Wrap = () => {
             borderColor={"#E8E8E8"}
             justifyContent="space-between"
           >
-            <Button.Outline onClick={() => setWrapModalOpen(false)}>Cancel</Button.Outline>
+            <Button.Outline onClick={() => setModalOpen(false)}>Cancel</Button.Outline>
             <Flex
               px={4}
               py={3}
