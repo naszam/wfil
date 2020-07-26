@@ -65,7 +65,7 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
   /// @dev Emit the Filecoin Address to send the Filecoin
   /// @param filaddress The Filecoin Address to uwrap WFIL
   /// @param amount The amount of WFIL to unwrap
-  /// @return True If WFIL is successfully unwrapped
+  /// @return True if WFIL is successfully unwrapped
   function uwrap(string calldata filaddress, uint amount) external returns (bool) {
     burn(amount);
     emit Unwrapped(filaddress, amount);
