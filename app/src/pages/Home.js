@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Flex, Box, Card, Heading, Field, Text } from 'rimble-ui';
+import { Flex, Box, Card, Heading } from 'rimble-ui';
 
 import MainLayout from '../components/layouts';
+import Wrap from '../components/Wrap';
+import Unwrap from '../components/Unwrap';
 
 const Tab = styled(Box)`
   cursor: pointer;
@@ -10,49 +12,8 @@ const Tab = styled(Box)`
   border-bottom: 1px solid ${(props) => props.theme.colors.primary};
 `;
 
-const Input = styled.input`
-  width: 100%;
-  border: 0px solid transparent;
-  outline: none;
-  font-size: 52px;
-  text-align: center;
-  color: ${props => props.theme.colors.primary};
-
-  ::-webkit-input-placeholder { /* Edge */
-    color: ${props => props.theme.colors['moon-gray']};
-  }
-
-  :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: ${props => props.theme.colors['moon-gray']};
-  }
-
-  ::placeholder {
-    color: ${props => props.theme.colors['moon-gray']};
-  }
-`;
-const parseAmount = textAmount => Number(textAmount.replace(/ FIL/, ''));
-
 const Home = () => {
-  const inputRef = useRef(null);
   const [tab, setTab] = useState('wrap');
-  const [amount, setAmount] = useState('');
-
-  useEffect(() => {
-    if (inputRef.current) {
-      const cursorPosition = amount.length - 4;
-      inputRef.current.focus();
-      inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
-    }
-  }, [amount]);
-
-  const handleAmountOnChange = (e) => {
-    const { value } = e.target;
-    const amountNumber = parseAmount(value)
-    const inputAmount = !isNaN(amountNumber) && amountNumber > 0 ? `${amountNumber} FIL` : ''
-    setAmount(inputAmount);
-  }
-
-  console.log(process.env.REACT_APP_FIL_WALLET);
 
   return (
     <MainLayout>
@@ -77,30 +38,9 @@ const Home = () => {
             <Heading as="h3" fontFamily="sansSerif">UNWRAP</Heading>
           </Tab>
         </Flex>
-        {tab === 'wrap'
-         ? (
-          <Flex flexDirection="column" alignItems="center">
-            <Box px={3} pt={5} pb={3}>
-              <Input
-                value={amount}
-                onChange={handleAmountOnChange}
-                type="text"
-                placeholder="0.00 FIL"
-                ref={inputRef}
-                showingPlaceholder={!amount}
-              />
-            </Box>
-          </Flex>
-         )
-         : (
-          <Flex flexDirection="column" alignItems="center">
-            <Box p={3}>
-              UNWRAP
-            </Box>
-          </Flex>
-         )
-        }
+        {tab === 'wrap' ? <Wrap /> : <Unwrap />}
       </Card>
+      
     </MainLayout>
   );
 }
