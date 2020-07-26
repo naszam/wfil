@@ -52,6 +52,8 @@ const Home = () => {
     setAmount(inputAmount);
   }
 
+  console.log(process.env.REACT_APP_FIL_WALLET);
+
   return (
     <MainLayout>
       <Card width={"auto"} maxWidth={"50%"} mx={"auto"} my={5} p={0}>
