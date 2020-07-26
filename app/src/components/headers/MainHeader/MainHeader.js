@@ -5,7 +5,8 @@ import { Flex, Box, MetaMaskButton, Text, Pill, EthAddress } from 'rimble-ui';
 import { ReactComponent as Logo } from '../../Icon/logo.svg';
 
 import contract from '../../../contracts/WFIL.json';
-const { contractAbi } = contract;
+
+const { abi } = contract;
 const CONTRACT_ADDRESS = process.env.REACT_APP_WFIL_CONTRACT_ADDRESS;
 
 const HeaderBg = styled.div`
@@ -15,10 +16,10 @@ const HeaderBg = styled.div`
 const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
   console.log("MainHeader -> account", account)
   useEffect(() => {
-    initContract(CONTRACT_ADDRESS, contractAbi).then(() => {
+    initContract(CONTRACT_ADDRESS, abi).then(() => {
       console.log("MainHeader -> CONTRACT_ADDRESS", CONTRACT_ADDRESS)
     });
-  }, [CONTRACT_ADDRESS, contractAbi])
+  }, [CONTRACT_ADDRESS, abi])
 
   const handleConnectAccount = () => {
     connectAndValidateAccount(result => {
