@@ -49,15 +49,15 @@ Clone this GitHub repository.
     ```
   - Global dependencies:
     - Truffle (recommended):
-    ```
+    ```sh
     $ npm install -g truffle
     ```
     - Ganache CLI (recommended):
-    ```
+    ```sh
     $ npm install -g ganache-cli
     ```
     - Slither (optional): 
-    ```
+    ```sh
     $ git clone https://github.com/crytic/slither.git && cd slither
     $ sudo python3 setup.py install
     ```
@@ -85,7 +85,7 @@ Clone this GitHub repository.
      $ npm test
      ```
    - Analyze the smart contracts using Slither with the following command (optional):
-      ```
+      ```sh
       $ slither .
       ```
    - Analyze the smart contracts using MythX CLI with the following command (optional):
@@ -135,11 +135,11 @@ Using the DApp
     $ truffle migrate
     ```
   - Move to client directory on the project:
-    ```
+    ```sh
     $ cd app
     ```
   - Install dependencies:
-    ```
+    ```sh
     $ yarn install
     ```
   - Start the Local Web Server:
