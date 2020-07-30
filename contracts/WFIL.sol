@@ -108,6 +108,9 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
 
   /// @notice Hook to pause _mint(), _transfer() and _burn()
   /// @dev Override ERC20 and ERC20Pausable Hooks
+  /// @param from Sender address
+  /// @param to Recipient address
+  /// @param amount Token amount 
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Pausable) {
       super._beforeTokenTransfer(from, to, amount);
   }
