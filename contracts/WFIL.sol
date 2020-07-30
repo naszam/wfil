@@ -1,11 +1,11 @@
 /// SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.6.12;
 
-///@title WFIL
-///@author Nazzareno Massari @naszam
-///@notice Wrapped Filecoin
-///@dev All function calls are currently implemented without side effects through TDD approach
-///@dev OpenZeppelin library is used for secure contract development
+/// @title WFIL
+/// @author Nazzareno Massari @naszam
+/// @notice Wrapped Filecoin
+/// @dev All function calls are currently implemented without side effects through TDD approach
+/// @dev OpenZeppelin library is used for secure contract development
 
 /*
 ██     ██ ███████ ██ ██ 
@@ -106,6 +106,8 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
       _unpause();
   }
 
+  /// @notice Hook to pause _mint(), _transfer() and _burn()
+  /// @dev Override ERC20 and ERC20Pausable Hooks
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Pausable) {
       super._beforeTokenTransfer(from, to, amount);
   }
