@@ -146,6 +146,7 @@ Using the DApp
     ```sh
     $ npm run start
     ```
+    The DApp has been deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co/)
  
 Back-end
 ============
