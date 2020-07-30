@@ -12,7 +12,7 @@
 
 ## Mentors
 
-- Andrew W. Hill (Textile), @andrewxhill  
+- Andrew W. Hill (Textile), [@andrewxhill](https://github.com/andrewxhill)  
 
 [Demo]()  
 [HackFS](http://hack.ethglobal.co/showcase/wfil-recCwbCnY2rnipjcR)  
