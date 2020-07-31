@@ -2,7 +2,7 @@
 [![#npm 12.18.2](https://img.shields.io/badge/npm-v12.18.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc 0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
-[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](https://kovan.etherscan.io/address/0x1962d20b37B9FBD4f2E2e4A250905157BcADeAC5)
+[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](https://kovan.etherscan.io/address/0xeC41bA46D6a477e0a004a8e30566f3e9e4a7684b)
 
 <img src="wfil.svg" width="20%">
 
@@ -12,7 +12,7 @@
 
 ## Mentors
 
-- Andrew W. Hill (Textile), @andrewxhill  
+- Andrew W. Hill (Textile), [@andrewxhill](https://github.com/andrewxhill)  
 
 [Demo]()  
 [HackFS](http://hack.ethglobal.co/showcase/wfil-recCwbCnY2rnipjcR)  
@@ -49,15 +49,15 @@ Clone this GitHub repository.
     ```
   - Global dependencies:
     - Truffle (recommended):
-    ```
+    ```sh
     $ npm install -g truffle
     ```
     - Ganache CLI (recommended):
-    ```
+    ```sh
     $ npm install -g ganache-cli
     ```
     - Slither (optional): 
-    ```
+    ```sh
     $ git clone https://github.com/crytic/slither.git && cd slither
     $ sudo python3 setup.py install
     ```
@@ -80,12 +80,12 @@ Clone this GitHub repository.
      ```sh
      $ truffle migrate
      ```
-   - Test the smart contracts using Jest & OpenZeppelin Test Environment with the following command:
+   - Test the smart contracts using Mocha & OpenZeppelin Test Environment with the following command:
      ```sh
      $ npm test
      ```
    - Analyze the smart contracts using Slither with the following command (optional):
-      ```
+      ```sh
       $ slither .
       ```
    - Analyze the smart contracts using MythX CLI with the following command (optional):
@@ -122,7 +122,7 @@ Deploy
    ```
    
 ## Project deployed on Kovan
-[WFIL.sol](https://kovan.etherscan.io/address/0x1962d20b37B9FBD4f2E2e4A250905157BcADeAC5)
+[WFIL.sol](https://kovan.etherscan.io/address/0xeC41bA46D6a477e0a004a8e30566f3e9e4a7684b)
 
 Using the DApp
 ==============
@@ -135,17 +135,18 @@ Using the DApp
     $ truffle migrate
     ```
   - Move to client directory on the project:
-    ```
+    ```sh
     $ cd app
     ```
   - Install dependencies:
-    ```
+    ```sh
     $ yarn install
     ```
   - Start the Local Web Server:
     ```sh
     $ npm run start
     ```
+    The DApp has been deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co/)
  
 Back-end
 ============

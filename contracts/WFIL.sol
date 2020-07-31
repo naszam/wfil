@@ -1,11 +1,11 @@
 /// SPDX-License-Identifier: GPL-3.0
 pragma solidity 0.6.12;
 
-///@title WFIL
-///@author Nazzareno Massari @naszam
-///@notice Wrapped Filecoin
-///@dev All function calls are currently implemented without side effects through TDD approach
-///@dev OpenZeppelin library is used for secure contract development
+/// @title WFIL
+/// @author Nazzareno Massari @naszam
+/// @notice Wrapped Filecoin
+/// @dev All function calls are currently implemented without side effects through TDD approach
+/// @dev OpenZeppelin library is used for secure contract development
 
 /*
 ██     ██ ███████ ██ ██ 
@@ -29,6 +29,8 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
   bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
+
+  event Unwrapped(string filaddress, uint amount);
 
   constructor() public ERC20("Wrapped Filecoin", "WFIL"){
     _setupRole(DEFAULT_ADMIN_ROLE, owner());
@@ -57,6 +59,17 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
   function mint(address to, uint256 amount) external onlyMinter returns (bool) {
       _mint(to, amount);
       return true;
+  }
+
+  /// @notice Burn WFIL
+  /// @dev Emit an event with the Filecoin Address and amount to UI
+  /// @param filaddress The Filecoin Address to uwrap WFIL
+  /// @param amount The amount of WFIL to unwrap
+  /// @return True if WFIL is successfully unwrapped
+  function unwrap(string calldata filaddress, uint amount) external returns (bool) {
+    burn(amount);
+    emit Unwrapped(filaddress, amount);
+    return true;
   }
 
   /// @notice Add a new Minter
@@ -93,6 +106,11 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
       _unpause();
   }
 
+  /// @notice Hook to pause _mint(), _transfer() and _burn()
+  /// @dev Override ERC20 and ERC20Pausable Hooks
+  /// @param from Sender address
+  /// @param to Recipient address
+  /// @param amount Token amount 
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Pausable) {
       super._beforeTokenTransfer(from, to, amount);
   }

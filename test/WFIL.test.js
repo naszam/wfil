@@ -19,6 +19,8 @@ const [ owner, minter, other ] = accounts;
 const name = 'Wrapped Filecoin';
 const symbol = 'WFIL';
 
+const filaddress = 't3r65ygzflxsibwkput2c5thotk4qpo4vkz2t5dtg76dhxgotynlb7nbzabt6z2if3xmlfpvu7ujyhfy44qvoq';
+
 const amount = new BN('5000');
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -113,6 +115,24 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       })
   })
 
+  describe("unwrap()", async () => {
+
+      beforeEach(async () => {
+        await wfil.mint(owner, amount, {from: owner})
+      })
+
+      it("wfil owner should be able to burn wfil", async () => {
+        await wfil.unwrap(filaddress, amount, {from: owner})
+        expect(await wfil.balanceOf(owner)).to.be.bignumber.equal('0')
+      })
+
+      it("should emit the appropriate event when wfil is unwrapped", async () => {
+        const receipt = await wfil.unwrap(filaddress, amount, {from:owner})
+        expectEvent(receipt, "Unwrapped", {filaddress, amount})
+      })
+  })
+
+
   describe('pausing', function () {
       it('owner can pause', async function () {
         const receipt = await wfil.pause({ from: owner });
@@ -135,6 +155,26 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
         await expectRevert(
           wfil.mint(other, amount, { from: owner }),
+          'ERC20Pausable: token transfer while paused'
+        );
+      });
+
+      it('cannot transfer while paused', async function () {
+        await wfil.mint(owner, amount, {from: owner})
+        await wfil.pause({ from: owner });
+
+        await expectRevert(
+          wfil.transfer(other, amount, { from: owner }),
+          'ERC20Pausable: token transfer while paused'
+        );
+      });
+
+      it('cannot burn while paused', async function () {
+        await wfil.mint(owner, amount, {from: owner})
+        await wfil.pause({ from: owner });
+
+        await expectRevert(
+          wfil.burn(amount, { from: owner }),
           'ERC20Pausable: token transfer while paused'
         );
       });
