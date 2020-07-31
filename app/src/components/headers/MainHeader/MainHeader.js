@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Flex, Box, MetaMaskButton, Text, Pill, EthAddress } from 'rimble-ui';
 
@@ -8,6 +9,10 @@ import contract from '../../../contracts/WFIL.json';
 
 const { abi } = contract;
 const CONTRACT_ADDRESS = process.env.REACT_APP_WFIL_CONTRACT_ADDRESS;
+
+const AppLink = styled(Link)`
+  text-decoration: none;
+`
 
 const HeaderBg = styled.div`
   background-color: ${props => props.theme.colors.primary};
@@ -39,10 +44,21 @@ const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
         <Box p={3} width={1 / 2}>
           <Flex alignItems="center" justifyContent="flex-start">
             <Box>
-              <Logo style={{ width: '30px', height: '30px' }} />
+              <AppLink to="/">
+                <Flex alignItems="center" justifyContent="flex-start">
+                    <Box>
+                      <Logo style={{ width: '30px', height: '30px' }} />
+                    </Box>
+                    <Box>
+                      <Text ml={1} color="white" fontFamily="sansSerif">WFIL</Text>
+                    </Box>
+                </Flex>
+              </AppLink>
             </Box>
-            <Box>
-              <Text ml={1} color="white" fontFamily="sansSerif">WFIL</Text>
+            <Box ml={4}>
+              <AppLink to="/wallet">
+                <Text ml={1} color="white" fontFamily="sansSerif">Wallet</Text>
+              </AppLink>
             </Box>
           </Flex>
         </Box>
