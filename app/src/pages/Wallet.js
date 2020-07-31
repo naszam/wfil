@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Flex, Box, Card, Button, Heading, Text, Input, Field } from 'rimble-ui';
 
+import { createWallet, getBalance, sendFil } from '../services/api';
 import MainLayout from '../components/layouts';
 
 const Wallet = () => {
   const [balanceAddress, setBalanceAddress] = useState('');
   const [sendForm, setSendForm] = useState({});
+  const [createWalletResult, setCreateWalletResult] = useState({});
+  const [walletBalance, setWalletBalance] = useState('');
 
   const handleSendValueChange = ({ target }) => {
     const { name, value } = target;
@@ -16,22 +19,57 @@ const Wallet = () => {
     });
   }
 
+  const handleCreateWallet = async () => {
+    const { success, data } = await createWallet();
+    if (success) {
+      setCreateWalletResult(data);
+    }
+  }
+
+  const handleGetBalance = async () => {
+    const { success, data } = await getBalance(balanceAddress);
+    if (success) {
+      setWalletBalance(data)
+    }
+  }
+
+  const handleSendFil = async () => {
+    const { token, amount, destination } = sendForm;
+    const { success } = await sendFil(token, amount, destination);
+    if (success) {
+      setSendForm({ success: true })
+    }
+
+  }
+
   return (
     <MainLayout>
       <Card width={"auto"} maxWidth={"50%"} mx={"auto"} my={5}>
         <Heading as="h1" fontFamily="sansSerif" color="primary" mb={1}>Create Wallet</Heading>
-        <Box>
-          <Text fontFamily="sansSerif" mb={4}>
+        <Box mb={4}>
+          <Text fontFamily="sansSerif">
             Create your own filecoin wallet. You will receive an address and a private token.
           </Text>
         </Box>
         <Flex justifyContent="flex-end">
-          <Button onClick={() => {}}>Create</Button>
+          <Button onClick={handleCreateWallet}>Create</Button>
         </Flex>
+        {createWalletResult.token && createWalletResult.address && (
+          <>
+            <Box mt={4}>
+              <Heading as="h3" fontFamily="sansSerif" color="primary" my={1}>Token:</Heading>
+              <Text fontFamily="sansSerif">{createWalletResult.token}</Text>
+            </Box>
+            <Box mt={2}>
+              <Heading as="h3" fontFamily="sansSerif" color="primary" my={1}>Address:</Heading>
+              <Text fontFamily="sansSerif">{createWalletResult.address}</Text>
+            </Box>
+          </>
+        )}
       </Card>
       <Card width={"auto"} maxWidth={"50%"} mx={"auto"} my={5}>
         <Heading as="h1" fontFamily="sansSerif" color="primary" mb={1}>Get address balance</Heading>
-        <Box mb={2}>
+        <Box mb={4}>
           <Text fontFamily="sansSerif" mb={4}>
             Get the balance of a given address
           </Text>
@@ -45,8 +83,16 @@ const Wallet = () => {
             />
         </Box>
         <Flex justifyContent="flex-end">
-          <Button onClick={() => {}}>Get Balance</Button>
+          <Button onClick={handleGetBalance}>Get Balance</Button>
         </Flex>
+        {walletBalance && (
+          <>
+            <Box mt={4}>
+              <Heading as="h3" fontFamily="sansSerif" color="primary" my={1}>Balance:</Heading>
+              <Text fontFamily="sansSerif">{walletBalance}</Text>
+            </Box>
+          </>
+        )}
       </Card>
       <Card width={"auto"} maxWidth={"50%"} mx={"auto"} my={5}>
         <Heading as="h1" fontFamily="sansSerif" color="primary" mb={1}>Send FIL</Heading>
@@ -86,8 +132,15 @@ const Wallet = () => {
           </Field>
         </Box>
         <Flex justifyContent="flex-end">
-          <Button onClick={() => {}}>Send</Button>
+          <Button onClick={handleSendFil}>Send</Button>
         </Flex>
+        {sendForm.success && (
+          <>
+            <Box mt={4}>
+              <Heading as="h3" fontFamily="sansSerif" color="primary" my={1}>Success</Heading>
+            </Box>
+          </>
+        )}
       </Card>
       
     </MainLayout>
