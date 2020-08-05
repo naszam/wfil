@@ -53,7 +53,7 @@ Applications:
 
 Implements an ERC20 token by leveraging on OpenZeppelin Library.  
 
-It allows the owner of the contract, set as Default Admin and Pauser to add/remove a Minter via **addMinter()**, **removeMinter()** functions.  
+It allows the owner of the contract, set as Default Admin to add/remove a Minter via **addMinter()**, **removeMinter()** functions.  
 
 The contract also implements the **unwrap()** function to burn the WFIL via *ERC20Burnable* module, and passing the filecoin address to unwrap WFIL by emitting an event, *Unwrapped*.  
 
