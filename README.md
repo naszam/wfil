@@ -16,7 +16,7 @@ The current iteration implments a custodial pattern where users need to send fil
 
 To unwrap `WFIL` a user need to burn `WFIL` with the function and specify a filecoin address where to receive the Filecoins.
 
-Futures Developments & Features:
+Future Developments & Features:
 
 We'd like to migrate to a non-custodial pattern where by leveraging on Filcoin smart contracts we'd be able to implement a fully decentralized application.  
 
