@@ -52,8 +52,11 @@ Applications:
 ### [WFIL](./contracts/WFIL.sol)
 
 Implements an ERC20 token by leveraging on OpenZeppelin Library.  
+
 It allows the owner of the contract, set as Default Admin and Pauser to add/remove a Minter via **addMinter()**, **removeMinter()** functions.  
+
 The contract also implements the **unwrap()** function to burn the WFIL via *ERC20Burnable* module, and passing the filecoin address to unwrap WFIL by emitting an event, *Unwrapped*.  
+
 The contract also inherits OpenZeppelin *AccessControl* module to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
