@@ -79,7 +79,7 @@ The Frontend has been implemented via Rimble UI & Rimble Web3 Components and dep
 
 Implements a Filecoin client by leveraging on Textile Powergate APIs.  
 
-Further developments of the project includes building a MetaMask for Filecoin, creating an extension for Chrome.  
+Further developments of the project include building a MetaMask for Filecoin, creating an extension for Chrome.  
 
 
 Setup
