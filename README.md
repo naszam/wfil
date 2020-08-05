@@ -61,7 +61,7 @@ The contract also implements the **unwrap()** function to burn the WFIL by inher
 
 The contract also inherits OpenZeppelin *AccessControl* module to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
 
-Once the owner call the **pause()** function, thanks to the **_beforeTokenTransfer()** hook, *_mint()*, *_burn()* and *_transfer()* ,internal functions, will revert.
+Once the owner call the **pause()** function, thanks to the **_beforeTokenTransfer()** hook, *_mint()*, *_burn()* and *_transfer()* internal functions, will revert.
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
