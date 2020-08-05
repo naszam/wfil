@@ -32,9 +32,9 @@
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
-### [Frontend](https://wfil.on.fleek.co)
+### [Frontend](./app)
 
-The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/)
+The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co)
 
 ### [Filecoin Wallet](https://wfil.on.fleek.co)
 
