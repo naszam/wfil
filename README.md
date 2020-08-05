@@ -34,6 +34,8 @@
 
 ### [Frontend](https://wfil.on.fleek.co)
 
+The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/)
+
 ### [Filecoin Wallet](https://wfil.on.fleek.co)
 
 
@@ -153,7 +155,6 @@ Using the DApp
     ```sh
     $ npm run start
     ```
-    The DApp has been deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co/)
 
 About
 ============
