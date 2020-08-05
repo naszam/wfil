@@ -33,7 +33,7 @@
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
-### [Filecoin Wallet](https://wfil.on.fleek.co/wallet)
+### [Filecoin Wallet](https://wfil.on.fleek.co)
 
 Setup
 ============
