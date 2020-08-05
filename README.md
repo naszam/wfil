@@ -14,7 +14,7 @@
 
 The current iteration implments a custodial pattern where users need to send filcoins to a custodial wallet and they'll get automatically the correspondent amount in `WFIL` to thier ethereum addresses.  
 
-To unwrap `WFIL` a user need to burn `WFIL` and specify a filecoin address where to receive the Filecoins.
+To unwrap `WFIL` a user need to burn `WFIL` with the function **unwrap()** and specify a filecoin address where to receive the Filecoins.
 
 Futures Developments & Features:
 
