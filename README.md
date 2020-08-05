@@ -10,12 +10,16 @@
 
 > Wrapped Filecoin 
 
-WFIL is an ERC20 token reppresenting a stablecoin on deposits on a custodial filecoin wallet (1:1 ratio).    
-The current iteration implments a custodial pattern where users need to send filcoins to a custodial wallet and they'll get automatically the correspondent amount in WFIL to thier ethereum address. To unwrap WFIL a user need to burn WFIL and specify a filecoin address where to receive the Filecoins.
+`WFIL` is an ERC20 token reppresenting a stablecoin on deposits on a custodial Filecoin wallet (1:1 ratio).  
+
+The current iteration implments a custodial pattern where users need to send filcoins to a custodial wallet and they'll get automatically the correspondent amount in `WFIL` to thier ethereum address.   
+
+To unwrap `WFIL` a user need to burn `WFIL` and specify a filecoin address where to receive the Filecoins.
 
 Futures Developments & Features:
 
 We'd like to migrate to a non-custodial pattern where by leveraging on Filcoin smart contracts we'd be able to implement a fully decentralized application.  
+
 One of the features we're considering is to add the permit() function to WFIL to allow meta transactions by leveraging on OpenZeppelin ERC20Permit module (currenlty in progress) and incentivise adoption in the space.
 
 Applications:
