@@ -18,11 +18,11 @@ To unwrap `WFIL` a user need to burn `WFIL` with the function and specify a file
 
 Future Developments & Features:
 
-We'd like to migrate to a non-custodial pattern where by leveraging on Filcoin smart contracts we'd be able to implement a fully decentralized application.  
-
-One of the features we're considering is to add the permit() function to WFIL to allow meta transactions by leveraging on OpenZeppelin ERC20Permit module (currenlty in progress) and incentivise adoption in the space.
+We'd like to migrate to a non-custodial pattern where by leveraging on Filcoin smart contracts we'd be able to implement a fully decentralized application.
 
 Extend the Filecoin Wallet into a MetaMask for Filecoin.  
+
+One of the features we're considering is to add the permit() function to WFIL to allow meta transactions by leveraging on OpenZeppelin ERC20Permit module (currenlty in progress) and incentivise adoption in the space.
 
 Applications:
 
