@@ -22,6 +22,8 @@ We'd like to migrate to a non-custodial pattern where by leveraging on Filcoin s
 
 One of the features we're considering is to add the permit() function to WFIL to allow meta transactions by leveraging on OpenZeppelin ERC20Permit module (currenlty in progress) and incentivise adoption in the space.
 
+Extend the Filecoin Wallet into a MetaMask for Filecoin.  
+
 Applications:
 
 - Uniswap
@@ -61,12 +63,21 @@ The contract also inherits OpenZeppelin *AccessControl* module to set the Pauser
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
+Implements a custodial wallet by leveraging on Texitle Powergate APIs.  
+
+Via AWS Lambda Function, allows to automatically wrap Filecoin, by minting WFIL from an account set as Minter.  
+
+It's also connected to a Lotus node to listen for transactions and wrap/unwrap WFIL.
+
 ### [Frontend](./app)
 
 The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co)
 
 ### [Filecoin Wallet](https://wfil.on.fleek.co)
 
+Implements a Filecoin client by leveraging on Textile Powergate APIs.  
+
+Further developments of the project includes building a MetaMask for Filecoin, creating an extension for Chrome.  
 
 
 Setup
