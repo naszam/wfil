@@ -32,6 +32,8 @@ Applications:
 ## Mentors
 
 - Andrew W. Hill (Textile), [@andrewxhill](https://github.com/andrewxhill)  
+- Aaron Sutula (Textile), [@asutula](https://github.com/asutula)
+- Ignacio Hagopian (Textile) [@jsign](https://github.com/jsign)
 
 [Demo]()  
 [HackFS](http://hack.ethglobal.co/showcase/wfil-recCwbCnY2rnipjcR)  
