@@ -22,7 +22,6 @@
 * [Setup](#setup)
 * [Deploy](#deploy)
 * [Using the DApp](#using-the-dapp)
-* [Back-end](#back-end)
 * [About](#about)
 
 ## Building Blocks
@@ -33,7 +32,11 @@
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
+### [Frontend](https://wfil.on.fleek.co)
+
 ### [Filecoin Wallet](https://wfil.on.fleek.co)
+
+
 
 Setup
 ============
@@ -151,11 +154,6 @@ Using the DApp
     $ npm run start
     ```
     The DApp has been deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co/)
- 
-Back-end
-============
-
-[WFIL-Backend](https://github.com/cristiam86/wfil-backend)
 
 About
 ============
