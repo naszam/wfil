@@ -27,7 +27,7 @@
 
 ## Building Blocks
 
-![Smart Contracts Flow-Chart]()
+![Smart Contracts Flow-Chart](WFIL.png)
 
 ### [WFIL](./contracts/WFIL.sol)
 
