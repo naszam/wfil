@@ -16,7 +16,7 @@ The current iteration implments a custodial pattern where users need to send fil
 
 Future Developments & Features:
 
-We'd like to migrate to a non-custodial pattern where by leveraging on Filcoin smart contracts we'd be able to implement a fully decentralized application.
+We'd like to migrate to a non-custodial pattern where by leveraging on Filecoin smart contracts we'd be able to implement a fully decentralized application.
 
 Extend the Filecoin Wallet into a MetaMask for Filecoin.  
 
