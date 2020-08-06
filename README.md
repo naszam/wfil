@@ -8,7 +8,7 @@
 
 # WFIL
 
-> Wrapped Filecoin 
+> Wrapped Filecoin, ERC20 Wrapper over Filecoin
 
 `WFIL` is an ERC20 wrapper over Filecoin, representing a stablecoin on deposits on a custodial Filecoin wallet (1:1 ratio).  
 
