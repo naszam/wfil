@@ -20,7 +20,7 @@ We'd like to migrate to a non-custodial pattern where by leveraging on Filecoin 
 
 Extend the Filecoin Wallet into a MetaMask for Filecoin.  
 
-One of the features we're considering is to add the permit() function to WFIL to allow meta transactions by leveraging on OpenZeppelin ERC20Permit module (currenlty in progress) and incentivise adoption in the space.
+One of the features we're considering is to add the permit() function to WFIL to allow meta transactions by leveraging on OpenZeppelin ERC20Permit module (currently in progress) and incentivise adoption in the space.
 
 Applications:
 
