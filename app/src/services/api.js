@@ -44,3 +44,16 @@ export async function sendFil(token, amount, destination) {
     return parseResponse(false);
   }
 }
+
+export async function checkFilTransaction({origin, amount, destination}) {
+  try {
+    const query = `origin=${origin}&amount=${amount}&destination=${destination}`;
+    const result = await axios.get(`${BASE_URL}/transaction?${query}`);
+    console.log("checkFilTransaction -> result", result);
+    const { tx } = result.data;
+    return parseResponse(true, { tx });
+  } catch (error) {
+    console.log("checkFilTransaction -> error", error)
+    return parseResponse(false); 
+  }
+}

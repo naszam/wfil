@@ -1,15 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Flex, Box, Card, Heading, Field, Text, Icon, Input, Button, Modal, Loader } from 'rimble-ui';
 
+import { checkFilTransaction } from '../../services/api';
 import Clipboard from '../../utilities/components/CopyToClipboard';
 import AmountInput from '../AmountInput';
 
+const INTERVAL_CHECK = 20000;
 const WFIL_ADDRESS = process.env.REACT_APP_FIL_WALLET;
+let intervalHandler = null;
+
+const AppLink = styled(Link)`
+  color: ${props => props.theme.colors.primary};
+`
 
 const Wrap = () => {
   const [modalOpen, setModalOpen] = useState(false)
+  const [txResult, setTxResult] = useState('')
   const [formData, setFormData] = useState({ amount: '', destination: '', origin: '' });
+
+  useEffect(() => {
+    return () => intervalHandler && clearInterval(intervalHandler);
+  }, []);
 
   const onWrapValueChange = ({ target }) => {
     const { name, value } = target;
@@ -24,8 +37,20 @@ const Wrap = () => {
     console.log("WRAPPPP!!", amount, destination, origin)
     if (amount > 0) {
       setModalOpen(true)
+      const filAmount = amount.replace(',', '.') * 10e17;
+      intervalHandler && clearInterval(intervalHandler);
+      intervalHandler = setInterval(async() => {
+        const { success, data } = await checkFilTransaction({ origin, amount: filAmount, destination });
+        console.log("intervalHandler -> success", success, data)
+        if (success && data && data.tx) {
+          setTxResult(data.tx);
+          clearInterval(intervalHandler);
+        }
+      }, INTERVAL_CHECK)
     }
   }
+
+  const closeModal = () => setModalOpen(false);
 
   return (
     <>
@@ -79,41 +104,53 @@ const Wrap = () => {
             right={0}
             mt={3}
             mr={3}
-            onClick={() => setModalOpen(false)}
+            onClick={closeModal}
           />
 
           <Box p={4} mb={3}>
             <Heading.h3>Wrapping FIL into WFIL</Heading.h3>
-            <Text mt={4}>Send {formData.amount} to:</Text>
-            <Clipboard text={WFIL_ADDRESS}>
-              {isCopied => (
-                <Box
-                  color={'inherit'}
-                  position={'relative'}
-                  display={'flex'}
-                  alignItems={'center'}
-                >
-                  <Input
-                    readOnly
-                    value={WFIL_ADDRESS}
-                    width={1}
-                    p={'auto'}
-                    pl={3}
-                    pr={'5rem'}
-                    fontWeight={3}
-                  />
-                  <Button
-                    size={'small'}
-                    width={'4rem'}
-                    mx={2}
-                    position={'absolute'}
-                    right={0}
-                  >
-                    {!isCopied ? 'Copy' : <Icon name={'Check'} />}
-                  </Button>
-                </Box>
-              )}
-            </Clipboard>
+            {txResult 
+              ? (
+                <Text mt={4}>
+                  <span>Success! </span>
+                  <AppLink to={{ pathname: `https://kovan.etherscan.io/tx/${txResult}` }} target="_blank" rel="noopener noreferrer">Check transaction</AppLink>
+                </Text>
+              )
+              : (
+              <>
+                <Text mt={4}>Send {formData.amount} to:</Text>
+                <Clipboard text={WFIL_ADDRESS}>
+                  {isCopied => (
+                    <Box
+                      color={'inherit'}
+                      position={'relative'}
+                      display={'flex'}
+                      alignItems={'center'}
+                    >
+                      <Input
+                        readOnly
+                        value={WFIL_ADDRESS}
+                        width={1}
+                        p={'auto'}
+                        pl={3}
+                        pr={'5rem'}
+                        fontWeight={3}
+                      />
+                      <Button
+                        size={'small'}
+                        width={'4rem'}
+                        mx={2}
+                        position={'absolute'}
+                        right={0}
+                      >
+                        {!isCopied ? 'Copy' : <Icon name={'Check'} />}
+                      </Button>
+                    </Box>
+                  )}
+                </Clipboard>
+              </>
+            )}
+            
           </Box>
 
           <Flex
@@ -123,17 +160,23 @@ const Wrap = () => {
             borderColor={"#E8E8E8"}
             justifyContent="space-between"
           >
-            <Button.Outline onClick={() => setModalOpen(false)}>Cancel</Button.Outline>
-            <Flex
-              px={4}
-              py={3}
-              justifyContent="flex-end"
-              alignItems="center"
-            >
-              <Loader />
-              <Text ml={1}>Waiting</Text>
-            </Flex>
-            
+            {!txResult && <Button.Outline onClick={closeModal}>Cancel</Button.Outline>}
+
+            {txResult 
+             ? (
+              <Button onClick={closeModal} width="100%">Cerrar</Button>
+             )
+             : (
+              <Flex
+                px={4}
+                py={3}
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                <Loader />
+                <Text ml={1}>Waiting</Text>
+              </Flex>
+            )}
           </Flex>
         </Card>
       </Modal>
