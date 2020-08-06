@@ -29,7 +29,7 @@ const UNITS_REGEX = {
 
 const AmountInput = ({ name, onChange, unit, value }) => {
   const inputRef = useRef(null);
-  const parseAmount = textAmount => Number(textAmount.replace(UNITS_REGEX[unit], ''));
+  const parseAmount = textAmount => textAmount.replace(UNITS_REGEX[unit], '');
 
   useEffect(() => {
     if (inputRef.current) {
@@ -41,7 +41,7 @@ const AmountInput = ({ name, onChange, unit, value }) => {
 
   const handleAmountOnChange = (e) => {
     const { value } = e.target;
-    const amountNumber = parseAmount(value)
+    const amountNumber = parseAmount(value);
     onChange({ target: { name, value: amountNumber } });
   }
 
