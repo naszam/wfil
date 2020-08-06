@@ -14,8 +14,6 @@
 
 The current iteration implments a custodial pattern where users need to send filcoins to a custodial wallet and they'll get automatically the correspondent amount in `WFIL` to thier ethereum addresses.  
 
-To unwrap `WFIL` a user need to burn `WFIL` with the function and specify a filecoin address where to receive the Filecoins.
-
 Future Developments & Features:
 
 We'd like to migrate to a non-custodial pattern where by leveraging on Filcoin smart contracts we'd be able to implement a fully decentralized application.
