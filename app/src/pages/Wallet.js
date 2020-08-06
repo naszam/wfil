@@ -7,7 +7,7 @@ import MainLayout from '../components/layouts';
 
 const Wallet = () => {
   const [balanceAddress, setBalanceAddress] = useState('');
-  const [sendForm, setSendForm] = useState({});
+  const [sendForm, setSendForm] = useState({ token: '', amount: '', destination: '' });
   const [createWalletResult, setCreateWalletResult] = useState({});
   const [walletBalance, setWalletBalance] = useState('');
 
@@ -35,9 +35,10 @@ const Wallet = () => {
 
   const handleSendFil = async () => {
     const { token, amount, destination } = sendForm;
-    const { success } = await sendFil(token, amount, destination);
+    const filAmount = amount.replace(',', '.') * 10e17;
+    const { success } = await sendFil(token, filAmount, destination);
     if (success) {
-      setSendForm({ success: true })
+      setSendForm({ token: '', amount: '', destination: '', success: true })
     }
 
   }
@@ -89,7 +90,7 @@ const Wallet = () => {
           <>
             <Box mt={4}>
               <Heading as="h3" fontFamily="sansSerif" color="primary" my={1}>Balance:</Heading>
-              <Text fontFamily="sansSerif">{walletBalance}</Text>
+              <Text fontFamily="sansSerif">{(walletBalance / 10e17).toFixed(4)} FIL</Text>
             </Box>
           </>
         )}
@@ -124,7 +125,7 @@ const Wallet = () => {
             <Input
                 name="token"
                 onChange={handleSendValueChange}
-                placeholder="Ypur private token"
+                placeholder="Your private token"
                 type="text"
                 value={sendForm.token}
                 width="100%"
