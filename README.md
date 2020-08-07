@@ -171,7 +171,7 @@ Deploy
    ```
    
 ## Project deployed on Kovan
-[WFIL.sol](https://kovan.etherscan.io/address/0x09FdFedb18a23fCFB1E3c93a0C6bb952B904071f)
+[WFIL.sol](https://kovan.etherscan.io/address/0xeC41bA46D6a477e0a004a8e30566f3e9e4a7684b)
 
 Using the DApp
 ==============
