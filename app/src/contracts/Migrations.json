@@ -908,12 +908,12 @@
     "42": {
       "events": {},
       "links": {},
-      "address": "0x4Db0d0EE92eBB57B8bc4443aa99A0073bFBe1A8c",
-      "transactionHash": "0xdf833aff984445157950512a2643a1f5b45504572a0274322b9dd45247fd8643"
+      "address": "0xAc7E93f60d34a631E8745E82CCCa5750d06404aF",
+      "transactionHash": "0x7ca27b2f0b793c9286d3ca84ca3493552e140dcfbb2da56b9990ff71da7f7ce2"
     }
   },
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-07-30T11:45:04.291Z",
+  "updatedAt": "2020-08-07T00:54:36.570Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
