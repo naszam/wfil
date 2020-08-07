@@ -24,7 +24,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 
 
 
-contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
+contract WFIL is Ownable, AccessControl, ERC20, ERC20Burnable, ERC20Pausable {
 
   bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -110,7 +110,7 @@ contract WFIL is Ownable, AccessControl, ERC20Burnable, ERC20Pausable {
   /// @dev Override ERC20 and ERC20Pausable Hooks
   /// @param from Sender address
   /// @param to Recipient address
-  /// @param amount Token amount 
+  /// @param amount Token amount
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Pausable) {
       super._beforeTokenTransfer(from, to, amount);
   }
