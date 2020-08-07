@@ -19,11 +19,12 @@ pragma solidity 0.6.12;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 
 
 
-contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
+contract WFIL is Ownable, AccessControl, ERC20, ERC20Burnable, ERC20Pausable {
 
   bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
   bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -66,7 +67,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
   /// @param amount The amount of WFIL to unwrap
   /// @return True if WFIL is successfully unwrapped
   function unwrap(string calldata filaddress, uint amount) external returns (bool) {
-    _burn(msg.sender, amount);
+    burn(amount);
     emit Unwrapped(filaddress, amount);
     return true;
   }
