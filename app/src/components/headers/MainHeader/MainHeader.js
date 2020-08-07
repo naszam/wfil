@@ -19,7 +19,6 @@ const HeaderBg = styled.div`
 `;
 
 const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
-  console.log("MainHeader -> account", account)
   useEffect(() => {
     initContract(CONTRACT_ADDRESS, abi).then(() => {
       console.log("MainHeader -> CONTRACT_ADDRESS", CONTRACT_ADDRESS)

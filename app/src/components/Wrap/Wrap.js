@@ -164,7 +164,7 @@ const Wrap = () => {
 
             {txResult 
              ? (
-              <Button onClick={closeModal} width="100%">Cerrar</Button>
+              <Button onClick={closeModal} width="100%">Close</Button>
              )
              : (
               <Flex

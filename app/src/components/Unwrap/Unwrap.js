@@ -7,22 +7,39 @@ import AmountInput from '../AmountInput';
 
 const WFIL_ADDRESS = process.env.REACT_APP_FIL_WALLET;
 
-const Unwrap = () => {
+const Unwrap = ({ contractMethodSendWrapper, account }) => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [formData, setFormData] = useState({ amount: '', destination: '', origin: '' });
+  const [formData, setFormData] = useState({ amount: '', destination: ''});
+  const [success, setSuccess] = useState(false);
 
   const onWrapValueChange = ({ target }) => {
     const { name, value } = target;
+    console.log("onWrapValueChange -> name, value ", name, value )
     setFormData({
       ...formData,
       [name]: value
     });
   }
 
-  const handleWrap = () => {
-    const { amount, destination, origin } = formData;
-    console.log("UNWRAPPPP!!", amount, destination, origin)
+  const handleUnWrap = () => {
+    const { amount, destination } = formData;
+    console.log("UNWRAPPPP!!", amount, destination)
     if (amount > 0) {
+      const filAmount = String(amount.replace(',', '.') * 10e17);
+      contractMethodSendWrapper(
+        "unwrap",
+        destination,
+        filAmount,
+        (txStatus, transaction) => {
+          console.log("incrementCounter callback: ", txStatus, transaction);
+          if (
+            txStatus === "confirmation" &&
+            transaction.status === "success"
+          ) {
+            setSuccess(true);
+          }
+        }
+      );
       setModalOpen(true)
     }
   }
@@ -41,18 +58,18 @@ const Unwrap = () => {
         <Box px={4} mb={2}>
           <Field label="FIL Address" fontFamily="sansSerif" width="100%" color="primary">
             <Input
-              name="origin"
+              name="destination"
               onChange={onWrapValueChange}
               placeholder="Wallet to receive FIL"
               required={true}
               type="text"
-              value={formData.origin}
+              value={formData.destination}
               width="100%"
             />
           </Field>
         </Box>
         <Box px={4}>
-          <Button onClick={handleWrap} width="100%">UNWRAP</Button>
+          <Button onClick={handleUnWrap} width="100%">UNWRAP</Button>
         </Box>
       </Flex>
       <Modal isOpen={modalOpen}>
@@ -70,37 +87,11 @@ const Unwrap = () => {
           />
 
           <Box p={4} mb={3}>
-            <Heading.h3>Wrapping FIL into WFIL</Heading.h3>
-            <Text mt={4}>Send {formData.amount} to:</Text>
-            <Clipboard text={WFIL_ADDRESS}>
-              {isCopied => (
-                <Box
-                  color={'inherit'}
-                  position={'relative'}
-                  display={'flex'}
-                  alignItems={'center'}
-                >
-                  <Input
-                    readOnly
-                    value={WFIL_ADDRESS}
-                    width={1}
-                    p={'auto'}
-                    pl={3}
-                    pr={'5rem'}
-                    fontWeight={3}
-                  />
-                  <Button
-                    size={'small'}
-                    width={'4rem'}
-                    mx={2}
-                    position={'absolute'}
-                    right={0}
-                  >
-                    {!isCopied ? 'Copy' : <Icon name={'Check'} />}
-                  </Button>
-                </Box>
-              )}
-            </Clipboard>
+            <Heading.h3>UnWrapping WFIL into FIL</Heading.h3>
+            {success 
+              ? (<Text mt={4}>Success</Text>)
+              : (<Text mt={4}>Please confirm transaction on Metamask</Text>)
+            }
           </Box>
 
           <Flex
@@ -110,16 +101,22 @@ const Unwrap = () => {
             borderColor={"#E8E8E8"}
             justifyContent="space-between"
           >
-            <Button.Outline onClick={() => setModalOpen(false)}>Cancel</Button.Outline>
-            <Flex
-              px={4}
-              py={3}
-              justifyContent="flex-end"
-              alignItems="center"
-            >
-              <Loader />
-              <Text ml={1}>Waiting</Text>
-            </Flex>
+            {success 
+              ? (<Button onClick={() => setModalOpen(false)} width="100%">Close</Button>) 
+              : (
+                <>
+                  <Button.Outline onClick={() => setModalOpen(false)}>Cancel</Button.Outline>
+                  <Flex
+                    px={4}
+                    py={3}
+                    justifyContent="flex-end"
+                    alignItems="center"
+                  >
+                    <Loader />
+                    <Text ml={1}>Waiting</Text>
+                  </Flex>
+                </>
+              )}
             
           </Flex>
         </Card>

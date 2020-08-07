@@ -13,7 +13,7 @@ class NoWeb3BrowserModal extends React.Component {
           lineHeight={"1.375em"}
           my={3}
         >
-          Switch browsers to use the Rimble App Demo
+          Switch browsers to use the Rimble Demo
         </Heading.h2>
 
         {RimbleUtil.isMobileDevice() ? (
@@ -86,7 +86,7 @@ class NoWeb3BrowserModal extends React.Component {
 
             <Text>
               <Text.span bold>Rather use your phone?</Text.span> You can use
-              the Rimble App Demo in mobile browser wallets like{" "}
+              the WFIL Demo in mobile browser wallets like{" "}
               <Link
                 href="https://status.im/"
                 title="status.im website"

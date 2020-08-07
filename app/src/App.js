@@ -10,7 +10,6 @@ import customTheme from './theme';
 
 const appTheme = { ...theme, ...customTheme };
 
-console.log("appTheme", appTheme)
 const config = {
   accountBalanceMinimum: 0.001,
   requiredNetwork: 42

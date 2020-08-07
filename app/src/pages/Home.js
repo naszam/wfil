@@ -5,6 +5,7 @@ import { Flex, Box, Card, Heading } from 'rimble-ui';
 import MainLayout from '../components/layouts';
 import Wrap from '../components/Wrap';
 import Unwrap from '../components/Unwrap';
+import RimbleWeb3 from '../utilities/RimbleWeb3';
 
 const Tab = styled(Box)`
   cursor: pointer;
@@ -38,7 +39,9 @@ const Home = () => {
             <Heading as="h3" fontFamily="sansSerif">UNWRAP</Heading>
           </Tab>
         </Flex>
-        {tab === 'wrap' ? <Wrap /> : <Unwrap />}
+        <RimbleWeb3.Consumer>
+          {(rimbleProps) => (tab === 'wrap' ? <Wrap /> : <Unwrap {...rimbleProps} />)}
+        </RimbleWeb3.Consumer>
       </Card>
       
     </MainLayout>

@@ -517,7 +517,7 @@ class RimbleTransaction extends React.Component {
     }, 1000);
   };
 
-  contractMethodSendWrapper = (contractMethod, callback) => {
+  contractMethodSendWrapper = (contractMethod, destination, amount, callback) => {
     console.log("contractMethodSendWrapper Callback: ", callback);
     // Is it web3 capable?
     if (!this.web3ActionPreflight()) {
@@ -528,7 +528,7 @@ class RimbleTransaction extends React.Component {
     if (!this.state.account || !this.state.accountValidated) {
       this.openTransactionConnectionModal(null, () => {
         console.log("Successfully connected, continuing with Tx");
-        this.contractMethodSendWrapper(contractMethod, callback);
+        this.contractMethodSendWrapper(contractMethod, destination, amount, callback);
       });
       return;
     }
@@ -557,11 +557,11 @@ class RimbleTransaction extends React.Component {
     this.updateTransaction(transaction);
 
     const { contract, account } = this.state;
-
     try {
-      contract.methods[contractMethod]()
+      contract.methods[contractMethod](destination, amount)
         .send({ from: account })
         .on("transactionHash", hash => {
+        
           // Submitted to block and received transaction hash
           // Set properties on the current transaction
           transaction.transactionHash = hash;
@@ -573,6 +573,7 @@ class RimbleTransaction extends React.Component {
           }
         })
         .on("confirmation", (confirmationNumber, receipt) => {
+        
           // Update confirmation count on each subsequent confirmation that's received
           transaction.confirmationCount += 1;
 
@@ -603,6 +604,7 @@ class RimbleTransaction extends React.Component {
           }
         })
         .on("receipt", receipt => {
+        
           // Received receipt, met total number of confirmations
           transaction.recentEvent = "receipt";
           this.updateTransaction(transaction);
@@ -611,6 +613,7 @@ class RimbleTransaction extends React.Component {
           }
         })
         .on("error", error => {
+        
           // Errored out
           transaction.status = "error";
           transaction.recentEvent = "error";
@@ -628,6 +631,7 @@ class RimbleTransaction extends React.Component {
           }
         });
     } catch (error) {
+    
       transaction.status = "error";
       this.updateTransaction(transaction);
       // TODO: should this be a custom error? What is the error here?

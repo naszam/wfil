@@ -176,7 +176,7 @@ class LowFundsModal extends React.Component {
                 <Flex borderTop={1} borderColor={"#999"} />
                 <Flex pt={4} justifyContent={["center", "flex-end"]}>
                   <Button onClick={this.props.closeModal} width={[1, "auto"]}>
-                    Back to Rimble App Demo
+                    Back to WFIL Demo
                   </Button>
                 </Flex>
                 {/* End primary footer */}

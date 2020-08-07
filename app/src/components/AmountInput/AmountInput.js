@@ -24,7 +24,7 @@ const Input = styled.input`
 
 const UNITS_REGEX = {
   FIL: / FIL/,
-  ETH: / ETH/
+  WFIL: / WFIL/
 }
 
 const AmountInput = ({ name, onChange, unit, value }) => {
@@ -33,7 +33,7 @@ const AmountInput = ({ name, onChange, unit, value }) => {
 
   useEffect(() => {
     if (inputRef.current) {
-      const cursorPosition = String(value).length - 4;
+      const cursorPosition = String(value).length - (unit === 'FIL' ? 4 : 5);
       inputRef.current.focus();
       inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
     }
