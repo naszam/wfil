@@ -41,6 +41,12 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         _setupRole(PAUSER_ROLE, owner());
     }
 
+    /// @notice Fallback function
+    /// @dev Added not payable to revert transactions not matching any other function which send value
+    fallback() external {
+        revert();
+    }
+
     /// @dev Modifiers
     modifier onlyAdmin() {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
