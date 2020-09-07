@@ -4,7 +4,7 @@
   "description": "Wrapped Filecoin",
   "main": "truffle-config.js",
   "scripts": {
-    "test": "npx mocha --exit --recursive --parallel"
+    "test": "npx truffle compile && mocha --exit --recursive --parallel --timeout 2000"
   },
   "repository": {
     "type": "git",
