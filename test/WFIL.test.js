@@ -4,7 +4,7 @@
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-const { BN, constants, expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
+const { BN, constants, expectEvent, expectRevert, send } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
 const { expect } = require('chai');
@@ -55,6 +55,13 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
     expect(await wfil.getRoleAdmin(PAUSER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
   });
 
+  // Check Fallback function
+  describe('fallback()', async function () {
+    it('should revert when sending ether to contract address', async function () {
+        await expectRevert.unspecified(send.ether(owner, wfil.address, 1));
+    });
+  });
+
   describe('WFIL metadata', function () {
     it("has a name", async () => {
         expect(await wfil.name({from:other})).to.equal(name)
@@ -64,21 +71,37 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
     })
   });
 
-  describe('minting', function () {
+  describe('wrap()', function () {
     it('owner can mint tokens', async function () {
-      const receipt = await wfil.mint(other, amount, { from: owner });
+      const receipt = await wfil.wrap(other, amount, { from: owner });
+      expectEvent(receipt, 'Wrapped', { to: other, amount: amount });
       expectEvent(receipt, 'Transfer', { from: ZERO_ADDRESS, to: other, value: amount });
 
       expect(await wfil.balanceOf(other)).to.be.bignumber.equal(amount);
     });
 
-    it('other accounts cannot mint tokens', async function () {
-      await expectRevert(wfil.mint(other, amount, { from: other }),'Caller is not a minter');
+    it('other accounts cannot wrap tokens', async function () {
+      await expectRevert(wfil.wrap(other, amount, { from: other }),'Caller is not a minter');
     });
   });
 
-  describe("addMinter()", async () => {
+  describe("unwrap()", async () => {
+      beforeEach(async () => {
+        await wfil.wrap(owner, amount, {from: owner})
+      })
 
+      it("wfil owner should be able to burn wfil", async () => {
+        await wfil.unwrap(filaddress, amount, {from: owner})
+        expect(await wfil.balanceOf(owner)).to.be.bignumber.equal('0')
+      })
+
+      it("should emit the appropriate event when wfil is unwrapped", async () => {
+        const receipt = await wfil.unwrap(filaddress, amount, {from:owner})
+        expectEvent(receipt, "Unwrapped", {filaddress: filaddress, amount: amount})
+      })
+  })
+
+  describe("addMinter()", async () => {
       it("admin should be able to add a new minter", async () => {
         await wfil.addMinter(minter, {from:owner})
         expect(await wfil.getRoleMember(MINTER_ROLE, 1)).to.equal(minter)
@@ -95,7 +118,6 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
   })
 
   describe("removeMinter()", async () => {
-
       beforeEach(async () => {
         await wfil.addMinter(minter, {from: owner})
       })
@@ -115,24 +137,6 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       })
   })
 
-  describe("unwrap()", async () => {
-
-      beforeEach(async () => {
-        await wfil.mint(owner, amount, {from: owner})
-      })
-
-      it("wfil owner should be able to burn wfil", async () => {
-        await wfil.unwrap(filaddress, amount, {from: owner})
-        expect(await wfil.balanceOf(owner)).to.be.bignumber.equal('0')
-      })
-
-      it("should emit the appropriate event when wfil is unwrapped", async () => {
-        const receipt = await wfil.unwrap(filaddress, amount, {from:owner})
-        expectEvent(receipt, "Unwrapped", {filaddress, amount})
-      })
-  })
-
-
   describe('pausing', function () {
       it('owner can pause', async function () {
         const receipt = await wfil.pause({ from: owner });
@@ -150,17 +154,17 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         expect(await wfil.paused()).to.equal(false);
       });
 
-      it('cannot mint while paused', async function () {
+      it('cannot wrap while paused', async function () {
         await wfil.pause({ from: owner });
 
         await expectRevert(
-          wfil.mint(other, amount, { from: owner }),
+          wfil.wrap(other, amount, { from: owner }),
           'ERC20Pausable: token transfer while paused'
         );
       });
 
       it('cannot transfer while paused', async function () {
-        await wfil.mint(owner, amount, {from: owner})
+        await wfil.wrap(owner, amount, {from: owner})
         await wfil.pause({ from: owner });
 
         await expectRevert(
@@ -169,12 +173,12 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         );
       });
 
-      it('cannot burn while paused', async function () {
-        await wfil.mint(owner, amount, {from: owner})
+      it('cannot unwrap while paused', async function () {
+        await wfil.wrap(owner, amount, {from: owner})
         await wfil.pause({ from: owner });
 
         await expectRevert(
-          wfil.burn(amount, { from: owner }),
+          wfil.unwrap(filaddress, amount, { from: owner }),
           'ERC20Pausable: token transfer while paused'
         );
       });
@@ -184,15 +188,19 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       });
   });
 
-    describe('burning', function () {
-      it('holders can burn their tokens', async function () {
-        await wfil.mint(other, amount, { from: owner });
-
-        const receipt = await wfil.burn(amount.subn(1), { from: other });
-        expectEvent(receipt, 'Transfer', { from: other, to: ZERO_ADDRESS, value: amount.subn(1) });
-
-        expect(await wfil.balanceOf(other)).to.be.bignumber.equal('1');
+  // Check override _tranfer() function
+  describe('ERC20 override _transfer()', async function () {
+      beforeEach(async function () {
+        await wfil.wrap(owner, amount, {from: owner})
       });
-    });
 
+      it('check transfer() for revert when trying to transfer to the token contract', async function () {
+        await expectRevert(wfil.transfer(wfil.address, amount, {from:owner}), 'WFIL: transfer to the token contract');
+      });
+
+      it('check transferFrom() for revert when trying to transfer to the token contract', async function () {
+        await wfil.increaseAllowance(wfil.address, amount, {from: owner})
+        await expectRevert(wfil.transferFrom(owner, wfil.address, amount, {from:owner}), 'WFIL: transfer to the token contract');
+      });
+  });
 });
