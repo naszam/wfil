@@ -1,7 +1,7 @@
 [![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
 [![#npm 12.18.2](https://img.shields.io/badge/npm-v12.18.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
-[![#solc 0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
+[![#solc 0.7.1](https://img.shields.io/badge/solc-v0.7.1-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.7.1)
 [![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](https://kovan.etherscan.io/address/0xeC41bA46D6a477e0a004a8e30566f3e9e4a7684b)
 
 <img src="wfil.svg" width="20%">
@@ -105,7 +105,7 @@ Clone this GitHub repository.
     ```sh
     $ npm install -g ganache-cli
     ```
-    - Slither (optional): 
+    - Slither (optional):
     ```sh
     $ git clone https://github.com/crytic/slither.git && cd slither
     $ sudo python3 setup.py install
@@ -141,7 +141,7 @@ Clone this GitHub repository.
      ```sh
      $ mythx analyze
      ```
-     
+
 Deploy
 ============
 ## Deploy on Kovan Testnet
@@ -169,7 +169,7 @@ Deploy
    ```sh
    $ truffle migrate --network kovan
    ```
-   
+
 ## Project deployed on Kovan
 [WFIL.sol](https://kovan.etherscan.io/address/0xeC41bA46D6a477e0a004a8e30566f3e9e4a7684b)
 
