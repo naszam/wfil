@@ -25,10 +25,11 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 
 contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
 
+    /// @dev Roles
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-
+    /// @dev Events
     event Wrapped(address to, uint amount);
     event Unwrapped(string filaddress, uint amount);
 
