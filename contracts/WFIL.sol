@@ -21,8 +21,6 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 
-
-
 contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
 
     /// @dev Roles
