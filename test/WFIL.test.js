@@ -28,7 +28,7 @@ const MINTER_ROLE = web3.utils.soliditySha3('MINTER_ROLE');
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 
   beforeEach(async function () {
-    wfil = await WFIL.new({ from: owner })
+    wfil = await WFIL.new({ from: owner });
   });
 
   it('the deployer is the owner', async function () {
@@ -104,7 +104,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
         expectEvent(receipt, 'Transfer', { from: owner, to: ZERO_ADDRESS, value: amount });
       });
 
-      it('otther accounts cannot unwrap tokens', async function () {
+      it('other accounts cannot unwrap tokens', async function () {
         await expectRevert(wfil.unwrap(filaddress, amount, { from: other }), "ERC20: burn amount exceeds balance");
       });
   })
