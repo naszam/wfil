@@ -2,7 +2,7 @@
 [![#npm 12.18.2](https://img.shields.io/badge/npm-v12.18.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc 0.7.1](https://img.shields.io/badge/solc-v0.7.1-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.7.1)
-[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](https://kovan.etherscan.io/address/0xeC41bA46D6a477e0a004a8e30566f3e9e4a7684b)
+[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](https://kovan.etherscan.io/address/0x4E46Ce0e611A748Eed976bFdf5E14Cf197D40b0C)
 
 <img src="wfil.svg" width="20%">
 
@@ -55,9 +55,11 @@ Implements an ERC20 token by leveraging on OpenZeppelin Library.
 
 It allows the owner of the contract, set as Default Admin to add/remove a Minter via **addMinter()**, **removeMinter()** functions.  
 
-The contract also implements the **unwrap()** function to burn the WFIL by inheriting *ERC20Burnable* module, and passing the filecoin address and the amount of WFIL to unwrap by emitting an event, *Unwrapped*.  
+The contract implements the **wrap()** function to mint WFIL by passing the recepient address and the amount of Filecoin to wrap as parameters and emitting an event, *Wrapped*.  
 
-The contract also inherits OpenZeppelin *AccessControl* module to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
+The contract also implements the **unwrap()** function to burn the WFIL by passing the filecoin address and the amount of WFIL to unwrap as parameters and emitting an event, *Unwrapped*.  
+
+The contract inherits OpenZeppelin *AccessControl* module to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
 
 Once the owner call the **pause()** function, thanks to the **_beforeTokenTransfer()** hook, *_mint()*, *_burn()* and *_transfer()* internal functions, will revert.
 
@@ -171,7 +173,7 @@ Deploy
    ```
 
 ## Project deployed on Kovan
-[WFIL.sol](https://kovan.etherscan.io/address/0xeC41bA46D6a477e0a004a8e30566f3e9e4a7684b)
+[WFIL.sol](https://kovan.etherscan.io/address/0x4E46Ce0e611A748Eed976bFdf5E14Cf197D40b0C)
 
 Using the DApp
 ==============
