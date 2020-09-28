@@ -35,8 +35,9 @@ Applications:
 - Aaron Sutula (Textile), [@asutula](https://github.com/asutula)
 - Ignacio Hagopian (Textile) [@jsign](https://github.com/jsign)
 
-[Demo](https://www.youtube.com/watch?v=EmdEGsnYjgs&feature=youtu.be)  
+[Demo (HackFS)](https://www.youtube.com/watch?v=EmdEGsnYjgs&feature=youtu.be)  
 [HackFS](http://hack.ethglobal.co/showcase/wfil-recCwbCnY2rnipjcR)  
+[Demo (APOLLO)](https://youtu.be/UbB5F03OTo0)
 
 ## Sections
 * [Building Blocks](#building-blocks)
