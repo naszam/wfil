@@ -76,7 +76,7 @@ It's also connected to a Lotus node to listen for transactions and wrap/unwrap W
 
 The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co)
 
-### [Filecoin Wallet](https://wfil.on.fleek.co)
+### [Filecoin Wallet](https://wfil.on.fleek.co/#/wallet)
 
 Implements a Filecoin client by leveraging on Textile Powergate APIs.  
 
