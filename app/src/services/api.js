@@ -57,3 +57,15 @@ export async function checkFilTransaction({origin, amount, destination}) {
     return parseResponse(false); 
   }
 }
+export async function checkEthTransaction({amount, destination}) {
+  try {
+    const query = `amount=${amount}&destination=${destination}`;
+    const result = await axios.get(`${BASE_URL}/unwrap?${query}`);
+    console.log("checkFilTransaction -> result", result);
+    const { tx } = result.data;
+    return parseResponse(true, { tx });
+  } catch (error) {
+    console.log("checkFilTransaction -> error", error)
+    return parseResponse(false); 
+  }
+}

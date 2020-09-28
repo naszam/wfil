@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { Flex, Box, Card, Heading, Field, Text, Icon, Input, Button, Modal, Loader } from 'rimble-ui';
 
-import Clipboard from '../../utilities/components/CopyToClipboard';
 import AmountInput from '../AmountInput';
+import { checkEthTransaction } from '../../services/api';
 
-const WFIL_ADDRESS = process.env.REACT_APP_FIL_WALLET;
+const INTERVAL_CHECK = 20000;
+let intervalHandler = null;
 
 const Unwrap = ({ contractMethodSendWrapper, account }) => {
   const [modalOpen, setModalOpen] = useState(false)
@@ -36,7 +36,15 @@ const Unwrap = ({ contractMethodSendWrapper, account }) => {
             txStatus === "confirmation" &&
             transaction.status === "success"
           ) {
-            setSuccess(true);
+            intervalHandler && clearInterval(intervalHandler);
+            intervalHandler = setInterval(async() => {
+              const { success } = await checkEthTransaction({ origin, amount: filAmount, destination });
+              console.log("intervalHandler -> success", success)
+              if (success) {
+                clearInterval(intervalHandler);
+                setSuccess(true);
+              }
+            }, INTERVAL_CHECK)
           }
         }
       );
