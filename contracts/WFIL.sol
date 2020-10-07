@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.7.1;
+pragma solidity 0.6.12;
 
 /// @title WFIL
 /// @author Nazzareno Massari @naszam
@@ -39,6 +39,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     event Unwrapped(string filaddress, uint unwrapOut, uint unwrapFee);
 
     constructor(address feeTo_)
+        public
         ERC20("Wrapped Filecoin", "WFIL")
     {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
