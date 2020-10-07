@@ -58,17 +58,17 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
 
     /// @dev Modifiers
     modifier onlyAdmin() {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not an admin");
        _;
     }
 
     modifier onlyMinter() {
-        require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
+        require(hasRole(MINTER_ROLE, msg.sender), "WFIL: caller is not a minter");
         _;
     }
 
     modifier onlyFeeSetter() {
-        require(hasRole(FEE_SETTER_ROLE, msg.sender), "Caller is not the fee setter");
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _;
     }
 
@@ -115,7 +115,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @param account Address of the new Minter
     /// @return True if the account address is added as Minter
     function addMinter(address account) external onlyAdmin returns (bool) {
-        require(!hasRole(MINTER_ROLE, account), "Account is already a minter");
+        require(!hasRole(MINTER_ROLE, account), "WFIL: account is already a minter");
         grantRole(MINTER_ROLE, account);
         return true;
     }
@@ -125,7 +125,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @param account Address of the Minter
     /// @return True if the account address is removed as Minter
     function removeMinter(address account) external onlyAdmin returns (bool) {
-        require(hasRole(MINTER_ROLE, account), "Account is not a minter");
+        require(hasRole(MINTER_ROLE, account), "WFIL: account is not a minter");
         revokeRole(MINTER_ROLE, account);
         return true;
     }
