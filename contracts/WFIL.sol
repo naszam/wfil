@@ -146,8 +146,8 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     }
 
     function _setFeeTo(address feeTo) private {
-      require(_feeTo != address(0), "WFIL: set to zero address");
-      require(_feeTo != address(this), "WFIL: set to contract address");
+      require(feeTo != address(0), "WFIL: set to zero address");
+      require(feeTo != address(this), "WFIL: set to contract address");
       _feeTo = feeTo;
     }
 
