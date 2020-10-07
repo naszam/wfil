@@ -3,5 +3,5 @@ const kovan = require('./kovan');
 
 module.exports = function(deployer) {
 
-	deployer.deploy(WFIL, kovan.wfil.feeTo);
+	deployer.deploy(WFIL, kovan.wfil.feeTo, kovan.wfil.fee);
 };
