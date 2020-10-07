@@ -38,7 +38,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     event Wrapped(address to, uint wrapOut, uint wrapFee);
     event Unwrapped(string filaddress, uint unwrapOut, uint unwrapFee);
 
-    constructor(address feeTo_)
+    constructor(address feeTo_, uint8 fee_)
         public
         ERC20("Wrapped Filecoin", "WFIL")
     {
@@ -48,6 +48,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         _setupRole(PAUSER_ROLE, owner());
         _setupRole(FEE_SETTER_ROLE, owner());
 
+        _setFee(fee_);
         _setFeeTo(feeTo_);
     }
 
@@ -73,8 +74,12 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         _;
     }
 
-    function setFee(uint8 fee) external onlyFeeSetter returns (bool) {
-        _fee = fee;
+    function fee() public view returns (uint256) {
+      return _fee;
+    }
+
+    function setFee(uint8 wfilFee) external onlyFeeSetter returns (bool) {
+        _setFee(wfilFee);
         return true;
     }
 
@@ -145,6 +150,10 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         _unpause();
     }
 
+    function _setFee(uint8 wfilFee) private {
+      _fee = wfilFee;
+    }
+
     function _setFeeTo(address feeTo) private {
       require(feeTo != address(0), "WFIL: set to zero address");
       require(feeTo != address(this), "WFIL: set to contract address");
@@ -169,5 +178,4 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     function _beforeTokenTransfer(address from, address to, uint amount) internal override(ERC20, ERC20Pausable) {
         super._beforeTokenTransfer(from, to, amount);
     }
-
 }
