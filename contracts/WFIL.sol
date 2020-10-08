@@ -67,7 +67,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @notice Getter function for the wrap/unwrap fee
     /// @return _fee current fee
     function fee() external view returns (uint256) {
-      return _fee;
+        return _fee;
     }
 
     /// @notice Set a new fee
@@ -178,15 +178,15 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @dev set function visibility to private
     /// @param wfilFee fee to set
     function _setFee(uint8 wfilFee) private {
-      _fee = wfilFee;
+        _fee = wfilFee;
     }
 
     /// @notice Internal function to set feeTo address
     /// @dev set function visibility to private
     /// @param feeTo address to set
     function _setFeeTo(address feeTo) private {
-      require(feeTo != address(0), "WFIL: set to zero address");
-      require(feeTo != address(this), "WFIL: set to contract address");
-      _feeTo = feeTo;
+        require(feeTo != address(0), "WFIL: set to zero address");
+        require(feeTo != address(this), "WFIL: set to contract address");
+        _feeTo = feeTo;
     }
 }
