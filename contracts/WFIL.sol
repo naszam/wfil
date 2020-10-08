@@ -70,7 +70,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
       return _fee;
     }
 
-    /// @noitce Set a new fee
+    /// @notice Set a new fee
     /// @dev Access restricted only for Fee Setters
     /// @dev Call internal function _setFee()
     /// @param wfilFee fee to set
@@ -92,7 +92,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         return true;
     }
 
-    /// @notice Wrap WFIL, mint fee + wrapOut
+    /// @notice Wrap WFIL, mint amount (wrapFee + wrapOut)
     /// @dev Access restricted only for Minters
     /// @param to Address of the recipient
     /// @param amount Amount of WFIL issued
@@ -107,7 +107,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         return true;
     }
 
-    /// @notice Unwrap WFIL, transfer fee + burn uwnrapOut
+    /// @notice Unwrap WFIL, transfer unwrapFee + burn uwnrapOut
     /// @dev Emit an event with the Filecoin Address to UI
     /// @param filaddress The Filecoin Address to uwrap WFIL
     /// @param amount The amount of WFIL to unwrap
