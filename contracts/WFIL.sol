@@ -66,7 +66,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
 
     /// @notice Getter function for the wrap/unwrap fee
     /// @return _fee current fee
-    function fee() public view returns (uint256) {
+    function fee() external view returns (uint256) {
       return _fee;
     }
 
