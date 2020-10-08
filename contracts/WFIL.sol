@@ -23,7 +23,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
 
     /// @dev Libraries
-    using SafeMath for uint256;
+    using SafeMath for uint;
 
     /// @dev Roles
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -31,14 +31,14 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     /// @dev Data
-    uint8 private _fee;
+    uint private _fee;
     address private _feeTo;
 
     /// @dev Events
     event Wrapped(address to, uint wrapOut, uint wrapFee);
     event Unwrapped(string filaddress, uint unwrapOut, uint unwrapFee);
 
-    constructor(address feeTo_, uint8 fee_)
+    constructor(address feeTo_, uint fee_)
         public
         ERC20("Wrapped Filecoin", "WFIL")
     {
@@ -66,7 +66,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
 
     /// @notice Getter function for the wrap/unwrap fee
     /// @return _fee current fee
-    function fee() external view returns (uint256) {
+    function fee() external view returns (uint) {
         return _fee;
     }
 
@@ -75,7 +75,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @dev Call internal function _setFee()
     /// @param wfilFee fee to set
     /// @return True if wfilFee is successfully set
-    function setFee(uint8 wfilFee) external returns (bool) {
+    function setFee(uint wfilFee) external returns (bool) {
         require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _setFee(wfilFee);
         return true;
@@ -177,7 +177,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @notice Internal function to set fee
     /// @dev set function visibility to private
     /// @param wfilFee fee to set
-    function _setFee(uint8 wfilFee) private {
+    function _setFee(uint wfilFee) private {
         _fee = wfilFee;
     }
 
