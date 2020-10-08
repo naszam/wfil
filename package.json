@@ -1,7 +1,7 @@
 {
   "name": "wfil",
-  "version": "0.2.0",
-  "description": "Wrapped Filecoin",
+  "version": "0.3.0",
+  "description": "Wrapped Filecoin (WFIL)",
   "main": "truffle-config.js",
   "scripts": {
     "test": "npx truffle compile && mocha --exit --recursive --parallel --timeout 2000"
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/naszam/wfil.git"
   },
   "author": "Nazzareno Massari",
-  "license": "GPL-3.0",
+  "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/naszam/wfil/issues"
   },
