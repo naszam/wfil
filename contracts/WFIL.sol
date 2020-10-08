@@ -64,26 +64,18 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
        _;
     }
 
-    modifier onlyMinter() {
-        require(hasRole(MINTER_ROLE, msg.sender), "WFIL: caller is not a minter");
-        _;
-    }
-
-    modifier onlyFeeSetter() {
-        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
-        _;
-    }
-
     function fee() public view returns (uint256) {
       return _fee;
     }
 
-    function setFee(uint8 wfilFee) external onlyFeeSetter returns (bool) {
+    function setFee(uint8 wfilFee) external returns (bool) {
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _setFee(wfilFee);
         return true;
     }
 
-    function setFeeTo(address feeTo) external onlyFeeSetter returns (bool) {
+    function setFeeTo(address feeTo) external returns (bool) {
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _setFeeTo(feeTo);
         return true;
     }
@@ -93,7 +85,8 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @param to Address of the recipient
     /// @param amount Amount of WFIL issued
     /// @return True if WFIL is successfully wrapped
-    function wrap(address to, uint amount) external onlyMinter returns (bool) {
+    function wrap(address to, uint amount) external returns (bool) {
+        require(hasRole(MINTER_ROLE, msg.sender), "WFIL: caller is not a minter");
         uint wrapFee = amount.mul(_fee).div(1000);
         uint wrapOut = amount.sub(wrapFee);
         _mint(_feeTo, wrapFee);
