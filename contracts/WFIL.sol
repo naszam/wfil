@@ -64,23 +64,35 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
        _;
     }
 
+    /// @notice Getter function for the wrap/unwrap fee
+    /// @return _fee current fee
     function fee() public view returns (uint256) {
       return _fee;
     }
 
+    /// @noitce Set a new fee
+    /// @dev Access restricted only for Fee Setters
+    /// @dev Call internal function _setFee()
+    /// @param wfilFee fee to set
+    /// @return True if wfilFee is successfully set
     function setFee(uint8 wfilFee) external returns (bool) {
         require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _setFee(wfilFee);
         return true;
     }
 
+    /// @notice Set a new feeTo address
+    /// @dev Access restricted only for Fee Setters
+    /// @dev Call internal function _setFeeTo()
+    /// @param feeTo address to set
+    /// @return True if feeTo is successfully set
     function setFeeTo(address feeTo) external returns (bool) {
         require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _setFeeTo(feeTo);
         return true;
     }
 
-    /// @notice Mint new WFIL
+    /// @notice Wrap WFIL, mint fee + wrapOut
     /// @dev Access restricted only for Minters
     /// @param to Address of the recipient
     /// @param amount Amount of WFIL issued
@@ -95,8 +107,8 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         return true;
     }
 
-    /// @notice Burn WFIL
-    /// @dev Emit an event with the Filecoin Address and amount to UI
+    /// @notice Unwrap WFIL, transfer fee + burn uwnrapOut
+    /// @dev Emit an event with the Filecoin Address to UI
     /// @param filaddress The Filecoin Address to uwrap WFIL
     /// @param amount The amount of WFIL to unwrap
     /// @return True if WFIL is successfully unwrapped
@@ -143,16 +155,6 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         _unpause();
     }
 
-    function _setFee(uint8 wfilFee) private {
-      _fee = wfilFee;
-    }
-
-    function _setFeeTo(address feeTo) private {
-      require(feeTo != address(0), "WFIL: set to zero address");
-      require(feeTo != address(this), "WFIL: set to contract address");
-      _feeTo = feeTo;
-    }
-
     /// @notice Prevent transfer to the token contract
     /// @dev Override ERC20 _transfer()
     /// @param sender Sender address
@@ -170,5 +172,21 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @param amount Token amount
     function _beforeTokenTransfer(address from, address to, uint amount) internal override(ERC20, ERC20Pausable) {
         super._beforeTokenTransfer(from, to, amount);
+    }
+
+    /// @notice Internal function to set fee
+    /// @dev set function visibility to private
+    /// @param wfilFee fee to set
+    function _setFee(uint8 wfilFee) private {
+      _fee = wfilFee;
+    }
+
+    /// @notice Internal function to set feeTo address
+    /// @dev set function visibility to private
+    /// @param feeTo address to set
+    function _setFeeTo(address feeTo) private {
+      require(feeTo != address(0), "WFIL: set to zero address");
+      require(feeTo != address(this), "WFIL: set to contract address");
+      _feeTo = feeTo;
     }
 }
