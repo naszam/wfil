@@ -22,7 +22,7 @@ const symbol = 'WFIL';
 const filaddress = 't3r65ygzflxsibwkput2c5thotk4qpo4vkz2t5dtg76dhxgotynlb7nbzabt6z2if3xmlfpvu7ujyhfy44qvoq';
 
 const amount = ether('100');
-const fee = 5;
+const fee = '5';
 const wrapOut = ether('99.5');
 const wrapFee = ether('0.5');
 const unwrapFee = ether('0.4975');
@@ -38,34 +38,41 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
     wfil = await WFIL.new(feeTo, fee, { from: owner });
   });
 
-  it('the deployer is the owner', async function () {
-    expect(await wfil.owner()).to.equal(owner);
-  });
+  describe('Setup', async function () {
 
-  it('owner has the default admin role', async function () {
-    expect(await wfil.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
-    expect(await wfil.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
-  });
+    it('the deployer is the owner', async function () {
+      expect(await wfil.owner()).to.equal(owner);
+    });
 
-  it('owner has the minter role', async function () {
-    expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal('1');
-    expect(await wfil.getRoleMember(MINTER_ROLE, 0)).to.equal(owner);
-  });
+    it('the deployed fee is correct', async function () {
+      expect(await wfil.fee()).to.be.bignumber.equal(fee);
+    });
 
-  it('owner has the pauser role', async function () {
-    expect(await wfil.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
-    expect(await wfil.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
-  });
+    it('owner has the default admin role', async function () {
+      expect(await wfil.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
+      expect(await wfil.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
+    });
 
-  it('owner has the fee setter role', async function () {
-    expect(await wfil.getRoleMemberCount(FEE_SETTER_ROLE)).to.be.bignumber.equal('1');
-    expect(await wfil.getRoleMember(FEE_SETTER_ROLE, 0)).to.equal(owner);
-  });
+    it('owner has the minter role', async function () {
+      expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal('1');
+      expect(await wfil.getRoleMember(MINTER_ROLE, 0)).to.equal(owner);
+    });
 
-  it('minter, pauser and fee setter role admin is the default admin', async function () {
-    expect(await wfil.getRoleAdmin(MINTER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
-    expect(await wfil.getRoleAdmin(PAUSER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
-    expect(await wfil.getRoleAdmin(FEE_SETTER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
+    it('owner has the pauser role', async function () {
+      expect(await wfil.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
+      expect(await wfil.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
+    });
+
+    it('owner has the fee setter role', async function () {
+      expect(await wfil.getRoleMemberCount(FEE_SETTER_ROLE)).to.be.bignumber.equal('1');
+      expect(await wfil.getRoleMember(FEE_SETTER_ROLE, 0)).to.equal(owner);
+    });
+
+    it('minter, pauser and fee setter role admin is the default admin', async function () {
+      expect(await wfil.getRoleAdmin(MINTER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
+      expect(await wfil.getRoleAdmin(PAUSER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
+      expect(await wfil.getRoleAdmin(FEE_SETTER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
+    });
   });
 
   // Check Fallback function
