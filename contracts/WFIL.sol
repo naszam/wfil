@@ -37,6 +37,8 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @dev Events
     event Wrapped(address to, uint wrapOut, uint wrapFee);
     event Unwrapped(string filaddress, uint unwrapOut, uint unwrapFee);
+    event NewFee(uint fee);
+    event NewFeeTo(address feeTo);
 
     constructor(address feeTo_, uint fee_)
         public
@@ -179,6 +181,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @param wfilFee fee to set
     function _setFee(uint wfilFee) private {
         _fee = wfilFee;
+        emit NewFee(wfilFee);
     }
 
     /// @notice Internal function to set feeTo address
@@ -188,5 +191,6 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         require(feeTo != address(0), "WFIL: set to zero address");
         require(feeTo != address(this), "WFIL: set to contract address");
         _feeTo = feeTo;
+        emit NewFeeTo(feeTo);
     }
 }
