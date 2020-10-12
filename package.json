@@ -26,8 +26,8 @@
   "dependencies": {
     "@openzeppelin/contracts": "^3.2.0",
     "@truffle/hdwallet-provider": "^1.1.0",
-    "ganache-cli": "^6.11.0",
-    "truffle": "^5.1.47",
+    "ganache-cli": "^6.12.0",
+    "truffle": "^5.1.48",
     "truffle-flattener": "^1.5.0"
   }
 }
