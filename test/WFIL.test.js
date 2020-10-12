@@ -14,7 +14,7 @@ const WFIL = contract.fromArtifact('WFIL');
 let wfil;
 
 describe('WFIL', function () {
-const [ owner, minter, feeTo, fee_setter, other ] = accounts;
+const [ owner, minter, feeTo, fee_setter, other, feeTo2 ] = accounts;
 
 const name = 'Wrapped Filecoin';
 const symbol = 'WFIL';
@@ -23,6 +23,7 @@ const filaddress = 't3r65ygzflxsibwkput2c5thotk4qpo4vkz2t5dtg76dhxgotynlb7nbzabt
 
 const amount = ether('100');
 const fee = '5';
+const newFee = '6';
 const wrapOut = ether('99.5');
 const wrapFee = ether('0.5');
 const unwrapFee = ether('0.4975');
@@ -131,6 +132,41 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
       it('other accounts cannot unwrap tokens', async function () {
         await expectRevert(wfil.unwrap(filaddress, wrapOut, { from: other }), "ERC20: transfer amount exceeds balance");
       });
+  })
+
+  describe("setFee()", async () => {
+      it("fee setter should be able to add a new fee", async () => {
+        await wfil.setFee(newFee, {from:owner});
+        expect(await wfil.fee()).to.be.bignumber.equal(newFee);
+      })
+
+      it("should emit the appropriate event when a new fee is set", async () => {
+        const receipt = await wfil.setFee(newFee, {from:owner});
+        expectEvent(receipt, "NewFee", { fee: newFee });
+      })
+
+      it("other address should not be able to add a new fee", async () => {
+        await expectRevert(wfil.setFee(newFee, {from:other}), 'WFIL: caller is not the fee setter');
+      })
+  })
+
+  describe("setFeeTo()", async () => {
+      it("fee setter should be able to add a new feeTo address", async () => {
+        const receipt = await wfil.setFeeTo(feeTo2, {from:owner});
+        expectEvent(receipt, "NewFeeTo", { feeTo: feeTo2 });
+      })
+
+      it("other address should not be able to add a new feeTo address", async () => {
+        await expectRevert(wfil.setFeeTo(feeTo2, {from:other}), 'WFIL: caller is not the fee setter');
+      })
+
+      it("should revert when a zero address is specified", async () => {
+        await expectRevert(wfil.setFeeTo(ZERO_ADDRESS, {from:owner}), 'WFIL: set to zero address');
+      })
+
+      it("should revert when contract address is specified", async () => {
+        await expectRevert(wfil.setFeeTo(wfil.address, {from:owner}), 'WFIL: set to contract address');
+      })
   })
 
   describe("addMinter()", async () => {
