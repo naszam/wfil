@@ -71,7 +71,7 @@ Implements a custodial wallet by leveraging on Texitle Powergate APIs.
 
 Via AWS Lambda Function, allows to automatically wrap Filecoin, by minting WFIL from an account set as Minter.  
 
-It's also connected to a Lotus node to listen for transactions and wrap/unwrap WFIL.
+It's also connected via Filscan APIs to Filecoin to check for transactions that are tracked by Textile ThreadDB.
 
 ### [Frontend](./app)
 
