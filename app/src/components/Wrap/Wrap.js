@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Flex, Box, Card, Heading, Field, Text, Icon, Input, Button, Modal, Loader } from 'rimble-ui';
 
-import { checkFilTransaction } from '../../services/api';
+import { askForWrap, checkTransactionStatus } from '../../services/api';
 import Clipboard from '../../utilities/components/CopyToClipboard';
 import AmountInput from '../AmountInput';
 
-const INTERVAL_CHECK = 20000;
+const INTERVAL_CHECK = 5000;
 const WFIL_ADDRESS = process.env.REACT_APP_FIL_WALLET;
 let intervalHandler = null;
 
@@ -32,21 +32,27 @@ const Wrap = () => {
     });
   }
 
-  const handleWrap = () => {
+  const handleWrap = async () => {
     const { amount, destination, origin } = formData;
     console.log("WRAPPPP!!", amount, destination, origin)
     if (amount > 0) {
       setModalOpen(true)
       const filAmount = amount.replace(',', '.') * 10e17;
-      intervalHandler && clearInterval(intervalHandler);
-      intervalHandler = setInterval(async() => {
-        const { success, data } = await checkFilTransaction({ origin, amount: filAmount, destination });
-        console.log("intervalHandler -> success", success, data)
-        if (success && data && data.tx) {
-          setTxResult(data.tx);
-          clearInterval(intervalHandler);
-        }
-      }, INTERVAL_CHECK)
+      const { success, data } = await askForWrap({ origin, amount: filAmount, destination });
+      const transactionId = data && data.id ? data.id : null;
+
+      if (success && transactionId) {
+        intervalHandler && clearInterval(intervalHandler);
+        intervalHandler = setInterval(async() => {
+          const { success: statusSuccess, data: dataTransaction } = await checkTransactionStatus(transactionId);
+          console.log("intervalHandler -> success", success, dataTransaction)
+          if (statusSuccess && dataTransaction && dataTransaction.status === 'success') {
+            setTxResult(dataTransaction.txHash);
+            clearInterval(intervalHandler);
+          }
+        }, INTERVAL_CHECK);
+      }
+
     }
   }
 
@@ -118,7 +124,7 @@ const Wrap = () => {
               )
               : (
               <>
-                <Text mt={4}>Send {formData.amount} to:</Text>
+                <Text mt={4}>Send {formData.amount}FIL to:</Text>
                 <Clipboard text={WFIL_ADDRESS}>
                   {isCopied => (
                     <Box

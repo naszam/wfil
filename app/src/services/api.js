@@ -45,27 +45,37 @@ export async function sendFil(token, amount, destination) {
   }
 }
 
-export async function checkFilTransaction({origin, amount, destination}) {
+export async function askForWrap({origin, amount, destination}) {
   try {
-    const query = `origin=${origin}&amount=${amount}&destination=${destination}`;
-    const result = await axios.get(`${BASE_URL}/transaction?${query}`);
-    console.log("checkFilTransaction -> result", result);
-    const { tx } = result.data;
-    return parseResponse(true, { tx });
+    const result = await axios.post(`${BASE_URL}/wrap`, { origin, amount, destination });
+    console.log("askForWrap -> result", result);
+    return parseResponse(true, { id: result.data.data });
   } catch (error) {
-    console.log("checkFilTransaction -> error", error)
+    console.log("askForWrap -> error", error)
     return parseResponse(false); 
   }
 }
+
+export async function checkTransactionStatus(id) {
+  try {
+    const result = await axios.get(`${BASE_URL}/transaction/${id}`);
+    console.log("checkTransactionStatus -> result", result);
+    return parseResponse(true, { ...result.data.data });
+  } catch (error) {
+    console.log("askForWrap -> error", error)
+    return parseResponse(false); 
+  }
+}
+
 export async function checkEthTransaction({amount, destination}) {
   try {
     const query = `amount=${amount}&destination=${destination}`;
     const result = await axios.get(`${BASE_URL}/unwrap?${query}`);
-    console.log("checkFilTransaction -> result", result);
+    console.log("checkEthTransaction -> result", result);
     const { tx } = result.data;
     return parseResponse(true, { tx });
   } catch (error) {
-    console.log("checkFilTransaction -> error", error)
+    console.log("checkEthTransaction -> error", error)
     return parseResponse(false); 
   }
 }
