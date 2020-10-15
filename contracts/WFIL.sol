@@ -1,5 +1,5 @@
-/// SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.7.1;
+/// SPDX-License-Identifier: AGPL-3.0-or-later
+pragma solidity 0.6.12;
 
 /// @title WFIL
 /// @author Nazzareno Massari @naszam
@@ -22,21 +22,36 @@ import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 
 contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
 
+    /// @dev Libraries
+    using SafeMath for uint;
+
     /// @dev Roles
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 public constant FEE_SETTER_ROLE = keccak256("FEE_SETTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    /// @dev Events
-    event Wrapped(address to, uint amount);
-    event Unwrapped(string filaddress, uint amount);
+    /// @dev Data
+    uint private _fee;
+    address private _feeTo;
 
-    constructor()
+    /// @dev Events
+    event Wrapped(address to, uint wrapOut, uint wrapFee);
+    event Unwrapped(string filaddress, uint unwrapOut, uint unwrapFee);
+    event NewFee(uint fee);
+    event NewFeeTo(address feeTo);
+
+    constructor(address feeTo_, uint fee_)
+        public
         ERC20("Wrapped Filecoin", "WFIL")
     {
         _setupRole(DEFAULT_ADMIN_ROLE, owner());
 
         _setupRole(MINTER_ROLE, owner());
         _setupRole(PAUSER_ROLE, owner());
+        _setupRole(FEE_SETTER_ROLE, owner());
+
+        _setFee(fee_);
+        _setFeeTo(feeTo_);
     }
 
     /// @notice Fallback function
@@ -47,34 +62,64 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
 
     /// @dev Modifiers
     modifier onlyAdmin() {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Caller is not an admin");
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not an admin");
        _;
     }
 
-    modifier onlyMinter() {
-        require(hasRole(MINTER_ROLE, msg.sender), "Caller is not a minter");
-        _;
+    /// @notice Getter function for the wrap/unwrap fee
+    /// @return _fee current fee
+    function fee() external view returns (uint) {
+        return _fee;
     }
 
-    /// @notice Mint new WFIL
+    /// @notice Set a new fee
+    /// @dev Access restricted only for Fee Setters
+    /// @dev Call internal function _setFee()
+    /// @param wfilFee fee to set
+    /// @return True if wfilFee is successfully set
+    function setFee(uint wfilFee) external returns (bool) {
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
+        _setFee(wfilFee);
+        return true;
+    }
+
+    /// @notice Set a new feeTo address
+    /// @dev Access restricted only for Fee Setters
+    /// @dev Call internal function _setFeeTo()
+    /// @param feeTo address to set
+    /// @return True if feeTo is successfully set
+    function setFeeTo(address feeTo) external returns (bool) {
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
+        _setFeeTo(feeTo);
+        return true;
+    }
+
+    /// @notice Wrap WFIL, mint amount (wrapFee + wrapOut)
     /// @dev Access restricted only for Minters
     /// @param to Address of the recipient
     /// @param amount Amount of WFIL issued
     /// @return True if WFIL is successfully wrapped
-    function wrap(address to, uint amount) external onlyMinter returns (bool) {
-        _mint(to, amount);
-        emit Wrapped(to, amount);
+    function wrap(address to, uint amount) external returns (bool) {
+        require(hasRole(MINTER_ROLE, msg.sender), "WFIL: caller is not a minter");
+        uint wrapFee = amount.mul(_fee).div(1000);
+        uint wrapOut = amount.sub(wrapFee);
+        _mint(_feeTo, wrapFee);
+        _mint(to, wrapOut);
+        emit Wrapped(to, wrapOut, wrapFee);
         return true;
     }
 
-    /// @notice Burn WFIL
-    /// @dev Emit an event with the Filecoin Address and amount to UI
+    /// @notice Unwrap WFIL, transfer unwrapFee + burn uwnrapOut
+    /// @dev Emit an event with the Filecoin Address to UI
     /// @param filaddress The Filecoin Address to uwrap WFIL
     /// @param amount The amount of WFIL to unwrap
     /// @return True if WFIL is successfully unwrapped
     function unwrap(string calldata filaddress, uint amount) external returns (bool) {
-        _burn(msg.sender, amount);
-        emit Unwrapped(filaddress, amount);
+        uint unwrapFee = amount.mul(_fee).div(1000);
+        uint unwrapOut = amount.sub(unwrapFee);
+        _transfer(msg.sender, _feeTo, unwrapFee);
+        _burn(msg.sender, unwrapOut);
+        emit Unwrapped(filaddress, unwrapOut, unwrapFee);
         return true;
     }
 
@@ -83,7 +128,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @param account Address of the new Minter
     /// @return True if the account address is added as Minter
     function addMinter(address account) external onlyAdmin returns (bool) {
-        require(!hasRole(MINTER_ROLE, account), "Account is already a minter");
+        require(!hasRole(MINTER_ROLE, account), "WFIL: account is already a minter");
         grantRole(MINTER_ROLE, account);
         return true;
     }
@@ -93,7 +138,7 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
     /// @param account Address of the Minter
     /// @return True if the account address is removed as Minter
     function removeMinter(address account) external onlyAdmin returns (bool) {
-        require(hasRole(MINTER_ROLE, account), "Account is not a minter");
+        require(hasRole(MINTER_ROLE, account), "WFIL: account is not a minter");
         revokeRole(MINTER_ROLE, account);
         return true;
     }
@@ -131,4 +176,21 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
         super._beforeTokenTransfer(from, to, amount);
     }
 
+    /// @notice Internal function to set fee
+    /// @dev set function visibility to private
+    /// @param wfilFee fee to set
+    function _setFee(uint wfilFee) private {
+        _fee = wfilFee;
+        emit NewFee(wfilFee);
+    }
+
+    /// @notice Internal function to set feeTo address
+    /// @dev set function visibility to private
+    /// @param feeTo address to set
+    function _setFeeTo(address feeTo) private {
+        require(feeTo != address(0), "WFIL: set to zero address");
+        require(feeTo != address(this), "WFIL: set to contract address");
+        _feeTo = feeTo;
+        emit NewFeeTo(feeTo);
+    }
 }

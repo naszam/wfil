@@ -4,7 +4,7 @@
 
 const { accounts, contract, web3 } = require('@openzeppelin/test-environment');
 
-const { BN, constants, expectEvent, expectRevert, send } = require('@openzeppelin/test-helpers');
+const { BN, constants, expectEvent, expectRevert, send, ether } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
 const { expect } = require('chai');
@@ -14,45 +14,66 @@ const WFIL = contract.fromArtifact('WFIL');
 let wfil;
 
 describe('WFIL', function () {
-const [ owner, minter, other ] = accounts;
+const [ owner, minter, feeTo, fee_setter, other, feeTo2 ] = accounts;
 
 const name = 'Wrapped Filecoin';
 const symbol = 'WFIL';
 
 const filaddress = 't3r65ygzflxsibwkput2c5thotk4qpo4vkz2t5dtg76dhxgotynlb7nbzabt6z2if3xmlfpvu7ujyhfy44qvoq';
 
-const amount = new BN('5000');
+const amount = ether('100');
+const fee = '5';
+const newFee = '6';
+const wrapOut = ether('99.5');
+const wrapFee = ether('0.5');
+const unwrapFee = ether('0.4975');
+const unwrapOut = ether('99.0025');
+const totFee = ether('0.9975');
 
 const DEFAULT_ADMIN_ROLE = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const MINTER_ROLE = web3.utils.soliditySha3('MINTER_ROLE');
 const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
+const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
 
   beforeEach(async function () {
-    wfil = await WFIL.new({ from: owner });
+    wfil = await WFIL.new(feeTo, fee, { from: owner });
   });
 
-  it('the deployer is the owner', async function () {
-    expect(await wfil.owner()).to.equal(owner);
-  });
+  describe('Setup', async function () {
 
-  it('owner has the default admin role', async function () {
-    expect(await wfil.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
-    expect(await wfil.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
-  });
+    it('the deployer is the owner', async function () {
+      expect(await wfil.owner()).to.equal(owner);
+    });
 
-  it('owner has the minter role', async function () {
-    expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal('1');
-    expect(await wfil.getRoleMember(MINTER_ROLE, 0)).to.equal(owner);
-  });
+    it('the deployed fee is correct', async function () {
+      expect(await wfil.fee()).to.be.bignumber.equal(fee);
+    });
 
-  it('owner has the pauser role', async function () {
-    expect(await wfil.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
-    expect(await wfil.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
-  });
+    it('owner has the default admin role', async function () {
+      expect(await wfil.getRoleMemberCount(DEFAULT_ADMIN_ROLE)).to.be.bignumber.equal('1');
+      expect(await wfil.getRoleMember(DEFAULT_ADMIN_ROLE, 0)).to.equal(owner);
+    });
 
-  it('minter and pauser role admin is the default admin', async function () {
-    expect(await wfil.getRoleAdmin(MINTER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
-    expect(await wfil.getRoleAdmin(PAUSER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
+    it('owner has the minter role', async function () {
+      expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal('1');
+      expect(await wfil.getRoleMember(MINTER_ROLE, 0)).to.equal(owner);
+    });
+
+    it('owner has the pauser role', async function () {
+      expect(await wfil.getRoleMemberCount(PAUSER_ROLE)).to.be.bignumber.equal('1');
+      expect(await wfil.getRoleMember(PAUSER_ROLE, 0)).to.equal(owner);
+    });
+
+    it('owner has the fee setter role', async function () {
+      expect(await wfil.getRoleMemberCount(FEE_SETTER_ROLE)).to.be.bignumber.equal('1');
+      expect(await wfil.getRoleMember(FEE_SETTER_ROLE, 0)).to.equal(owner);
+    });
+
+    it('minter, pauser and fee setter role admin is the default admin', async function () {
+      expect(await wfil.getRoleAdmin(MINTER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
+      expect(await wfil.getRoleAdmin(PAUSER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
+      expect(await wfil.getRoleAdmin(FEE_SETTER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
+    });
   });
 
   // Check Fallback function
@@ -74,17 +95,19 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
   describe('wrap()', function () {
     it('owner can mint tokens', async function () {
       const receipt = await wfil.wrap(other, amount, { from: owner });
-      expect(await wfil.balanceOf(other)).to.be.bignumber.equal(amount);
+      expect(await wfil.balanceOf(other)).to.be.bignumber.equal(wrapOut);
+      expect(await wfil.balanceOf(feeTo)).to.be.bignumber.equal(wrapFee);
     });
 
     it("should emit the appropriate event when wfil is wrapped", async () => {
       const receipt = await wfil.wrap(other, amount, {from:owner});
-      expectEvent(receipt, 'Wrapped', { to: other, amount: amount });
-      expectEvent(receipt, 'Transfer', { from: ZERO_ADDRESS, to: other, value: amount });
+      expectEvent(receipt, 'Wrapped', { to: other, wrapOut: wrapOut, wrapFee: wrapFee });
+      expectEvent(receipt, 'Transfer', { from: ZERO_ADDRESS, to: other, value: wrapOut });
+      expectEvent(receipt, 'Transfer', { from: ZERO_ADDRESS, to: feeTo, value: wrapFee });
     });
 
     it('other accounts cannot wrap tokens', async function () {
-      await expectRevert(wfil.wrap(other, amount, { from: other }),'Caller is not a minter');
+      await expectRevert(wfil.wrap(other, amount, { from: other }),'WFIL: caller is not a minter');
     });
   });
 
@@ -94,19 +117,56 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       });
 
       it("wfil owner should be able to burn wfil", async () => {
-        await wfil.unwrap(filaddress, amount, {from: owner});
+        await wfil.unwrap(filaddress, wrapOut, {from: owner});
         expect(await wfil.balanceOf(owner)).to.be.bignumber.equal('0');
+        expect(await wfil.balanceOf(feeTo)).to.be.bignumber.equal(totFee);
       });
 
       it("should emit the appropriate event when wfil is unwrapped", async () => {
-        const receipt = await wfil.unwrap(filaddress, amount, {from:owner});
-        expectEvent(receipt, "Unwrapped", {filaddress: filaddress, amount: amount});
-        expectEvent(receipt, 'Transfer', { from: owner, to: ZERO_ADDRESS, value: amount });
+        const receipt = await wfil.unwrap(filaddress, wrapOut, {from:owner});
+        expectEvent(receipt, "Unwrapped", { filaddress: filaddress, unwrapOut: unwrapOut, unwrapFee: unwrapFee });
+        expectEvent(receipt, 'Transfer', { from: owner, to: feeTo, value: unwrapFee });
+        expectEvent(receipt, 'Transfer', { from: owner, to: ZERO_ADDRESS, value: unwrapOut });
       });
 
       it('other accounts cannot unwrap tokens', async function () {
-        await expectRevert(wfil.unwrap(filaddress, amount, { from: other }), "ERC20: burn amount exceeds balance");
+        await expectRevert(wfil.unwrap(filaddress, wrapOut, { from: other }), "ERC20: transfer amount exceeds balance");
       });
+  })
+
+  describe("setFee()", async () => {
+      it("fee setter should be able to add a new fee", async () => {
+        await wfil.setFee(newFee, {from:owner});
+        expect(await wfil.fee()).to.be.bignumber.equal(newFee);
+      })
+
+      it("should emit the appropriate event when a new fee is set", async () => {
+        const receipt = await wfil.setFee(newFee, {from:owner});
+        expectEvent(receipt, "NewFee", { fee: newFee });
+      })
+
+      it("other address should not be able to add a new fee", async () => {
+        await expectRevert(wfil.setFee(newFee, {from:other}), 'WFIL: caller is not the fee setter');
+      })
+  })
+
+  describe("setFeeTo()", async () => {
+      it("fee setter should be able to add a new feeTo address", async () => {
+        const receipt = await wfil.setFeeTo(feeTo2, {from:owner});
+        expectEvent(receipt, "NewFeeTo", { feeTo: feeTo2 });
+      })
+
+      it("other address should not be able to add a new feeTo address", async () => {
+        await expectRevert(wfil.setFeeTo(feeTo2, {from:other}), 'WFIL: caller is not the fee setter');
+      })
+
+      it("should revert when a zero address is specified", async () => {
+        await expectRevert(wfil.setFeeTo(ZERO_ADDRESS, {from:owner}), 'WFIL: set to zero address');
+      })
+
+      it("should revert when contract address is specified", async () => {
+        await expectRevert(wfil.setFeeTo(wfil.address, {from:owner}), 'WFIL: set to contract address');
+      })
   })
 
   describe("addMinter()", async () => {
@@ -121,7 +181,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       })
 
       it("other address should not be able to add a new minter", async () => {
-        await expectRevert(wfil.addMinter(minter, {from:other}), 'Caller is not an admin');
+        await expectRevert(wfil.addMinter(minter, {from:other}), 'WFIL: caller is not an admin');
       })
   })
 
@@ -141,7 +201,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
       })
 
       it("other address should not be able to remove a minter", async () => {
-        await expectRevert(wfil.removeMinter(minter, {from:other}), 'Caller is not an admin');
+        await expectRevert(wfil.removeMinter(minter, {from:other}), 'WFIL: caller is not an admin');
       })
   })
 

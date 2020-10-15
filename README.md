@@ -1,7 +1,7 @@
 [![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
 [![#npm 12.18.2](https://img.shields.io/badge/npm-v12.18.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
-[![#solc 0.7.1](https://img.shields.io/badge/solc-v0.7.1-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.7.1)
+[![#solc 0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
 [![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](https://kovan.etherscan.io/address/0x4E46Ce0e611A748Eed976bFdf5E14Cf197D40b0C)
 
 <img src="wfil.svg" width="20%">
@@ -35,8 +35,10 @@ Applications:
 - Aaron Sutula (Textile), [@asutula](https://github.com/asutula)
 - Ignacio Hagopian (Textile) [@jsign](https://github.com/jsign)
 
-[Demo](https://www.youtube.com/watch?v=EmdEGsnYjgs&feature=youtu.be)  
+[Demo (HackFS)](https://www.youtube.com/watch?v=EmdEGsnYjgs&feature=youtu.be)  
 [HackFS](http://hack.ethglobal.co/showcase/wfil-recCwbCnY2rnipjcR)  
+[Demo (APOLLO)](https://youtu.be/UbB5F03OTo0)  
+[Pitch Deck](https://www.beautiful.ai/player/-MIKcB-BSZr83qSqvhHI)
 
 ## Sections
 * [Building Blocks](#building-blocks)
@@ -69,13 +71,13 @@ Implements a custodial wallet by leveraging on Texitle Powergate APIs.
 
 Via AWS Lambda Function, allows to automatically wrap Filecoin, by minting WFIL from an account set as Minter.  
 
-It's also connected to a Lotus node to listen for transactions and wrap/unwrap WFIL.
+It's also connected via Filscan APIs to Filecoin to check for transactions that are tracked by Textile ThreadDB.
 
 ### [Frontend](./app)
 
 The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co)
 
-### [Filecoin Wallet](https://wfil.on.fleek.co)
+### [Filecoin Wallet](https://wfil.on.fleek.co/#/wallet)
 
 Implements a Filecoin client by leveraging on Textile Powergate APIs.  
 
