@@ -10,7 +10,7 @@
 
 > Wrapped Filecoin, ERC20 Wrapper over Filecoin
 
-`WFIL` is an ERC20 wrapper over Filecoin, representing a stablecoin on deposits on a custodial Filecoin wallet (1:1 ratio).  
+`WFIL` is the first ERC20 wrapper over Filecoin, representing a stablecoin on deposits on a custodial Filecoin wallet (1:1 ratio).  
 
 The current iteration implements a custodial pattern where users need to send filecoins to a custodial wallet and they'll get automatically the correspondent amount in `WFIL` to their ethereum addresses.  
 
@@ -61,9 +61,11 @@ The contract implements the **wrap()** function to mint WFIL by passing the rece
 
 The contract also implements the **unwrap()** function to burn the WFIL by passing the filecoin address and the amount of WFIL to unwrap as parameters and emitting an event, *Unwrapped*.  
 
-The contract inherits OpenZeppelin *AccessControl* module to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
+The contract inherits OpenZeppelin *AccessControl* module to set the Pauser role to the owner of the contract that can call the **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
 
 Once the owner call the **pause()** function, thanks to the **_beforeTokenTransfer()** hook, *_mint()*, *_burn()* and *_transfer()* internal functions, will revert.
+
+To manage the wrapping/unwrapping fee, the contract set the Fee Setter role to the owner of the contract that can set the fee via **setFee()** and the recipient via **setFeeTo()**. The fee is public and can be queried via the getter function **fee()**. 
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
@@ -71,7 +73,7 @@ Implements a custodial wallet by leveraging on Texitle Powergate APIs.
 
 Via AWS Lambda Function, allows to automatically wrap Filecoin, by minting WFIL from an account set as Minter.  
 
-It's also connected via Filscan APIs to Filecoin to check for transactions that are tracked by Textile ThreadDB.
+It's also connected via Filscan APIs to Filecoin to check for transactions that are tracked via Textile ThreadDB.
 
 ### [Frontend](./app)
 
@@ -148,11 +150,11 @@ Clone this GitHub repository.
 
 Deploy
 ============
-## Deploy on Kovan Testnet
+## Deploy on Rinkeby Testnet
  - Get an Ethereum Account on Metamask.
  - On the landing page, click “Get Chrome Extension.”
  - Create a .secret file cointaining the menomic.
- - Get some test ether from a [Kovan's faucet](https://faucet.kovan.network/).
+ - Get some test ether from a [Rinkeby's faucet](https://faucet.rinkeby.io/).
  - Signup [Infura](https://infura.io/).
  - Create new project.
  - Copy the kovan URL into truffle-config.js.
@@ -160,7 +162,7 @@ Deploy
    ```
    // const HDWalletProvider = require("@truffle/hdwallet-provider");
    // const infuraKey = '...';
-   // const infuraURL = 'https://kovan.infura.io/...';
+   // const infuraURL = 'https://rinkeby.infura.io/...';
 
    // const fs = require('fs');
    // const mnemonic = fs.readFileSync(".secret").toString().trim();
@@ -171,11 +173,11 @@ Deploy
    ```
  - Deploy the smart contract using Truffle & Infura with the following command:
    ```sh
-   $ truffle migrate --network kovan
+   $ truffle migrate --network rinkeby
    ```
 
-## Project deployed on Kovan
-[WFIL.sol](https://kovan.etherscan.io/address/0x4E46Ce0e611A748Eed976bFdf5E14Cf197D40b0C)
+## Project deployed on Rinkeby
+[WFIL.sol](https://rinkeby.etherscan.io/address/)
 
 Using the DApp
 ==============
