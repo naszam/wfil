@@ -67,7 +67,7 @@ Once the owner call the **pause()** function, thanks to the **_beforeTokenTransf
 
 To manage the wrapping - unwrapping fee, the contract set the Fee Setter role to the owner of the contract that can set the fee via **setFee()** and the recipient via **setFeeTo()**. The fee is public and can be queried via the getter function **fee()**. 
 
-A **Gnosis Safe Multisig** is used to received the wrapping fees.
+A **Gnosis Safe Multisig** is used to receive and store the wrapping fees.
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
