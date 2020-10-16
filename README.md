@@ -65,7 +65,9 @@ The contract inherits OpenZeppelin *AccessControl* module to set the Pauser role
 
 Once the owner call the **pause()** function, thanks to the **_beforeTokenTransfer()** hook, *_mint()*, *_burn()* and *_transfer()* internal functions, will revert.
 
-To manage the wrapping/unwrapping fee, the contract set the Fee Setter role to the owner of the contract that can set the fee via **setFee()** and the recipient via **setFeeTo()**. The fee is public and can be queried via the getter function **fee()**. 
+To manage the wrapping - unwrapping fee, the contract set the Fee Setter role to the owner of the contract that can set the fee via **setFee()** and the recipient via **setFeeTo()**. The fee is public and can be queried via the getter function **fee()**. 
+
+A **Gnosis Safe Multisig** is used to received the wrapping fees.
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
