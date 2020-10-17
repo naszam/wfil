@@ -7,7 +7,7 @@
         "enabled": true,
         "commands": [
             {
-                "command": ["npm", "test", ""]
+                "command": ["npm", "test"]
             }
         ]
     },
