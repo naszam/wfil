@@ -15,12 +15,11 @@ pragma solidity 0.6.12;
  ███ ███  ██      ██ ███████ 
 */
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 
-contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
+contract WFIL is AccessControl, ERC20, ERC20Pausable {
 
     /// @dev Libraries
     using SafeMath for uint;
@@ -44,11 +43,11 @@ contract WFIL is Ownable, AccessControl, ERC20, ERC20Pausable {
 	public
         ERC20("Wrapped Filecoin", "WFIL")
     {
-        _setupRole(DEFAULT_ADMIN_ROLE, owner());
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
-        _setupRole(MINTER_ROLE, owner());
-        _setupRole(PAUSER_ROLE, owner());
-        _setupRole(FEE_SETTER_ROLE, owner());
+        _setupRole(MINTER_ROLE, msg.sender);
+        _setupRole(PAUSER_ROLE, msg.sender);
+        _setupRole(FEE_SETTER_ROLE, msg.sender);
 
         _setFee(fee_);
         _setFeeTo(feeTo_);
