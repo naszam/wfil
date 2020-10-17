@@ -12,12 +12,7 @@
         ]
     },
     "slither": {
-        "target": ".",
-        "commands_before": [
-            {
-                "command": ["", "", "command"]
-            }
-        ]
+        "target": "."
     },
     "echidna": {
         "contract": ""
