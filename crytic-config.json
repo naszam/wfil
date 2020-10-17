@@ -7,8 +7,7 @@
         "enabled": true,
         "commands": [
             {
-                "command": ["npm", "test", ""],
-                "expected": "{RETURN_CODE} == 0"
+                "command": ["npm", "test", ""]
             }
         ]
     },
