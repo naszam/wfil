@@ -7,7 +7,7 @@
         "enabled": true,
         "commands": [
             {
-                "command": ["npm", "test", "echo SUCCESSFUL COMMAND!!"],
+                "command": ["npm", "test", ""],
                 "expected": "{RETURN_CODE} == 0"
             }
         ]
