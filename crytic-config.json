@@ -16,7 +16,7 @@
         "target": ".",
         "commands_before": [
             {
-                "command": ["npm", "run", "command"]
+                "command": ["", "", "command"]
             }
         ]
     },
