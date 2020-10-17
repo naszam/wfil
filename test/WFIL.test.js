@@ -41,10 +41,6 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
 
   describe('Setup', async function () {
 
-    it('the deployer is the owner', async function () {
-      expect(await wfil.owner()).to.equal(owner);
-    });
-
     it('the deployed fee is correct', async function () {
       expect(await wfil.fee()).to.be.bignumber.equal(fee);
     });
