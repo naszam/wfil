@@ -37,7 +37,7 @@ Applications:
 
 [Demo (HackFS)](https://www.youtube.com/watch?v=EmdEGsnYjgs&feature=youtu.be)  
 [HackFS](http://hack.ethglobal.co/showcase/wfil-recCwbCnY2rnipjcR)  
-[Demo (APOLLO)](https://youtu.be/UbB5F03OTo0)  
+[Demo](https://youtu.be/UbB5F03OTo0)  
 [Pitch Deck](https://www.beautiful.ai/player/-MIKcB-BSZr83qSqvhHI)
 
 ## Sections
