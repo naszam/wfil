@@ -40,7 +40,6 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     event NewFeeTo(address feeTo);
 
     constructor(address feeTo_, uint fee_)
-	public
         ERC20("Wrapped Filecoin", "WFIL")
     {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
