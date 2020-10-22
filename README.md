@@ -73,9 +73,9 @@ A **Gnosis Safe Multisig** is used to receive and store the wrapping fees and se
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
-Implements a custodial wallet by leveraging on Texitle Powergate APIs.  
+Implements a custodial wallet by leveraging on Lotus APIs.  
 
-Via AWS Lambda Function, allows to automatically wrap Filecoin, by minting WFIL from an account set as Minter.  
+Via AWS Lambda, allows to automatically wrap/unwrap Filecoin, by minting WFIL from an account set as Minter and call the unwrap method to burn WFIL by the user.  
 
 It's also connected via Filscan APIs to Filecoin to check for transactions that are tracked via Textile ThreadDB.
 
@@ -85,7 +85,7 @@ The Frontend has been implemented via Rimble UI & Rimble Web3 Components and dep
 
 ### [Filecoin Wallet](https://wfil.on.fleek.co/#/wallet)
 
-Implements a Filecoin client by leveraging on Textile Powergate APIs.  
+Implements a Filecoin client by leveraging on Lotus APIs.  
 
 Further developments of the project include building a MetaMask for Filecoin, creating an extension for Chrome.  
 
