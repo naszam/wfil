@@ -82,9 +82,9 @@ It's also connected via Filscan APIs to Filecoin to check for transactions that 
 
 ### [Frontend](./app)
 
-The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co)
+The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/).
 
-### [Filecoin Wallet](https://wfil.on.fleek.co/#/wallet)
+### [Filecoin Wallet](https://wfil.network/#/wallet)
 
 Implements a Filecoin client by leveraging on Lotus APIs.  
 
