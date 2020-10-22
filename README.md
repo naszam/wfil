@@ -2,7 +2,7 @@
 [![#npm 12.18.2](https://img.shields.io/badge/npm-v12.18.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc 0.7.3](https://img.shields.io/badge/solc-v0.7.3-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.7.3)
-[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x75f7ac694E50A527E4f25BD6C86d4f4Fa1026706)
+[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0xD7befC58A37f0Db1883222b802cfC31323785780)
 
 <img src="wfil.svg" width="20%">
 
@@ -181,7 +181,7 @@ Deploy
    ```
 
 ## Project deployed on Rinkeby
-[WFIL](https://rinkeby.etherscan.io/address/0x75f7ac694E50A527E4f25BD6C86d4f4Fa1026706)
+[WFIL](https://rinkeby.etherscan.io/address/0xD7befC58A37f0Db1883222b802cfC31323785780)
 
 Using the DApp
 ==============
