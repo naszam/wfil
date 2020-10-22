@@ -104,7 +104,7 @@ Clone this GitHub repository.
     - Truffle HD Wallet Provider
     - Truffle-Flattener
     ```sh
-    $ npm i
+    $ yarn
     ```
   - Global dependencies:
     - Truffle (recommended):
