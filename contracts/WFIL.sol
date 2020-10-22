@@ -59,12 +59,6 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
         revert();
     }
 
-    /// @dev Modifiers
-    modifier onlyAdmin() {
-        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not an admin");
-       _;
-    }
-
     /// @notice Getter function for the wrap/unwrap fee
     /// @return _fee current fee
     function fee() external view returns (uint) {
@@ -119,26 +113,6 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
         _transfer(msg.sender, _feeTo, unwrapFee);
         _burn(msg.sender, unwrapOut);
         emit Unwrapped(filaddress, unwrapOut, unwrapFee);
-        return true;
-    }
-
-    /// @notice Add a new Minter
-    /// @dev Access restricted only for Admins
-    /// @param account Address of the new Minter
-    /// @return True if the account address is added as Minter
-    function addMinter(address account) external onlyAdmin returns (bool) {
-        require(!hasRole(MINTER_ROLE, account), "WFIL: account is already a minter");
-        grantRole(MINTER_ROLE, account);
-        return true;
-    }
-
-    /// @notice Remove a Minter
-    /// @dev Access restricted only for Admins
-    /// @param account Address of the Minter
-    /// @return True if the account address is removed as Minter
-    function removeMinter(address account) external onlyAdmin returns (bool) {
-        require(hasRole(MINTER_ROLE, account), "WFIL: account is not a minter");
-        revokeRole(MINTER_ROLE, account);
         return true;
     }
 
