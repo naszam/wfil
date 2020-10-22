@@ -4,7 +4,7 @@
   "description": "Wrapped Filecoin (WFIL)",
   "main": "truffle-config.js",
   "scripts": {
-    "test": "npx truffle compile && mocha --exit --recursive --parallel --timeout 2000"
+    "test": "npx truffle compile && mocha --exit --recursive --parallel --timeout 3000"
   },
   "repository": {
     "type": "git",
