@@ -165,42 +165,6 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
       })
   })
 
-  describe("addMinter()", async () => {
-      it("admin should be able to add a new minter", async () => {
-        await wfil.addMinter(minter, {from:owner});
-        expect(await wfil.getRoleMember(MINTER_ROLE, 1)).to.equal(minter);
-      })
-
-      it("should emit the appropriate event when a new minter is added", async () => {
-        const receipt = await wfil.addMinter(minter, {from:owner});
-        expectEvent(receipt, "RoleGranted", { account: minter });
-      })
-
-      it("other address should not be able to add a new minter", async () => {
-        await expectRevert(wfil.addMinter(minter, {from:other}), 'WFIL: caller is not an admin');
-      })
-  })
-
-  describe("removeMinter()", async () => {
-      beforeEach(async () => {
-        await wfil.addMinter(minter, {from: owner});
-      })
-
-      it("admin should be able to remove a minter", async () => {
-        await wfil.removeMinter(minter, {from:owner});
-        expect(await wfil.hasRole(MINTER_ROLE, minter)).to.equal(false);
-      })
-
-      it("should emit the appropriate event when a minter is removed", async () => {
-        const receipt = await wfil.removeMinter(minter, {from:owner});
-        expectEvent(receipt, "RoleRevoked", { account: minter });
-      })
-
-      it("other address should not be able to remove a minter", async () => {
-        await expectRevert(wfil.removeMinter(minter, {from:other}), 'WFIL: caller is not an admin');
-      })
-  })
-
   describe('pausing', function () {
       it('owner can pause', async function () {
         const receipt = await wfil.pause({ from: owner });
