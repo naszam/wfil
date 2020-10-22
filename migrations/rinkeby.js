@@ -2,7 +2,7 @@
 
 module.exports = {
   wfil: {
-    feeTo: '0xF5f7393dbE345f566b5A6580c2455Bdcdd134A95',
+    feeTo: '0x6f4CfF6193A11aE83CDE68320190f1851500c6b1',
     fee: '5',
   },
 };
