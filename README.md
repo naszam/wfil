@@ -10,7 +10,7 @@
 
 > Wrapped Filecoin, ERC20 Wrapper over Filecoin
 
-`WFIL` is the first ERC20 wrapper over Filecoin, representing a stablecoin on deposits on a custodial Filecoin wallet (1:1 ratio).  
+`WFIL` is the fist ERC20 wrapper over Filecoin, representing a stablecoin on deposits on a custodial Filecoin wallet (1:1 ratio).  
 
 The current iteration implements a custodial pattern where users need to send filecoins to a custodial wallet and they'll get automatically the correspondent amount in `WFIL` to their ethereum addresses.  
 
@@ -25,7 +25,7 @@ One of the features we're considering is to add the permit() function to WFIL to
 Applications:
 
 - Uniswap
-- WFIL as Collater on MakerDAO
+- WFIL as Collateral on MakerDAO
 - De-Fi
 - ...
 
@@ -55,7 +55,7 @@ Applications:
 
 Implements an ERC20 token by leveraging on OpenZeppelin Library.  
 
-It allows the owner of the contract, set as Default Admin to add/remove a Minter via **addMinter()**, **removeMinter()** functions.  
+It allows the owner of the contract, set as Default Admin to add/remove a Minter via **grantRole()**, **revokeRole()** functions by leveraging on *AccessControl* module by OpenZeppelin.  
 
 The contract implements the **wrap()** function to mint WFIL by passing the recepient address and the amount of Filecoin to wrap as parameters and emitting an event, *Wrapped*.  
 
@@ -63,11 +63,13 @@ The contract also implements the **unwrap()** function to burn the WFIL by passi
 
 The contract inherits OpenZeppelin *AccessControl* module to set the Pauser role to the owner of the contract that can call the **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
 
-Once the owner call the **pause()** function, thanks to the **_beforeTokenTransfer()** hook, *_mint()*, *_burn()* and *_transfer()* internal functions, will revert.
+Once the owner call the **pause()** function, thanks to the **_beforeTokenTransfer()** hook, *_mint()*, *_burn()* and *_transfer()* internal functions, will revert.  
+
+To avoid users from sending *WFIL* to the contract address, **_transfer()** has been overidden to make sure the recipient address does not correspond to the contract address, and revert if it does.   
 
 To manage the wrapping - unwrapping fee, the contract set the Fee Setter role to the owner of the contract that can set the fee via **setFee()** and the recipient via **setFeeTo()**. The fee is public and can be queried via the getter function **fee()**. 
 
-A **Gnosis Safe Multisig** is used to receive and store the wrapping fees.
+A **Gnosis Safe Multisig** is used to receive and store the wrapping fees and set inside the constructor.
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
