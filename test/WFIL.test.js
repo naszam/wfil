@@ -103,7 +103,7 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
     });
 
     it('other accounts cannot wrap tokens', async function () {
-      await expectRevert(wfil.wrap(other, amount, { from: other }),'WFIL/invalid-minter');
+      await expectRevert(wfil.wrap(other, amount, { from: other }),'WFIL: caller is not a minter');
     });
   });
 
@@ -142,7 +142,7 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
       })
 
       it('other address should not be able to add a new fee', async () => {
-        await expectRevert(wfil.setFee(newFee, {from:other}), 'WFIL/invalid-fee-setter');
+        await expectRevert(wfil.setFee(newFee, {from:other}), 'WFIL: caller is not the fee setter');
       })
   })
 
@@ -153,15 +153,15 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
       })
 
       it('other address should not be able to add a new feeTo address', async () => {
-        await expectRevert(wfil.setFeeTo(feeTo2, {from:other}), 'WFIL/invalid-fee-setter');
+        await expectRevert(wfil.setFeeTo(feeTo2, {from:other}), 'WFIL: caller is not the fee setter');
       })
 
       it('should revert when a zero address is specified', async () => {
-        await expectRevert(wfil.setFeeTo(ZERO_ADDRESS, {from:owner}), 'WFIL/invalid-address-0');
+        await expectRevert(wfil.setFeeTo(ZERO_ADDRESS, {from:owner}), 'WFIL: set to zero address');
       })
 
       it('should revert when contract address is specified', async () => {
-        await expectRevert(wfil.setFeeTo(wfil.address, {from:owner}), 'WFIL/invalid-address-this');
+        await expectRevert(wfil.setFeeTo(wfil.address, {from:owner}), 'WFIL: set to contract address');
       })
   })
 
@@ -212,7 +212,7 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
       });
 
       it('other accounts cannot pause', async function () {
-        await expectRevert(wfil.pause({ from: other }), 'WFIL/invalid-pauser');
+        await expectRevert(wfil.pause({ from: other }), 'WFIL: must have pauser role to pause');
       });
   });
 
@@ -223,12 +223,12 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
       });
 
       it('check transfer() for revert when trying to transfer to the token contract', async function () {
-        await expectRevert(wfil.transfer(wfil.address, amount, {from:owner}), 'WFIL/invalid-address-this');
+        await expectRevert(wfil.transfer(wfil.address, amount, {from:owner}), 'WFIL: transfer to the token contract');
       });
 
       it('check transferFrom() for revert when trying to transfer to the token contract', async function () {
         await wfil.increaseAllowance(wfil.address, amount, {from: owner});
-        await expectRevert(wfil.transferFrom(owner, wfil.address, amount, {from:owner}), 'WFIL/invalid-address-this');
+        await expectRevert(wfil.transferFrom(owner, wfil.address, amount, {from:owner}), 'WFIL: transfer to the token contract');
       });
   });
 });

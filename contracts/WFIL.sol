@@ -70,7 +70,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param wfilFee fee to set
     /// @return True if wfilFee is successfully set
     function setFee(uint wfilFee) external returns (bool) {
-        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL/invalid-fee-setter");
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not a fee setter");
         _setFee(wfilFee);
         return true;
     }
@@ -81,7 +81,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param feeTo address to set
     /// @return True if feeTo is successfully set
     function setFeeTo(address feeTo) external returns (bool) {
-        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL/invalid-fee-setter");
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not a fee setter");
         _setFeeTo(feeTo);
         return true;
     }
@@ -92,7 +92,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param amount Amount of WFIL issued
     /// @return True if WFIL is successfully wrapped
     function wrap(address to, uint amount) external returns (bool) {
-        require(hasRole(MINTER_ROLE, msg.sender), "WFIL/invalid-minter");
+        require(hasRole(MINTER_ROLE, msg.sender), "WFIL: caller is not a minter");
         uint wrapFee = amount.mul(_fee).div(1000);
         uint wrapOut = amount.sub(wrapFee);
         _mint(_feeTo, wrapFee);
@@ -118,14 +118,14 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "WFIL/invalid-pauser");
+        require(hasRole(PAUSER_ROLE, msg.sender), "WFIL: must have pauser role to pause");
         _pause();
     }
 
     /// @notice Unpause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function unpause() external {
-        require(hasRole(PAUSER_ROLE, msg.sender), "WFIL/invalid-pauser");
+        require(hasRole(PAUSER_ROLE, msg.sender), "WFIL: must have pauser role to unpause");
         _unpause();
     }
 
@@ -135,7 +135,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param recipient Recipient address
     /// @param amount Token amount
     function _transfer(address sender, address recipient, uint amount) internal override {
-         require(recipient != address(this), "WFIL/invalid-address-this");
+         require(recipient != address(this), "WFIL: transfer to token contract");
          super._transfer(sender, recipient, amount);
     }
 
@@ -160,8 +160,8 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @dev set function visibility to private
     /// @param feeTo address to set
     function _setFeeTo(address feeTo) private {
-        require(feeTo != address(0), "WFIL/invalid-address-0");
-        require(feeTo != address(this), "WFIL/invalid-address-this");
+        require(feeTo != address(0), "WFIL: set to zero ");
+        require(feeTo != address(this), "WFIL: set to contract address");
         _feeTo = feeTo;
         emit NewFeeTo(feeTo);
     }
