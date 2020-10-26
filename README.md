@@ -104,6 +104,7 @@ Clone this GitHub repository.
     - OpenZeppelin Contracts v3.1.0
     - Truffle HD Wallet Provider
     - Truffle-Flattener
+    - Solhint
     ```sh
     $ yarn
     ```
