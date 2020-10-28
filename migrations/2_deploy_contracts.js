@@ -1,7 +1,7 @@
 var WFIL = artifacts.require("WFIL");
-const kovan = require('./kovan');
+const rinkeby = require('./rinkeby');
 
 module.exports = function(deployer) {
 
-	deployer.deploy(WFIL, kovan.wfil.feeTo, kovan.wfil.fee);
+	deployer.deploy(WFIL, rinkeby.wfil.feeTo, rinkeby.wfil.fee);
 };

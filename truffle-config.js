@@ -17,11 +17,11 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
- const path = require("path");
+ // const path = require("path");
 
  // const HDWalletProvider = require('@truffle/hdwallet-provider');
  // const infuraKey = '';
- // const infuraURL = 'https://kovan.infura.io/v3/';
+ // const infuraURL = 'https://rinkeby.infura.io/v3/';
 
  // const fs = require('fs');
  // const mnemonic = fs.readFileSync(".secret").toString().trim();
@@ -37,7 +37,7 @@ module.exports = {
    * $ truffle test --network <network-name>
    */
 
-  contracts_build_directory: path.join(__dirname, "app/src/contracts"),
+ // contracts_build_directory: path.join(__dirname, "app/src/contracts"),
 
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
@@ -101,7 +101,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-       version: "0.6.12",    // Fetch exact version from solc-bin (default: truffle's version)
+       version: "0.7.3",    // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {

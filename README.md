@@ -1,8 +1,8 @@
 [![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
-[![#npm 12.18.2](https://img.shields.io/badge/npm-v12.18.2-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
+[![#npm 12.19.0](https://img.shields.io/badge/npm-v12.19.0-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
-[![#solc 0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
-[![#testnet kovan](https://img.shields.io/badge/testnet-Kovan-purple?style=plastic&logo=Ethereum)](https://kovan.etherscan.io/address/0x4E46Ce0e611A748Eed976bFdf5E14Cf197D40b0C)
+[![#solc 0.7.3](https://img.shields.io/badge/solc-v0.7.3-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.7.3)
+[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0xD7befC58A37f0Db1883222b802cfC31323785780)
 
 <img src="wfil.svg" width="20%">
 
@@ -10,7 +10,7 @@
 
 > Wrapped Filecoin, ERC20 Wrapper over Filecoin
 
-`WFIL` is an ERC20 wrapper over Filecoin, representing a stablecoin on deposits on a custodial Filecoin wallet (1:1 ratio).  
+`WFIL` is the fist ERC20 wrapper over Filecoin, representing a stablecoin on deposits on a custodial Filecoin wallet (1:1 ratio).  
 
 The current iteration implements a custodial pattern where users need to send filecoins to a custodial wallet and they'll get automatically the correspondent amount in `WFIL` to their ethereum addresses.  
 
@@ -25,7 +25,7 @@ One of the features we're considering is to add the permit() function to WFIL to
 Applications:
 
 - Uniswap
-- WFIL as Collater on MakerDAO
+- WFIL as Collateral on MakerDAO
 - De-Fi
 - ...
 
@@ -37,7 +37,8 @@ Applications:
 
 [Demo (HackFS)](https://www.youtube.com/watch?v=EmdEGsnYjgs&feature=youtu.be)  
 [HackFS](http://hack.ethglobal.co/showcase/wfil-recCwbCnY2rnipjcR)  
-[Demo (APOLLO)](https://youtu.be/UbB5F03OTo0)  
+[ETHOnline](https://hack.ethglobal.co/showcase/wrapped-filecoin-wfil-recHEoUa9GgSZWZ02)  
+[Demo](https://youtu.be/UbB5F03OTo0)  
 [Pitch Deck](https://www.beautiful.ai/player/-MIKcB-BSZr83qSqvhHI)
 
 ## Sections
@@ -55,31 +56,37 @@ Applications:
 
 Implements an ERC20 token by leveraging on OpenZeppelin Library.  
 
-It allows the owner of the contract, set as Default Admin to add/remove a Minter via **addMinter()**, **removeMinter()** functions.  
+It allows the owner of the contract, set as Default Admin to add/remove a Minter via **grantRole()**, **revokeRole()** functions by leveraging on *AccessControl* module by OpenZeppelin.  
 
 The contract implements the **wrap()** function to mint WFIL by passing the recepient address and the amount of Filecoin to wrap as parameters and emitting an event, *Wrapped*.  
 
 The contract also implements the **unwrap()** function to burn the WFIL by passing the filecoin address and the amount of WFIL to unwrap as parameters and emitting an event, *Unwrapped*.  
 
-The contract inherits OpenZeppelin *AccessControl* module to set the Pauser role to the owner of the contract that can **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
+The contract inherits OpenZeppelin *AccessControl* module to set the Pauser role to the owner of the contract that can call the **pause()**, **unpause()** functions in case of emergency (Circuit Breaker Design Pattern).
 
-Once the owner call the **pause()** function, thanks to the **_beforeTokenTransfer()** hook, *_mint()*, *_burn()* and *_transfer()* internal functions, will revert.
+Once the owner call the **pause()** function, thanks to the **_beforeTokenTransfer()** hook, *_mint()*, *_burn()* and *_transfer()* internal functions, will revert.  
+
+To avoid users from sending *WFIL* to the contract address, **_transfer()** has been overidden to make sure the recipient address does not correspond to the contract address, and revert if it does.   
+
+To manage the wrapping - unwrapping fee, the contract set the Fee Setter role to the owner of the contract that can set the fee via **setFee()** and the recipient via **setFeeTo()**. The fee is public and can be queried via the getter function **fee()**. 
+
+A **Gnosis Safe Multisig** is used to receive and store the wrapping fees and set inside the constructor.
 
 ### [Backend](https://github.com/cristiam86/wfil-backend)
 
-Implements a custodial wallet by leveraging on Texitle Powergate APIs.  
+Implements a custodial wallet by leveraging on Lotus APIs.  
 
-Via AWS Lambda Function, allows to automatically wrap Filecoin, by minting WFIL from an account set as Minter.  
+Via AWS Lambda, allows to automatically wrap/unwrap Filecoin, by minting WFIL from an account set as Minter and call the unwrap method to burn WFIL by the user.  
 
-It's also connected via Filscan APIs to Filecoin to check for transactions that are tracked by Textile ThreadDB.
+It's also connected via Filscan APIs to Filecoin to check for transactions that are tracked via Textile ThreadDB.
 
 ### [Frontend](./app)
 
-The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/): [wfil.on.fleek.co](https://wfil.on.fleek.co)
+The Frontend has been implemented via Rimble UI & Rimble Web3 Components and deployed on IPFS via [Fleek](https://fleek.co/).
 
-### [Filecoin Wallet](https://wfil.on.fleek.co/#/wallet)
+### [Filecoin Wallet](https://wfil.network/#/wallet)
 
-Implements a Filecoin client by leveraging on Textile Powergate APIs.  
+Implements a Filecoin client by leveraging on Lotus APIs.  
 
 Further developments of the project include building a MetaMask for Filecoin, creating an extension for Chrome.  
 
@@ -97,8 +104,9 @@ Clone this GitHub repository.
     - OpenZeppelin Contracts v3.1.0
     - Truffle HD Wallet Provider
     - Truffle-Flattener
+    - Solhint
     ```sh
-    $ npm i
+    $ yarn
     ```
   - Global dependencies:
     - Truffle (recommended):
@@ -148,19 +156,19 @@ Clone this GitHub repository.
 
 Deploy
 ============
-## Deploy on Kovan Testnet
+## Deploy on Rinkeby Testnet
  - Get an Ethereum Account on Metamask.
  - On the landing page, click “Get Chrome Extension.”
  - Create a .secret file cointaining the menomic.
- - Get some test ether from a [Kovan's faucet](https://faucet.kovan.network/).
+ - Get some test ether from a [Rinkeby's faucet](https://faucet.rinkeby.io/).
  - Signup [Infura](https://infura.io/).
  - Create new project.
- - Copy the kovan URL into truffle-config.js.
+ - Copy the rinkeby URL into truffle-config.js.
  - Uncomment the following lines in truffle-config.js:
    ```
    // const HDWalletProvider = require("@truffle/hdwallet-provider");
    // const infuraKey = '...';
-   // const infuraURL = 'https://kovan.infura.io/...';
+   // const infuraURL = 'https://rinkeby.infura.io/...';
 
    // const fs = require('fs');
    // const mnemonic = fs.readFileSync(".secret").toString().trim();
@@ -171,11 +179,11 @@ Deploy
    ```
  - Deploy the smart contract using Truffle & Infura with the following command:
    ```sh
-   $ truffle migrate --network kovan
+   $ truffle migrate --network rinkeby
    ```
 
-## Project deployed on Kovan
-[WFIL.sol](https://kovan.etherscan.io/address/0x4E46Ce0e611A748Eed976bFdf5E14Cf197D40b0C)
+## Project deployed on Rinkeby
+[WFIL](https://rinkeby.etherscan.io/address/0xD7befC58A37f0Db1883222b802cfC31323785780)
 
 Using the DApp
 ==============

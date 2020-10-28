@@ -41,10 +41,6 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
 
   describe('Setup', async function () {
 
-    it('the deployer is the owner', async function () {
-      expect(await wfil.owner()).to.equal(owner);
-    });
-
     it('the deployed fee is correct', async function () {
       expect(await wfil.fee()).to.be.bignumber.equal(fee);
     });
@@ -84,10 +80,10 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
   });
 
   describe('WFIL metadata', function () {
-    it("has a name", async () => {
+    it('has a name', async () => {
         expect(await wfil.name({from:other})).to.equal(name);
     })
-    it("has a symbol", async () => {
+    it('has a symbol', async () => {
         expect(await wfil.symbol({from:other})).to.equal(symbol);
     })
   });
@@ -99,7 +95,7 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
       expect(await wfil.balanceOf(feeTo)).to.be.bignumber.equal(wrapFee);
     });
 
-    it("should emit the appropriate event when wfil is wrapped", async () => {
+    it('should emit the appropriate event when wfil is wrapped', async () => {
       const receipt = await wfil.wrap(other, amount, {from:owner});
       expectEvent(receipt, 'Wrapped', { to: other, wrapOut: wrapOut, wrapFee: wrapFee });
       expectEvent(receipt, 'Transfer', { from: ZERO_ADDRESS, to: other, value: wrapOut });
@@ -111,97 +107,61 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
     });
   });
 
-  describe("unwrap()", async () => {
+  describe('unwrap()', async () => {
       beforeEach(async () => {
         await wfil.wrap(owner, amount, {from: owner});
       });
 
-      it("wfil owner should be able to burn wfil", async () => {
+      it('wfil owner should be able to burn wfil', async () => {
         await wfil.unwrap(filaddress, wrapOut, {from: owner});
         expect(await wfil.balanceOf(owner)).to.be.bignumber.equal('0');
         expect(await wfil.balanceOf(feeTo)).to.be.bignumber.equal(totFee);
       });
 
-      it("should emit the appropriate event when wfil is unwrapped", async () => {
+      it('should emit the appropriate event when wfil is unwrapped', async () => {
         const receipt = await wfil.unwrap(filaddress, wrapOut, {from:owner});
-        expectEvent(receipt, "Unwrapped", { filaddress: filaddress, unwrapOut: unwrapOut, unwrapFee: unwrapFee });
+        expectEvent(receipt, 'Unwrapped', { filaddress: filaddress, unwrapOut: unwrapOut, unwrapFee: unwrapFee });
         expectEvent(receipt, 'Transfer', { from: owner, to: feeTo, value: unwrapFee });
         expectEvent(receipt, 'Transfer', { from: owner, to: ZERO_ADDRESS, value: unwrapOut });
       });
 
       it('other accounts cannot unwrap tokens', async function () {
-        await expectRevert(wfil.unwrap(filaddress, wrapOut, { from: other }), "ERC20: transfer amount exceeds balance");
+        await expectRevert(wfil.unwrap(filaddress, wrapOut, { from: other }), 'ERC20: transfer amount exceeds balance');
       });
   })
 
-  describe("setFee()", async () => {
-      it("fee setter should be able to add a new fee", async () => {
+  describe('setFee()', async () => {
+      it('fee setter should be able to add a new fee', async () => {
         await wfil.setFee(newFee, {from:owner});
         expect(await wfil.fee()).to.be.bignumber.equal(newFee);
       })
 
-      it("should emit the appropriate event when a new fee is set", async () => {
+      it('should emit the appropriate event when a new fee is set', async () => {
         const receipt = await wfil.setFee(newFee, {from:owner});
-        expectEvent(receipt, "NewFee", { fee: newFee });
+        expectEvent(receipt, 'NewFee', { fee: newFee });
       })
 
-      it("other address should not be able to add a new fee", async () => {
+      it('other address should not be able to add a new fee', async () => {
         await expectRevert(wfil.setFee(newFee, {from:other}), 'WFIL: caller is not the fee setter');
       })
   })
 
-  describe("setFeeTo()", async () => {
-      it("fee setter should be able to add a new feeTo address", async () => {
+  describe('setFeeTo()', async () => {
+      it('fee setter should be able to add a new feeTo address', async () => {
         const receipt = await wfil.setFeeTo(feeTo2, {from:owner});
-        expectEvent(receipt, "NewFeeTo", { feeTo: feeTo2 });
+        expectEvent(receipt, 'NewFeeTo', { feeTo: feeTo2 });
       })
 
-      it("other address should not be able to add a new feeTo address", async () => {
+      it('other address should not be able to add a new feeTo address', async () => {
         await expectRevert(wfil.setFeeTo(feeTo2, {from:other}), 'WFIL: caller is not the fee setter');
       })
 
-      it("should revert when a zero address is specified", async () => {
+      it('should revert when a zero address is specified', async () => {
         await expectRevert(wfil.setFeeTo(ZERO_ADDRESS, {from:owner}), 'WFIL: set to zero address');
       })
 
-      it("should revert when contract address is specified", async () => {
+      it('should revert when contract address is specified', async () => {
         await expectRevert(wfil.setFeeTo(wfil.address, {from:owner}), 'WFIL: set to contract address');
-      })
-  })
-
-  describe("addMinter()", async () => {
-      it("admin should be able to add a new minter", async () => {
-        await wfil.addMinter(minter, {from:owner});
-        expect(await wfil.getRoleMember(MINTER_ROLE, 1)).to.equal(minter);
-      })
-
-      it("should emit the appropriate event when a new minter is added", async () => {
-        const receipt = await wfil.addMinter(minter, {from:owner});
-        expectEvent(receipt, "RoleGranted", { account: minter });
-      })
-
-      it("other address should not be able to add a new minter", async () => {
-        await expectRevert(wfil.addMinter(minter, {from:other}), 'WFIL: caller is not an admin');
-      })
-  })
-
-  describe("removeMinter()", async () => {
-      beforeEach(async () => {
-        await wfil.addMinter(minter, {from: owner});
-      })
-
-      it("admin should be able to remove a minter", async () => {
-        await wfil.removeMinter(minter, {from:owner});
-        expect(await wfil.hasRole(MINTER_ROLE, minter)).to.equal(false);
-      })
-
-      it("should emit the appropriate event when a minter is removed", async () => {
-        const receipt = await wfil.removeMinter(minter, {from:owner});
-        expectEvent(receipt, "RoleRevoked", { account: minter });
-      })
-
-      it("other address should not be able to remove a minter", async () => {
-        await expectRevert(wfil.removeMinter(minter, {from:other}), 'WFIL: caller is not an admin');
       })
   })
 
