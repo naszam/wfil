@@ -11,7 +11,7 @@ const INTERVAL_CHECK = 5000;
 const WFIL_ADDRESS = process.env.REACT_APP_FIL_WALLET;
 let intervalHandler = null;
 
-const AppLink = styled(Link)`
+const AppLink = styled.a`
   color: ${props => props.theme.colors.primary};
 `
 
@@ -119,7 +119,7 @@ const Wrap = () => {
               ? (
                 <Text mt={4}>
                   <span>Success! </span>
-                  <AppLink to={{ pathname: `https://kovan.etherscan.io/tx/${txResult}` }} target="_blank" rel="noopener noreferrer">Check transaction</AppLink>
+                  <AppLink href={{ pathname: `https://kovan.etherscan.io/tx/${txResult}` }} target="_blank" rel="noopener noreferrer">Check transaction</AppLink>
                 </Text>
               )
               : (
