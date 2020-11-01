@@ -1,8 +1,13 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import TransactionToastUtil from '../../../utilities/TransactionToastUtil';
 import RimbleWeb3 from '../../../utilities/RimbleWeb3';
 import MainHeader from '../../headers/MainHeader';
+
+const MainContainer = styled.div`
+  padding-top: 2%;
+`;
 
 const MainLayout = ({ children }) => {
   return (
@@ -10,9 +15,9 @@ const MainLayout = ({ children }) => {
       {(rimbleProps) => (
         <>
           <MainHeader {...rimbleProps} />
-          <main>
+          <MainContainer>
             {React.Children.map(children, (child) => React.cloneElement(child, rimbleProps))}
-          </main>
+          </MainContainer>
           <TransactionToastUtil transactions={rimbleProps.transactions} />
         </>
       )}

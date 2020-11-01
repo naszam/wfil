@@ -18,6 +18,10 @@ const HeaderBg = styled.div`
   background-color: ${props => props.theme.colors.primary};
 `;
 
+const SubHeader = styled(Flex)`
+  box-shadow: 5px 0 5px 0 ${({ theme }) => theme.colors.primary};
+`
+
 const MainHeader = ({ connectAndValidateAccount, initContract, account, tokenBalance }) => {
   const [wfilTotalSupply, setWfilTotalSupply] = useState(0);
   useEffect(() => {
@@ -42,33 +46,39 @@ const MainHeader = ({ connectAndValidateAccount, initContract, account, tokenBal
   }
 
   return (
-    <HeaderBg>
-      <Flex alignItems="center">
-        <Box p={1} width={1 / 3}>
-          <AppLink to="/">
-            <Box>
-              <Logo style={{ width: '60px', height: '60px' }} />
-            </Box>
-          </AppLink>
+    <>
+      <HeaderBg>
+        <Flex alignItems="center">
+          <Box p={1} width={1 / 2}>
+            <AppLink to="/">
+              <Box>
+                <Logo style={{ width: '60px', height: '60px' }} />
+              </Box>
+            </AppLink>
+          </Box>
+          <Box p={3} width={1 / 2} textAlign="right">
+            {account
+              ? (
+                <Pill color="green">
+                  <Text fontFamily="sansSerif" fontSize={1}>Connected: {account}</Text>
+                </Pill>
+              )
+              : (
+                <MetaMaskButton.Outline size="small" onClick={handleConnectAccount}>Connect with MetaMask</MetaMaskButton.Outline>
+              )
+            }
+          </Box>
+        </Flex>
+      </HeaderBg>
+      <SubHeader justifyContent="space-between">
+        <Box  p={2} width={1 / 2} textAlign="left">
+          {wfilTotalSupply > 0 && <Text color="primary" fontFamily="sansSerif" fontSize={1}>Total Supply: {wfilTotalSupply} WFIL</Text>}
         </Box>
-        <Box p={1} width={1 / 3}>
-          <Text color="white" fontFamily="sansSerif" fontSize={1}>Total Supply: {wfilTotalSupply} WFIL</Text>
-          <Text color="white" fontFamily="sansSerif" fontSize={1}>Current networks: Calibration - Rinkeby</Text>
+        <Box  p={2} width={1 / 2} textAlign="right">
+          <Text color="primary" fontFamily="sansSerif" fontSize={1}>Current networks: Calibration - Rinkeby</Text>
         </Box>
-        <Box p={3} width={1 / 3} textAlign="right">
-          {account
-            ? (
-              <Pill color="green">
-                <Text fontFamily="sansSerif" fontSize={1}>Connected: {account}</Text>
-              </Pill>
-            )
-            : (
-              <MetaMaskButton.Outline size="small" onClick={handleConnectAccount}>Connect with MetaMask</MetaMaskButton.Outline>
-            )
-          }
-        </Box>
-      </Flex>
-    </HeaderBg>
+      </SubHeader>
+    </>
   )
 }
  
