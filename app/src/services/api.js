@@ -25,18 +25,17 @@ export async function createWallet() {
 export async function getBalance(address) {
   try {
     const result = await axios.get(`${BASE_URL}/wallet/balance?address=${address}`);
-    console.log("getBalance -> result", result);
-    const { balance } = result.data;
-    return parseResponse(true, balance, '');
+    console.log("getBalance -> result", result)
+    return parseResponse(true, result.data, '');
   } catch (error) {
     console.log("getBalance -> error", error)  
     return parseResponse(false);  
   }
 }
 
-export async function sendFil(token, amount, destination) {
+export async function sendFil(from, to, value) {
   try {
-    const result = await axios.post(`${BASE_URL}/wallet/send`,{ token, amount, destination });
+    const result = await axios.post(`${BASE_URL}/wallet/send`,{ from, to, value });
     console.log("sendFil -> result", result);
     return parseResponse(true, true, '');
   } catch (error) {
@@ -58,10 +57,9 @@ export async function askForWrap({origin, amount, destination}) {
 
 export async function checkTransactionStatus(id) {
   try {
-    return parseResponse(true, { status: 'success', txHash: '0x467ad41d3df2441bde10f0f5e4c7f52f94e5d2abe105ec47644f5cf4e725032a' });
-    // const result = await axios.get(`${BASE_URL}/transaction/${id}`);
-    // console.log("checkTransactionStatus -> result", result);
-    // return parseResponse(true, { ...result.data.data });
+    const result = await axios.get(`${BASE_URL}/transaction/${id}`);
+    console.log("checkTransactionStatus -> result", result);
+    return parseResponse(true, { ...result.data.data });
   } catch (error) {
     console.log("askForWrap -> error", error)
     return parseResponse(false); 

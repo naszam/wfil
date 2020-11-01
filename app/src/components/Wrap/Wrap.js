@@ -6,6 +6,7 @@ import { Flex, Box, Card, Heading, Field, Text, Icon, Input, Button, Modal, Load
 import { askForWrap, checkTransactionStatus } from '../../services/api';
 import Clipboard from '../../utilities/components/CopyToClipboard';
 import AmountInput from '../AmountInput';
+import { getWallet } from '../Wallet/db';
 
 const INTERVAL_CHECK = 5000;
 const WFIL_ADDRESS = process.env.REACT_APP_FIL_WALLET;
@@ -16,9 +17,10 @@ const AppLink = styled.a`
 `
 
 const Wrap = () => {
+  const { address } = getWallet();
   const [modalOpen, setModalOpen] = useState(false)
   const [txResult, setTxResult] = useState('')
-  const [formData, setFormData] = useState({ amount: '', destination: '', origin: '' });
+  const [formData, setFormData] = useState({ amount: '', destination: '', origin: address });
 
   useEffect(() => {
     return () => intervalHandler && clearInterval(intervalHandler);
@@ -37,7 +39,7 @@ const Wrap = () => {
     console.log("WRAPPPP!!", amount, destination, origin)
     if (amount > 0) {
       setModalOpen(true)
-      const filAmount = amount.replace(',', '.') * 10e17;
+      const filAmount = amount.replace(',', '.');
       const { success, data } = await askForWrap({ origin, amount: filAmount, destination });
       const transactionId = data && data.id ? data.id : null;
 
@@ -45,8 +47,9 @@ const Wrap = () => {
         intervalHandler && clearInterval(intervalHandler);
         intervalHandler = setInterval(async() => {
           const { success: statusSuccess, data: dataTransaction } = await checkTransactionStatus(transactionId);
-          console.log("intervalHandler -> success", success, dataTransaction)
+          console.log("intervalHandler -> success", statusSuccess, dataTransaction)
           if (statusSuccess && dataTransaction && dataTransaction.status === 'success') {
+            debugger;
             setTxResult(dataTransaction.txHash);
             clearInterval(intervalHandler);
           }
@@ -119,7 +122,7 @@ const Wrap = () => {
               ? (
                 <Text mt={4}>
                   <span>Success! </span>
-                  <AppLink href={{ pathname: `https://kovan.etherscan.io/tx/${txResult}` }} target="_blank" rel="noopener noreferrer">Check transaction</AppLink>
+                  <a href={{ pathname: `https://kovan.etherscan.io/tx/${txResult}` }} target="_blank" rel="noopener noreferrer">Check transaction</a>
                 </Text>
               )
               : (

@@ -6,5 +6,5 @@ export function getWallet() {
 }
 
 export function saveWallet(wallet) {
-  window.localStorage.setItem(LOCAL_STORAGE_KEY, wallet);
+  window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(wallet));
 }
