@@ -25,7 +25,6 @@ export async function createWallet() {
 export async function getBalance(address) {
   try {
     const result = await axios.get(`${BASE_URL}/wallet/balance?address=${address}`);
-    console.log("getBalance -> result", result)
     return parseResponse(true, result.data, '');
   } catch (error) {
     console.log("getBalance -> error", error)  

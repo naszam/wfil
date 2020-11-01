@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Flex, Box, MetaMaskButton, Text, Pill, EthAddress } from 'rimble-ui';
@@ -18,10 +18,14 @@ const HeaderBg = styled.div`
   background-color: ${props => props.theme.colors.primary};
 `;
 
-const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
+const MainHeader = ({ connectAndValidateAccount, initContract, account, tokenBalance }) => {
+  const [wfilTotalSupply, setWfilTotalSupply] = useState(0);
   useEffect(() => {
-    initContract(CONTRACT_ADDRESS, abi).then(() => {
-      console.log("MainHeader -> CONTRACT_ADDRESS", CONTRACT_ADDRESS)
+    initContract(CONTRACT_ADDRESS, abi).then(async () => {
+      const totalSupply = await tokenBalance((totalSupply) => {
+        console.log("MainHeader -> totalSupply", totalSupply)
+        setWfilTotalSupply(totalSupply);
+      });
     });
   }, [initContract])
 
@@ -48,7 +52,7 @@ const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
           </AppLink>
         </Box>
         <Box p={1} width={1 / 3}>
-          <Text color="white" fontFamily="sansSerif" fontSize={1}>Total Supply: 10002 WFIL</Text>
+          <Text color="white" fontFamily="sansSerif" fontSize={1}>Total Supply: {wfilTotalSupply} WFIL</Text>
           <Text color="white" fontFamily="sansSerif" fontSize={1}>Current networks: Calibration - Rinkeby</Text>
         </Box>
         <Box p={3} width={1 / 3} textAlign="right">

@@ -12,7 +12,7 @@ const WalletContainer = styled.div`
   position: fixed;
   bottom: 5px;
   right: 5px;
-  width: 320px;
+  max-width: 320px;
   box-shadow: 0 0 8px 0 grey;
   z-index: 99999;
 `;
@@ -55,14 +55,13 @@ const defaultSendFilData = { amount: '', destination: '' };
 
 const Wallet = () => {
   const dbWallet = getWallet();
-  const [wallet, setWallet] = useState(dbWallet);
+  const [wallet, setWallet] = useState(dbWallet || {});
   const [isOpen, setIsOpen] = useState(false);
   const [sendFilData, setSendFilData] = useState(defaultSendFilData);
   const [sendFilSuccess, setSendFilSuccess] = useState(false);
 
   const updateWalletBalance = async (address) => {
     const { success, data: balance } = await getBalance(address);
-    console.log("updateWalletBalance -> balance", balance)
     if (success){
       setWallet(wallet => ({ ...wallet, balance }))
     }
@@ -95,88 +94,90 @@ const Wallet = () => {
 
   return (
     <WalletContainer>
-      {wallet 
-        ? (
-          <WalletHeader p={3} onClick={() => setIsOpen(!isOpen)}>
-            <Flex>
-              <WalletHeaderAddress flex="0 1 70%">
-                <Text fontFamily="sansSerif" fontSize={1}>Connected: {wallet.address}</Text>
-              </WalletHeaderAddress>
-              <Box flex="1 0 30%">
-                <Text textAlign="right" fontFamily="sansSerif" fontSize={1}>{wallet.balance && friendlyAmount(wallet.balance)}&nbsp;FIL</Text>
-              </Box>
-            </Flex>
-          </WalletHeader>
+      {!wallet.address 
+        ? <Flex justifyContent="flex-end"><Button ml="auto" onClick={handleCreateWallet}>Create Wallet</Button></Flex>
+        : (
+          <>
+            <WalletHeader p={3} onClick={() => setIsOpen(!isOpen)}>
+              <Flex>
+                <WalletHeaderAddress flex="0 1 70%">
+                  <Text fontFamily="sansSerif" fontSize={1}>Connected: {wallet.address}</Text>
+                </WalletHeaderAddress>
+                <Box flex="1 0 30%">
+                  <Text textAlign="right" fontFamily="sansSerif" fontSize={1}>{wallet.balance && friendlyAmount(wallet.balance)}&nbsp;FIL</Text>
+                </Box>
+              </Flex>
+            </WalletHeader>
+            <WalletBoddy isOpen={isOpen}>
+              <WalletSection p={3}>
+                <Heading Heading as={"h2"} mb={1} fontFamily="sansSerif">Your Wallet</Heading>
+                <Clipboard text={wallet.address}>
+                  {isCopied => (
+                    <Box
+                      color={'inherit'}
+                      position={'relative'}
+                      display={'flex'}
+                      alignItems={'center'}
+                    >
+                      <Input
+                        readOnly
+                        value={wallet.address}
+                        width={1}
+                        p={'auto'}
+                        pl={3}
+                        pr={'5rem'}
+                        fontWeight={3}
+                      />
+                      <Button
+                        size={'small'}
+                        width={'4rem'}
+                        mx={2}
+                        position={'absolute'}
+                        right={0}
+                      >
+                        {!isCopied ? 'Copy' : <Icon name={'Check'} />}
+                      </Button>
+                    </Box>
+                  )}
+                </Clipboard>
+              </WalletSection>
+              <WalletSection p={3}>
+                <Heading Heading as={"h2"} mb={1} fontFamily="sansSerif">Send FIL</Heading>
+                {sendFilSuccess && <Text textAlign="center" fontFamily="sansSerif" fontSize={1}>Successfully sent!</Text>}
+                <Box px={4} mb={2}>
+                  <Field label="Destination" fontFamily="sansSerif" width="100%" color="primary">
+                    <Input
+                      name="destination"
+                      onChange={({ target: { value }}) => setSendFilData({ ...sendFilData, destination: value })}
+                      placeholder="Wallet to send FIL"
+                      required={true}
+                      type="text"
+                      value={sendFilData.destination}
+                      width="100%"
+                    />
+                  </Field>
+                </Box>
+                <Box px={4} mb={2}>
+                  <Field label="Amount" fontFamily="sansSerif" width="100%" color="primary">
+                    <Input
+                      name="amount"
+                      onChange={({ target: { value }}) => setSendFilData({ ...sendFilData, amount: value })}
+                      placeholder="0 FIL"
+                      required={true}
+                      type="text"
+                      value={sendFilData.amount}
+                      width="100%"
+                    />
+                  </Field>
+                </Box>
+                <Box px={4}>
+                  <Button onClick={handleSendFil} width="100%">SEND</Button>
+                </Box>
+              </WalletSection>
+            </WalletBoddy>
+          </>
         )
-        : <Flex justifyContent="flex-end"><Button ml="auto" onClick={handleCreateWallet}>Create Wallet</Button></Flex>
       }
-      <WalletBoddy isOpen={isOpen}>
-        <WalletSection p={3}>
-          <Heading Heading as={"h2"} mb={1} fontFamily="sansSerif">Your Wallet</Heading>
-          <Clipboard text={wallet.address}>
-            {isCopied => (
-              <Box
-                color={'inherit'}
-                position={'relative'}
-                display={'flex'}
-                alignItems={'center'}
-              >
-                <Input
-                  readOnly
-                  value={wallet.address}
-                  width={1}
-                  p={'auto'}
-                  pl={3}
-                  pr={'5rem'}
-                  fontWeight={3}
-                />
-                <Button
-                  size={'small'}
-                  width={'4rem'}
-                  mx={2}
-                  position={'absolute'}
-                  right={0}
-                >
-                  {!isCopied ? 'Copy' : <Icon name={'Check'} />}
-                </Button>
-              </Box>
-            )}
-          </Clipboard>
-        </WalletSection>
-        <WalletSection p={3}>
-          <Heading Heading as={"h2"} mb={1} fontFamily="sansSerif">Send FIL</Heading>
-          {sendFilSuccess && <Text textAlign="center" fontFamily="sansSerif" fontSize={1}>Successfully sent!</Text>}
-          <Box px={4} mb={2}>
-            <Field label="Destination" fontFamily="sansSerif" width="100%" color="primary">
-              <Input
-                name="destination"
-                onChange={({ target: { value }}) => setSendFilData({ ...sendFilData, destination: value })}
-                placeholder="Wallet to send FIL"
-                required={true}
-                type="text"
-                value={sendFilData.destination}
-                width="100%"
-              />
-            </Field>
-          </Box>
-          <Box px={4} mb={2}>
-            <Field label="Amount" fontFamily="sansSerif" width="100%" color="primary">
-              <Input
-                name="amount"
-                onChange={({ target: { value }}) => setSendFilData({ ...sendFilData, amount: value })}
-                placeholder="0 FIL"
-                required={true}
-                type="text"
-                value={sendFilData.amount}
-                width="100%"
-              />
-            </Field>
-          </Box>
-          <Box px={4}>
-            <Button onClick={handleSendFil} width="100%">SEND</Button>
-          </Box>
-        </WalletSection>
-      </WalletBoddy>
     </WalletContainer>
   )
 }

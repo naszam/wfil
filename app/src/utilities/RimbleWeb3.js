@@ -113,7 +113,7 @@ class RimbleTransaction extends React.Component {
     }
 
     // Is it on the correct network?
-    if (!this.state.network.isCorrectNetwork) {
+    if (this.state.network.required.id !== 42) {
       // wrong network modal
       this.state.modals.methods.openWrongNetworkModal();
       return false;
@@ -516,6 +516,29 @@ class RimbleTransaction extends React.Component {
       }
     }, 1000);
   };
+
+  tokenBalance = async (callback) => {
+    if (!this.web3ActionPreflight()) {
+      return;
+    }
+
+    // Is a wallet connected and verified?
+    if (!this.state.account || !this.state.accountValidated) {
+      this.openTransactionConnectionModal(null, () => {
+        console.log("Successfully connected, continuing with Tx");
+        this.tokenBalance(callback);
+      });
+      return;
+    }
+    const { contract } = this.state;
+    try {
+      const result = await contract.methods.totalSupply().call();
+      callback((result / 1e18).toFixed(4));      
+    } catch (error) {
+      console.log("tokenBalance -> error", error)
+    
+    }
+  }
 
   contractMethodSendWrapper = (contractMethod, destination, amount, callback) => {
     console.log("contractMethodSendWrapper Callback: ", callback);
@@ -932,6 +955,7 @@ class RimbleTransaction extends React.Component {
     initContract: this.initContract,
     initAccount: this.initAccount,
     contractMethodSendWrapper: this.contractMethodSendWrapper,
+    tokenBalance: this.tokenBalance,
     rejectAccountConnect: this.rejectAccountConnect,
     accountValidated: null,
     accountValidationPending: null,

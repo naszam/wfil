@@ -17,7 +17,8 @@ const AppLink = styled.a`
 `
 
 const Wrap = () => {
-  const { address } = getWallet();
+  const lsWallet = getWallet();
+  const address = lsWallet?.address ?? '';
   const [modalOpen, setModalOpen] = useState(false)
   const [txResult, setTxResult] = useState('')
   const [formData, setFormData] = useState({ amount: '', destination: '', origin: address });
