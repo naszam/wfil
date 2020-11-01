@@ -39,7 +39,8 @@ Applications:
 [HackFS](http://hack.ethglobal.co/showcase/wfil-recCwbCnY2rnipjcR)  
 [ETHOnline](https://hack.ethglobal.co/showcase/wrapped-filecoin-wfil-recHEoUa9GgSZWZ02)  
 [Demo](https://youtu.be/UbB5F03OTo0)  
-[Pitch Deck](https://www.beautiful.ai/player/-MIKcB-BSZr83qSqvhHI)
+[Pitch Deck](https://www.beautiful.ai/player/-MIKcB-BSZr83qSqvhHI)  
+[Newsletter](https://wfil.substack.com/)
 
 ## Sections
 * [Building Blocks](#building-blocks)
