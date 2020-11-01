@@ -19,7 +19,7 @@ const Home = () => {
   return (
     <MainLayout>
       <Flex justifyContent="center">
-        <Text mt="10px" fontFamily="sansSerif" fontSize={1}>Wrapped Filecoin is currently in beta. Please don't use main-net FIL on this project.</Text>
+        <Text mt="10px" fontFamily="sansSerif" fontSize={1}>Wrapped Filecoin is currently in beta. Please don't use Mainnet FIL on this project.</Text>
       </Flex>
       <Card width={"auto"} maxWidth={['98%', '50%']} mx={"auto"} my={5} p={0}>
         <Flex>
