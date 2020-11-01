@@ -49,7 +49,6 @@ const Wrap = () => {
           const { success: statusSuccess, data: dataTransaction } = await checkTransactionStatus(transactionId);
           console.log("intervalHandler -> success", statusSuccess, dataTransaction)
           if (statusSuccess && dataTransaction && dataTransaction.status === 'success') {
-            debugger;
             setTxResult(dataTransaction.txHash);
             clearInterval(intervalHandler);
           }
@@ -122,7 +121,7 @@ const Wrap = () => {
               ? (
                 <Text mt={4}>
                   <span>Success! </span>
-                  <a href={{ pathname: `https://kovan.etherscan.io/tx/${txResult}` }} target="_blank" rel="noopener noreferrer">Check transaction</a>
+                  <AppLink href={`https://kovan.etherscan.io/tx/${txResult}`} target="_blank" rel="noopener noreferrer">Check transaction</AppLink>
                 </Text>
               )
               : (
