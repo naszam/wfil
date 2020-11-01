@@ -44,19 +44,9 @@ const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
           <Flex alignItems="center" justifyContent="flex-start">
             <Box>
               <AppLink to="/">
-                <Flex alignItems="center" justifyContent="flex-start">
-                    <Box>
-                      <Logo style={{ width: '30px', height: '30px' }} />
-                    </Box>
-                    <Box>
-                      <Text ml={1} color="white" fontFamily="sansSerif">WFIL</Text>
-                    </Box>
-                </Flex>
-              </AppLink>
-            </Box>
-            <Box ml={4}>
-              <AppLink to="/wallet">
-                <Text ml={1} color="white" fontFamily="sansSerif">Wallet</Text>
+                <Box>
+                  <Logo style={{ width: '30px', height: '30px' }} />
+                </Box>
               </AppLink>
             </Box>
           </Flex>

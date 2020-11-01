@@ -8,7 +8,6 @@ const Routes = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/wallet" exact component={Wallet} />
         <Route component={Home} />
       </Switch>
     </Router>
