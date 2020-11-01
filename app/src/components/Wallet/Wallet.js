@@ -55,7 +55,7 @@ const defaultSendFilData = { amount: '', destination: '' };
 
 const Wallet = () => {
   const dbWallet = getWallet();
-  const [wallet, setWallet] = useState(dbWallet || {});
+  const [wallet, setWallet] = useState(dbWallet);
   const [isOpen, setIsOpen] = useState(false);
   const [sendFilData, setSendFilData] = useState(defaultSendFilData);
   const [sendFilSuccess, setSendFilSuccess] = useState(false);
@@ -94,7 +94,7 @@ const Wallet = () => {
 
   return (
     <WalletContainer>
-      {!wallet.address 
+      {!wallet 
         ? <Flex justifyContent="flex-end"><Button ml="auto" onClick={handleCreateWallet}>Create Wallet</Button></Flex>
         : (
           <>
@@ -104,7 +104,7 @@ const Wallet = () => {
                   <Text fontFamily="sansSerif" fontSize={1}>Connected: {wallet.address}</Text>
                 </WalletHeaderAddress>
                 <Box flex="1 0 30%">
-                  <Text textAlign="right" fontFamily="sansSerif" fontSize={1}>{wallet.balance && friendlyAmount(wallet.balance)}&nbsp;FIL</Text>
+                  <Text textAlign="right" fontFamily="sansSerif" fontSize={1}>{friendlyAmount(wallet.balance || 0)}&nbsp;FIL</Text>
                 </Box>
               </Flex>
             </WalletHeader>
