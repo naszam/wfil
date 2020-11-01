@@ -39,19 +39,19 @@ const MainHeader = ({ connectAndValidateAccount, initContract, account }) => {
 
   return (
     <HeaderBg>
-      <Flex>
-        <Box p={3} width={1 / 2}>
-          <Flex alignItems="center" justifyContent="flex-start">
+      <Flex alignItems="center">
+        <Box p={1} width={1 / 3}>
+          <AppLink to="/">
             <Box>
-              <AppLink to="/">
-                <Box>
-                  <Logo style={{ width: '30px', height: '30px' }} />
-                </Box>
-              </AppLink>
+              <Logo style={{ width: '60px', height: '60px' }} />
             </Box>
-          </Flex>
+          </AppLink>
         </Box>
-        <Box p={3} width={1 / 2} textAlign="right">
+        <Box p={1} width={1 / 3}>
+          <Text color="white" fontFamily="sansSerif" fontSize={1}>Total Supply: 10002 WFIL</Text>
+          <Text color="white" fontFamily="sansSerif" fontSize={1}>Current networks: Calibration - Rinkeby</Text>
+        </Box>
+        <Box p={3} width={1 / 3} textAlign="right">
           {account
             ? (
               <Pill color="green">
