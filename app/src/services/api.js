@@ -14,8 +14,8 @@ export async function createWallet() {
   try {
     const result = await axios.post(`${BASE_URL}/wallet`);
     console.log("createWallet -> result", result);
-    const { token, address } = result.data;
-    return parseResponse(true, { token, address }, '');
+    const { privateKey, address } = result.data;
+    return parseResponse(true, { privateKey, address }, '');
   } catch (error) {
     console.log("createWallet -> error", error)
     return parseResponse(false); 
