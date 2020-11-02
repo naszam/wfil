@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Flex, Box, Card, Heading, Field, Text, Icon, Input, Button, Modal, Loader } from 'rimble-ui';
 
 import AmountInput from '../AmountInput';
-import { checkEthTransaction } from '../../services/api';
+import { checkTransactionStatus, askForUnwrap } from '../../services/api';
 
-const INTERVAL_CHECK = 20000;
+const INTERVAL_CHECK = 5000;
 let intervalHandler = null;
 
-const Unwrap = ({ contractMethodSendWrapper, account }) => {
+const Unwrap = ({ contractMethodSendWrapper, account: origin }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const [formData, setFormData] = useState({ amount: '', destination: ''});
   const [success, setSuccess] = useState(false);
@@ -21,15 +21,21 @@ const Unwrap = ({ contractMethodSendWrapper, account }) => {
     });
   }
 
-  const handleUnWrap = () => {
+  const handleUnWrap = async () => {
     const { amount, destination } = formData;
-    console.log("UNWRAPPPP!!", amount, destination)
+    console.log("UNWRAPPPP!!", amount, destination, origin)
     if (amount > 0) {
-      const filAmount = String(amount.replace(',', '.') * 10e17);
+      const filAmount = amount.replace(',', '.');
+      const { success, data } = await askForUnwrap({ origin, amount: filAmount, destination });
+      
+      if (!success) return;
+      const transactionId = data.id;
+      const filAmountAbs = String(amount.replace(',', '.') * 1e18);
+      
       contractMethodSendWrapper(
         "unwrap",
         destination,
-        filAmount,
+        filAmountAbs,
         (txStatus, transaction) => {
           console.log("incrementCounter callback: ", txStatus, transaction);
           if (
@@ -38,13 +44,13 @@ const Unwrap = ({ contractMethodSendWrapper, account }) => {
           ) {
             intervalHandler && clearInterval(intervalHandler);
             intervalHandler = setInterval(async() => {
-              const { success } = await checkEthTransaction({ origin, amount: filAmount, destination });
-              console.log("intervalHandler -> success", success)
-              if (success) {
-                clearInterval(intervalHandler);
+              const { success: statusSuccess, data: dataTransaction } = await checkTransactionStatus(transactionId);
+              console.log("intervalHandler -> success", statusSuccess, dataTransaction)
+              if (statusSuccess && dataTransaction && dataTransaction.status === 'success') {
                 setSuccess(true);
+                clearInterval(intervalHandler);
               }
-            }, INTERVAL_CHECK)
+            }, INTERVAL_CHECK);
           }
         }
       );

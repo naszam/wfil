@@ -53,6 +53,16 @@ export async function askForWrap({origin, amount, destination}) {
     return parseResponse(false); 
   }
 }
+export async function askForUnwrap({origin, amount, destination}) {
+  try {
+    const result = await axios.post(`${BASE_URL}/unwrap`, { origin, amount, destination });
+    console.log("askForUnwrap -> result", result);
+    return parseResponse(true, { id: result.data.data });
+  } catch (error) {
+    console.log("askForWrap -> error", error)
+    return parseResponse(false); 
+  }
+}
 
 export async function checkTransactionStatus(id) {
   try {
