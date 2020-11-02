@@ -13,7 +13,7 @@ const appTheme = { ...theme, ...customTheme };
 
 const config = {
   accountBalanceMinimum: 0.001,
-  requiredNetwork: 42
+  requiredNetwork: 4
 };
 
 const App = () => {

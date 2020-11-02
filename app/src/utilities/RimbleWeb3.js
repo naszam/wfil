@@ -113,7 +113,7 @@ class RimbleTransaction extends React.Component {
     }
 
     // Is it on the correct network?
-    if (this.state.network.required.id !== 42) {
+    if (this.state.network.required.id !== 4) {
       // wrong network modal
       this.state.modals.methods.openWrongNetworkModal();
       return false;

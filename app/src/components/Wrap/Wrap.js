@@ -122,7 +122,7 @@ const Wrap = () => {
               ? (
                 <Text mt={4}>
                   <span>Success! </span>
-                  <AppLink href={`https://kovan.etherscan.io/tx/${txResult}`} target="_blank" rel="noopener noreferrer">Check transaction</AppLink>
+                  <AppLink href={`https://rinkeby.etherscan.io/tx/${txResult}`} target="_blank" rel="noopener noreferrer">Check transaction</AppLink>
                 </Text>
               )
               : (
