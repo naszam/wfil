@@ -10,7 +10,7 @@
 
 > Wrapped Filecoin, ERC20 Wrapper over Filecoin
 
-`WFIL` is the fist ERC20 wrapper over Filecoin, backed by deposits on a custodial Filecoin wallet (1:1 ratio).  
+`WFIL` is the fist ERC20 wrapper over Filecoin, backed by filecoin deposits on a custodial wallet (1:1 ratio).  
 
 The current iteration implements a custodial pattern where users need to send filecoins to a custodial wallet and they'll get automatically the correspondent amount in `WFIL` to their ethereum addresses.  
 
