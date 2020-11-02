@@ -25,8 +25,8 @@ const SubHeader = styled(Flex)`
 const MainHeader = ({ connectAndValidateAccount, initContract, account, tokenBalance }) => {
   const [wfilTotalSupply, setWfilTotalSupply] = useState(0);
   useEffect(() => {
-    initContract(CONTRACT_ADDRESS, abi).then(async () => {
-      const totalSupply = await tokenBalance((totalSupply) => {
+    initContract(CONTRACT_ADDRESS, abi).then(() => {
+      tokenBalance((totalSupply) => {
         console.log("MainHeader -> totalSupply", totalSupply)
         setWfilTotalSupply(totalSupply);
       });
