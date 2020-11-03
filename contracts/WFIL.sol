@@ -71,7 +71,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param wfilFee fee to set
     /// @return True if wfilFee is successfully set
     function setFee(uint wfilFee) external returns (bool) {
-        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not a fee setter");
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _setFee(wfilFee);
         return true;
     }
@@ -82,7 +82,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param feeTo address to set
     /// @return True if feeTo is successfully set
     function setFeeTo(address feeTo) external returns (bool) {
-        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not a fee setter");
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _setFeeTo(feeTo);
         return true;
     }
@@ -136,7 +136,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param recipient Recipient address
     /// @param amount Token amount
     function _transfer(address sender, address recipient, uint amount) internal override {
-         require(recipient != address(this), "WFIL: transfer to token contract");
+         require(recipient != address(this), "WFIL: transfer to the token contract");
          super._transfer(sender, recipient, amount);
     }
 
@@ -161,7 +161,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @dev set function visibility to private
     /// @param feeTo address to set
     function _setFeeTo(address feeTo) private {
-        require(feeTo != address(0), "WFIL: set to zero ");
+        require(feeTo != address(0), "WFIL: set to zero address");
         require(feeTo != address(this), "WFIL: set to contract address");
         _feeTo = feeTo;
         emit NewFeeTo(feeTo);
