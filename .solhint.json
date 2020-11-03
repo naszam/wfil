@@ -1,7 +1,9 @@
 {
-  "extends": "solhint:recommended", 
+  "extends": "solhint:recommended",
   "rules": {
     "compiler-version": "off",
-    "reason-string": "off"
+    "reason-string": "off",
+    "payable-fallback": "off",
+    "var-name-mixedcase": "off"
    }
 }
