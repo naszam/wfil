@@ -65,6 +65,11 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
       expect(await wfil.getRoleMember(FEE_SETTER_ROLE, 0)).to.equal(owner);
     });
 
+    it('minter has the minter role', async function () {
+      expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal('2');
+      expect(await wfil.getRoleMember(MINTER_ROLE, 1)).to.equal(minter);
+    });
+
     it('minter, pauser and fee setter role admin is the default admin', async function () {
       expect(await wfil.getRoleAdmin(MINTER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
       expect(await wfil.getRoleAdmin(PAUSER_ROLE)).to.equal(DEFAULT_ADMIN_ROLE);
