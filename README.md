@@ -105,6 +105,7 @@ Clone this GitHub repository.
     - OpenZeppelin Contracts v3.1.0
     - Truffle HD Wallet Provider
     - Truffle-Flattener
+    - Truffle-Plugin-Verify
     - Solhint
     ```sh
     $ npm i
@@ -154,7 +155,6 @@ Clone this GitHub repository.
      ```sh
      $ mythx analyze
      ```
-
 Deploy
 ============
 ## Deploy on Rinkeby Testnet
@@ -182,7 +182,10 @@ Deploy
    ```sh
    $ truffle migrate --network rinkeby
    ```
-
+ - Verify WFIL contract on Rinkeby via Truffle Plugin Verify:
+   ```sh
+   $ truffle run verify WFIL --network rinkeby
+   ```   
 ## Project deployed on Rinkeby
 [WFIL](https://rinkeby.etherscan.io/address/0x48be7b803052C273F6Ff3e7baC99cA160931C3bf)
 
