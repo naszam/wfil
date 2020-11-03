@@ -14,7 +14,7 @@ const WFIL = contract.fromArtifact('WFIL');
 let wfil;
 
 describe('WFIL', function () {
-const [ owner, minter, feeTo, fee_setter, other, feeTo2 ] = accounts;
+const [ owner, minter, minter2, feeTo, fee_setter, other, feeTo2 ] = accounts;
 
 const name = 'Wrapped Filecoin';
 const symbol = 'WFIL';
@@ -36,7 +36,7 @@ const PAUSER_ROLE = web3.utils.soliditySha3('PAUSER_ROLE');
 const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
 
   beforeEach(async function () {
-    wfil = await WFIL.new(feeTo, fee, { from: owner });
+    wfil = await WFIL.new(minter, feeTo, fee, { from: owner });
   });
 
   describe('Setup', async function () {
@@ -51,7 +51,7 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
     });
 
     it('owner has the minter role', async function () {
-      expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal('1');
+      expect(await wfil.getRoleMemberCount(MINTER_ROLE)).to.be.bignumber.equal('2');
       expect(await wfil.getRoleMember(MINTER_ROLE, 0)).to.equal(owner);
     });
 
@@ -167,37 +167,37 @@ const FEE_SETTER_ROLE = web3.utils.soliditySha3('FEE_SETTER_ROLE');
 
   describe("addMinter()", async () => {
       it("default admin should be able to add a new minter", async () => {
-        await wfil.addMinter(minter, {from:owner});
-        expect(await wfil.getRoleMember(MINTER_ROLE, 1)).to.equal(minter);
+        await wfil.addMinter(minter2, {from:owner});
+        expect(await wfil.getRoleMember(MINTER_ROLE, 2)).to.equal(minter2);
       })
 
       it("should emit the appropriate event when a new minter is added", async () => {
-        const receipt = await wfil.addMinter(minter, {from:owner});
-        expectEvent(receipt, "RoleGranted", { account: minter });
+        const receipt = await wfil.addMinter(minter2, {from:owner});
+        expectEvent(receipt, "RoleGranted", { account: minter2 });
       })
 
       it("other address should not be able to add a new minter", async () => {
-        await expectRevert(wfil.addMinter(minter, {from:other}), 'WFIL: caller is not the default admin');
+        await expectRevert(wfil.addMinter(minter2, {from:other}), 'WFIL: caller is not the default admin');
       })
   })
 
   describe("removeMinter()", async () => {
       beforeEach(async () => {
-        await wfil.addMinter(minter, {from: owner});
+        await wfil.addMinter(minter2, {from: owner});
       })
 
       it("default admin should be able to remove a minter", async () => {
-        await wfil.removeMinter(minter, {from:owner});
-        expect(await wfil.hasRole(MINTER_ROLE, minter)).to.equal(false);
+        await wfil.removeMinter(minter2, {from:owner});
+        expect(await wfil.hasRole(MINTER_ROLE, minter2)).to.equal(false);
       })
 
       it("should emit the appropriate event when a minter is removed", async () => {
-        const receipt = await wfil.removeMinter(minter, {from:owner});
-        expectEvent(receipt, "RoleRevoked", { account: minter });
+        const receipt = await wfil.removeMinter(minter2, {from:owner});
+        expectEvent(receipt, "RoleRevoked", { account: minter2 });
       })
 
       it("other address should not be able to remove a minter", async () => {
-        await expectRevert(wfil.removeMinter(minter, {from:other}), 'WFIL: caller is not the default admin');
+        await expectRevert(wfil.removeMinter(minter2, {from:other}), 'WFIL: caller is not the default admin');
       })
   })
 
