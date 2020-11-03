@@ -116,6 +116,46 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
         return true;
     }
 
+    /// @notice Add a new Minter
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the new Minter
+    /// @return True if the account address is added as Minter
+    function addMinter(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not the default admin");
+        grantRole(MINTER_ROLE, account);
+        return true;
+    }
+
+    /// @notice Remove a Minter
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the Minter
+    /// @return True if the account address is removed as Minter
+    function removeMinter(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not the default admin");
+        revokeRole(MINTER_ROLE, account);
+        return true;
+    }
+
+    /// @notice Add a new Fee Setter
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the new Fee Setter
+    /// @return True if the account address is added as Fee Setter
+    function addFeeSetter(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not the default admin");
+        grantRole(FEE_SETTER_ROLE, account);
+        return true;
+    }
+
+    /// @notice Remove a Fee Setter
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the Fee Setter
+    /// @return True if the account address is removed as Fee Setter
+    function removeFeeSetter(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not the default admin");
+        revokeRole(FEE_SETTER_ROLE, account);
+        return true;
+    }
+
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
