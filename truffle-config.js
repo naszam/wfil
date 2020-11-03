@@ -39,6 +39,14 @@ module.exports = {
 
  // contracts_build_directory: path.join(__dirname, "app/src/contracts"),
 
+  plugins: [
+    'truffle-plugin-verify'
+  ],
+
+  api_keys: {
+    etherscan: ''
+  },
+
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
