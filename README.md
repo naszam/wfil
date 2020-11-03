@@ -107,7 +107,7 @@ Clone this GitHub repository.
     - Truffle-Flattener
     - Solhint
     ```sh
-    $ yarn
+    $ npm i
     ```
   - Global dependencies:
     - Truffle (recommended):
