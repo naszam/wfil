@@ -1,8 +1,8 @@
 [![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
 [![#npm 12.19.0](https://img.shields.io/badge/npm-v12.19.0-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
-[![#solc 0.7.3](https://img.shields.io/badge/solc-v0.7.3-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.7.3)
-[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0xD7befC58A37f0Db1883222b802cfC31323785780)
+[![#solc 0.6.12](https://img.shields.io/badge/solc-v0.6.12-brown?style=plastic)](https://github.com/ethereum/solidity/releases/tag/v0.6.12)
+[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x48be7b803052C273F6Ff3e7baC99cA160931C3bf)
 
 <img src="wfil.svg" width="20%">
 
@@ -10,7 +10,7 @@
 
 > Wrapped Filecoin, ERC20 Wrapper over Filecoin
 
-`WFIL` is the fist ERC20 wrapper over Filecoin, representing a stablecoin on deposits on a custodial Filecoin wallet (1:1 ratio).  
+`WFIL` is the fist ERC20 wrapper over Filecoin, backed by filecoin deposits on a custodial wallet (1:1 ratio).  
 
 The current iteration implements a custodial pattern where users need to send filecoins to a custodial wallet and they'll get automatically the correspondent amount in `WFIL` to their ethereum addresses.  
 
@@ -105,9 +105,10 @@ Clone this GitHub repository.
     - OpenZeppelin Contracts v3.1.0
     - Truffle HD Wallet Provider
     - Truffle-Flattener
+    - Truffle-Plugin-Verify
     - Solhint
     ```sh
-    $ yarn
+    $ npm i
     ```
   - Global dependencies:
     - Truffle (recommended):
@@ -154,7 +155,6 @@ Clone this GitHub repository.
      ```sh
      $ mythx analyze
      ```
-
 Deploy
 ============
 ## Deploy on Rinkeby Testnet
@@ -182,9 +182,12 @@ Deploy
    ```sh
    $ truffle migrate --network rinkeby
    ```
-
+ - Verify WFIL contract on Rinkeby via Truffle Plugin Verify:
+   ```sh
+   $ truffle run verify WFIL --network rinkeby
+   ```   
 ## Project deployed on Rinkeby
-[WFIL](https://rinkeby.etherscan.io/address/0xD7befC58A37f0Db1883222b802cfC31323785780)
+[WFIL](https://rinkeby.etherscan.io/address/0x48be7b803052C273F6Ff3e7baC99cA160931C3bf)
 
 Using the DApp
 ==============

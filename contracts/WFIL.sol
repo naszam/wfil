@@ -1,5 +1,5 @@
 /// SPDX-License-Identifier: AGPL-3.0-or-later
-pragma solidity 0.7.3;
+pragma solidity 0.6.12;
 
 /// @title WFIL
 /// @author Nazzareno Massari @naszam
@@ -39,7 +39,8 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     event NewFee(uint fee);
     event NewFeeTo(address feeTo);
 
-    constructor(address feeTo_, uint fee_)
+    constructor(address minter_, address feeTo_, uint fee_)
+        public
         ERC20("Wrapped Filecoin", "WFIL")
     {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -48,6 +49,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
         _setupRole(PAUSER_ROLE, msg.sender);
         _setupRole(FEE_SETTER_ROLE, msg.sender);
 
+        _setupRole(MINTER_ROLE, minter_);
         _setFee(fee_);
         _setFeeTo(feeTo_);
     }
@@ -70,7 +72,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param wfilFee fee to set
     /// @return True if wfilFee is successfully set
     function setFee(uint wfilFee) external returns (bool) {
-        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not a fee setter");
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _setFee(wfilFee);
         return true;
     }
@@ -81,7 +83,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param feeTo address to set
     /// @return True if feeTo is successfully set
     function setFeeTo(address feeTo) external returns (bool) {
-        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not a fee setter");
+        require(hasRole(FEE_SETTER_ROLE, msg.sender), "WFIL: caller is not the fee setter");
         _setFeeTo(feeTo);
         return true;
     }
@@ -115,6 +117,46 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
         return true;
     }
 
+    /// @notice Add a new Minter
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the new Minter
+    /// @return True if the account address is added as Minter
+    function addMinter(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not the default admin");
+        grantRole(MINTER_ROLE, account);
+        return true;
+    }
+
+    /// @notice Remove a Minter
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the Minter
+    /// @return True if the account address is removed as Minter
+    function removeMinter(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not the default admin");
+        revokeRole(MINTER_ROLE, account);
+        return true;
+    }
+
+    /// @notice Add a new Fee Setter
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the new Fee Setter
+    /// @return True if the account address is added as Fee Setter
+    function addFeeSetter(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not the default admin");
+        grantRole(FEE_SETTER_ROLE, account);
+        return true;
+    }
+
+    /// @notice Remove a Fee Setter
+    /// @dev Access restricted only for Default Admin
+    /// @param account Address of the Fee Setter
+    /// @return True if the account address is removed as Fee Setter
+    function removeFeeSetter(address account) external returns (bool) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "WFIL: caller is not the default admin");
+        revokeRole(FEE_SETTER_ROLE, account);
+        return true;
+    }
+
     /// @notice Pause all the functions
     /// @dev the caller must have the 'PAUSER_ROLE'
     function pause() external {
@@ -135,7 +177,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @param recipient Recipient address
     /// @param amount Token amount
     function _transfer(address sender, address recipient, uint amount) internal override {
-         require(recipient != address(this), "WFIL: transfer to token contract");
+         require(recipient != address(this), "WFIL: transfer to the token contract");
          super._transfer(sender, recipient, amount);
     }
 
@@ -160,7 +202,7 @@ contract WFIL is AccessControl, ERC20, ERC20Pausable {
     /// @dev set function visibility to private
     /// @param feeTo address to set
     function _setFeeTo(address feeTo) private {
-        require(feeTo != address(0), "WFIL: set to zero ");
+        require(feeTo != address(0), "WFIL: set to zero address");
         require(feeTo != address(this), "WFIL: set to contract address");
         _feeTo = feeTo;
         emit NewFeeTo(feeTo);
