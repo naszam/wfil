@@ -37,7 +37,7 @@ function getWeb3() {
   return new Web3(web3Provider);
 }
 
-export async function getTokenBalance() {
+export async function getTokenSupply() {
   const web3 = getWeb3();
   const contract = getContract();
   try {
@@ -45,12 +45,24 @@ export async function getTokenBalance() {
     return web3.utils.fromWei(result);
 
   } catch (e) {
-    console.log("getTokenBalance -> e", e)
+    console.log("getTokenSupply -> e", e)
   }
   return 0;
 }
 
-export const reqNetwork = getNetworkById(REQUIRED_NETWORK);
+export async function getUserTokenBalance(account) {
+  try {
+    const web3 = getWeb3();
+    const contract = await getContract();
+    const result = await contract.methods.balanceOf(account).call();
+    return web3.utils.fromWei(result);
+  } catch (error) {
+    console.log("getTokenUserbalance -> error", error)
+    return 0;
+  }
+}
+
+export const requiredNetwork = getNetworkById(REQUIRED_NETWORK);
 
 export const getNetwork = async () => {
   try {
@@ -66,13 +78,31 @@ export const getNetwork = async () => {
   }
 };
 
-export const setupEventHandlers = ({ onNetworkChanged }) => {
+export const setupEventHandlers = ({ onNetworkChanged, onAccountsChanged }) => {
   try {
-    window.ethereum.on('chainChanged', function(networkId){
-      onNetworkChanged(networkId.split('0x')[1]);
-    });
+    window.ethereum.on('chainChanged', onNetworkChanged);
+    window.ethereum.on('accountsChanged', onAccountsChanged);
 
   } catch (error) {
     console.log("setupEventHandlers -> error", error)    
   }
 }
+
+export const isConnected = () => {
+  return Boolean(window.ethereum.selectedAddress);
+}
+
+export const getUserAccount = () => {
+  return window.ethereum.selectedAddress;
+}
+
+export const userConnect = async () => {
+  try {
+    const address = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    return address;
+  } catch (error) {
+    console.log("getWalletAccount -> error", error);
+
+  }
+}
+
