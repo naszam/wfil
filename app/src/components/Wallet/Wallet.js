@@ -64,6 +64,7 @@ const Wallet = () => {
     const { success, data: balance } = await getBalance(address);
     if (success){
       setWallet(wallet => ({ ...wallet, balance }))
+      saveWallet({ ...wallet, balance });
     }
   }
 

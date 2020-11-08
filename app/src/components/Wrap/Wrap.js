@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Flex, Box, Card, Heading, Field, Text, Icon, Input, Button, Modal, Loader } from 'rimble-ui';
 
+import { friendlyAmount } from '../../helpers/filecoin';
 import { askForWrap, checkTransactionStatus } from '../../services/api';
 import Clipboard from '../../utilities/components/CopyToClipboard';
 import { getWallet } from '../Wallet/db';
@@ -12,11 +14,22 @@ let intervalHandler = null;
 
 const AppLink = styled.a`
   color: ${props => props.theme.colors.primary};
-`
+`;
+
+const SetInputValue = styled.a`
+  position: absolute;
+  top: 12px;
+  right: 0;
+  text-decoration: none;
+  color: ${props => props.theme.colors.primary};
+  cursor: pointer;
+`;
 
 const Wrap = () => {
+  const { account } = useSelector(state => state.web3)
   const lsWallet = getWallet();
   const address = lsWallet?.address ?? '';
+  const filBalance = friendlyAmount(lsWallet?.balance ?? 0);
   const [modalOpen, setModalOpen] = useState(false)
   const [txResult, setTxResult] = useState('')
   const [formData, setFormData] = useState({ amount: '', destination: '', origin: address });
@@ -33,6 +46,19 @@ const Wrap = () => {
       [name]: value
     });
   }
+
+  const handleUseEthWallet = () => {
+    onWrapValueChange({ target: { name: 'destination', value: account }});
+  }
+
+  const handleUseFilWallet = () => {
+    onWrapValueChange({ target: { name: 'origin', value: address }});
+  }
+
+  const handleUseMaxFilValue = () => {
+    onWrapValueChange({ target: { name: 'amount', value: filBalance }});
+  }
+
 
   const handleWrap = async () => {
     const { amount, destination, origin } = formData;
@@ -64,20 +90,21 @@ const Wrap = () => {
     <>
       <Flex flexDirection="column" alignItems="stretch" py={4}>
         <Box px={4} mb={1}>
-          <Field label="Amount" fontFamily="sansSerif" width="100%" color="primary">
+          <Field position="relative"  label="Amount" fontFamily="sansSerif" width="100%" color="primary">
             <Input
               name="amount"
               onChange={onWrapValueChange}
-              placeholder="Amount of WFIL to unwrapp"
+              placeholder="Amount of FIL to wrapp"
               required={true}
               type="number"
               value={formData.amount}
               width="100%"
             />
+            <SetInputValue onClick={handleUseMaxFilValue}>max</SetInputValue>
           </Field>
         </Box>
         <Box px={4} mb={1}>
-          <Field label="ETH Address" fontFamily="sansSerif" width="100%" color="primary">
+          <Field position="relative" label="ETH Address" fontFamily="sansSerif" width="100%" color="primary">
             <Input
               name="destination"
               onChange={onWrapValueChange}
@@ -87,10 +114,11 @@ const Wrap = () => {
               value={formData.destination}
               width="100%"
             />
+            <SetInputValue onClick={handleUseEthWallet}>wallet</SetInputValue>
           </Field>
         </Box>
         <Box px={4} mb={2}>
-          <Field label="FIL Address" fontFamily="sansSerif" width="100%" color="primary">
+          <Field position="relative"  label="FIL Address" fontFamily="sansSerif" width="100%" color="primary">
             <Input
               name="origin"
               onChange={onWrapValueChange}
@@ -100,6 +128,7 @@ const Wrap = () => {
               value={formData.origin}
               width="100%"
             />
+            <SetInputValue onClick={handleUseFilWallet}>wallet</SetInputValue>
           </Field>
         </Box>
         <Box px={4}>
