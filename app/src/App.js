@@ -69,10 +69,8 @@ const App = () => {
   return (
     <ThemeProvider theme={appTheme}>
       <Reset />
-      <RimbleWeb3 config={config}>
-        <Routes /> 
-        <Wallet />
-      </RimbleWeb3>
+      <Routes /> 
+      <Wallet />
     </ThemeProvider>
   );
 }

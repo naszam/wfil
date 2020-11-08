@@ -102,7 +102,28 @@ export const userConnect = async () => {
     return address;
   } catch (error) {
     console.log("getWalletAccount -> error", error);
-
   }
 }
 
+export const sendUnwrapTransaction = async ({ destination, amount, account, callback }) => {
+  try {
+    const contract = await getContract();
+    contract.methods.unwrap(destination, amount)
+      .send({ from: account })
+      .on('transactionHash', (hash) => {
+        callback({ status: 'pending', transactionHash: hash });
+      })
+      .on('confirmation', (confirmationNumber, receipt) => {
+        if (receipt.status) {
+          callback({
+            status: 'success',
+            transactionHash: receipt.transactionHash,
+          });
+        } else {
+          callback({ status: 'error' });
+        }
+      })
+  } catch (error) {
+    console.log("sendUnwrapTransaction -> error", error)
+  }
+}

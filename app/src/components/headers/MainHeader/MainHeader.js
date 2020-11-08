@@ -88,8 +88,8 @@ const MainHeader = () => {
       </UpperHeader>
       <BottomHeader justifyContent="space-between">
         <Box  p={2} width={1 / 2} textAlign="left">
-          {totalSupply && <Text color="primary" fontFamily="sansSerif" fontSize={1}>Total Supply: {totalSupply} WFIL</Text>}
-          {userBalance && <Text color="primary" fontFamily="sansSerif" fontSize={1}>Your Balance: {userBalance} WFIL</Text>}
+          <Text color="primary" fontFamily="sansSerif" fontSize={1}>Total Supply: {totalSupply} WFIL</Text>
+          <Text color="primary" fontFamily="sansSerif" fontSize={1}>Your Balance: {userBalance} WFIL</Text>
         </Box>
         <Box  p={2} width={1 / 2} textAlign="right">
           <Text color="primary" fontFamily="sansSerif" fontSize={1}>Current networks: Calibration - Rinkeby</Text>

@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Flex, Box, Card, Heading, Field, Text, Icon, Input, Button, Modal, Loader } from 'rimble-ui';
 
 import AmountInput from '../AmountInput';
 import { checkTransactionStatus, askForUnwrap } from '../../services/api';
+import { sendUnwrapTransaction } from '../../services/web3';
 
 const INTERVAL_CHECK = 5000;
 let intervalHandler = null;
+const TX_STATUSES = {
+  PENDING_COMPLETION: 'pending-completion',
+  PENDING_ETH_TX: 'pending-eth-tx',
+  PENDING_METAMASK: 'pending-metamask',
+  SUCCESS: 'success'
+}
 
 const Unwrap = ({ contractMethodSendWrapper, account: origin }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const [formData, setFormData] = useState({ amount: '', destination: ''});
   const [success, setSuccess] = useState(false);
+  const [txStatus, setTxStatus] = useState('');
+  const { account } = useSelector(state => state.web3);
 
   const onWrapValueChange = ({ target }) => {
     const { name, value } = target;
@@ -31,29 +41,51 @@ const Unwrap = ({ contractMethodSendWrapper, account: origin }) => {
       if (!success) return;
       const transactionId = data.id;
       const filAmountAbs = String(amount.replace(',', '.') * 1e18);
+      setTxStatus(TX_STATUSES.PENDING_METAMASK);
       
-      contractMethodSendWrapper(
-        "unwrap",
+      sendUnwrapTransaction({
         destination,
-        filAmountAbs,
-        (txStatus, transaction) => {
-          console.log("incrementCounter callback: ", txStatus, transaction);
-          if (
-            txStatus === "confirmation" &&
-            transaction.status === "success"
-          ) {
+        amount: filAmountAbs,
+        account,
+        callback: ({ status, transactionHash }) => {
+          setTxStatus(TX_STATUSES.PENDING_ETH_TX);
+          if (status === 'success') {
+            setTxStatus(TX_STATUSES.PENDING_COMPLETION);
             intervalHandler && clearInterval(intervalHandler);
             intervalHandler = setInterval(async() => {
               const { success: statusSuccess, data: dataTransaction } = await checkTransactionStatus(transactionId);
               console.log("intervalHandler -> success", statusSuccess, dataTransaction)
               if (statusSuccess && dataTransaction && dataTransaction.status === 'success') {
+                setTxStatus(TX_STATUSES.SUCCESS);
                 setSuccess(true);
                 clearInterval(intervalHandler);
               }
             }, INTERVAL_CHECK);
           }
         }
-      );
+      })
+      // contractMethodSendWrapper(
+      //   "unwrap",
+      //   destination,
+      //   filAmountAbs,
+      //   (txStatus, transaction) => {
+      //     console.log("incrementCounter callback: ", txStatus, transaction);
+      //     if (
+      //       txStatus === "confirmation" &&
+      //       transaction.status === "success"
+      //     ) {
+      //       intervalHandler && clearInterval(intervalHandler);
+      //       intervalHandler = setInterval(async() => {
+      //         const { success: statusSuccess, data: dataTransaction } = await checkTransactionStatus(transactionId);
+      //         console.log("intervalHandler -> success", statusSuccess, dataTransaction)
+      //         if (statusSuccess && dataTransaction && dataTransaction.status === 'success') {
+      //           setSuccess(true);
+      //           clearInterval(intervalHandler);
+      //         }
+      //       }, INTERVAL_CHECK);
+      //     }
+      //   }
+      // );
       setModalOpen(true)
     }
   }
@@ -101,11 +133,11 @@ const Unwrap = ({ contractMethodSendWrapper, account: origin }) => {
           />
 
           <Box p={4} mb={3}>
-            <Heading.h3>UnWrapping WFIL into FIL</Heading.h3>
-            {success 
-              ? (<Text mt={4}>Success</Text>)
-              : (<Text mt={4}>Please confirm transaction on Metamask</Text>)
-            }
+            <Heading.h3>Unwrapping WFIL into FIL</Heading.h3>
+            {txStatus === TX_STATUSES.SUCCESS && <Text mt={4}>Success</Text>}
+            {txStatus === TX_STATUSES.PENDING_METAMASK && <Text mt={4}>Please confirm transaction on Metamask</Text>}
+            {txStatus === TX_STATUSES.PENDING_ETH_TX && <Text mt={4}>Waiting for transaction to be confirmed</Text>}
+            {txStatus === TX_STATUSES.PENDING_COMPLETION && <Text mt={4}>Unwrapping</Text>}
           </Box>
 
           <Flex
