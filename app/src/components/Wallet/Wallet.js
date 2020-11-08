@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Flex, Box, Card, Heading, Button, Text, Field, Input, Icon } from 'rimble-ui';
+import { Flex, Box, Heading, Button, Text, Field, Input, Icon } from 'rimble-ui';
 
 import { createWallet, getBalance, sendFil } from '../../services/api';
 import Clipboard from '../../utilities/components/CopyToClipboard';

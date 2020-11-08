@@ -6,7 +6,6 @@ import { Flex, Box, Card, Heading, Field, Text, Input, Button, Modal, Loader } f
 import { checkTransactionStatus, askForUnwrap } from '../../services/api';
 import { sendUnwrapTransaction } from '../../services/web3';
 import { getWallet } from '../Wallet/db';
-import { friendlyAmount } from '../../helpers/filecoin';
 
 const INTERVAL_CHECK = 5000;
 let intervalHandler = null;

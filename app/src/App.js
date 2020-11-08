@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import {ThemeProvider} from 'styled-components'
 import {theme} from 'rimble-ui'
 
-import RimbleWeb3 from "./utilities/RimbleWeb3";
 import { Reset } from './components/ResetStyles';
 import Wallet from './components/Wallet';
 import Routes from './Routes';
@@ -24,11 +23,6 @@ import {
 } from './services/web3';
 
 const appTheme = { ...theme, ...customTheme };
-
-const config = {
-  accountBalanceMinimum: 0.001,
-  requiredNetwork: 4
-};
 
 const App = () => {
   const dispatch = useDispatch();
