@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Flex, Box, Card, Heading, Field, Text, Icon, Input, Button, Modal, Loader } from 'rimble-ui';
-
-import AmountInput from '../AmountInput';
 import { checkTransactionStatus, askForUnwrap } from '../../services/api';
 import { sendUnwrapTransaction } from '../../services/web3';
 
@@ -15,7 +13,7 @@ const TX_STATUSES = {
   SUCCESS: 'success'
 }
 
-const Unwrap = ({ contractMethodSendWrapper, account: origin }) => {
+const Unwrap = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [formData, setFormData] = useState({ amount: '', destination: ''});
   const [success, setSuccess] = useState(false);
@@ -24,7 +22,7 @@ const Unwrap = ({ contractMethodSendWrapper, account: origin }) => {
 
   const onWrapValueChange = ({ target }) => {
     const { name, value } = target;
-    console.log("onWrapValueChange -> name, value ", name, value )
+    if (name === 'amount' && Number(value) < 0) return;
     setFormData({
       ...formData,
       [name]: value
@@ -33,10 +31,11 @@ const Unwrap = ({ contractMethodSendWrapper, account: origin }) => {
 
   const handleUnWrap = async () => {
     const { amount, destination } = formData;
-    console.log("UNWRAPPPP!!", amount, destination, origin)
+    console.log("UNWRAPPPP!!", amount, destination, account)
+
     if (amount > 0) {
       const filAmount = amount.replace(',', '.');
-      const { success, data } = await askForUnwrap({ origin, amount: filAmount, destination });
+      const { success, data } = await askForUnwrap({ origin: account, amount: filAmount, destination });
       
       if (!success) return;
       const transactionId = data.id;
@@ -64,28 +63,6 @@ const Unwrap = ({ contractMethodSendWrapper, account: origin }) => {
           }
         }
       })
-      // contractMethodSendWrapper(
-      //   "unwrap",
-      //   destination,
-      //   filAmountAbs,
-      //   (txStatus, transaction) => {
-      //     console.log("incrementCounter callback: ", txStatus, transaction);
-      //     if (
-      //       txStatus === "confirmation" &&
-      //       transaction.status === "success"
-      //     ) {
-      //       intervalHandler && clearInterval(intervalHandler);
-      //       intervalHandler = setInterval(async() => {
-      //         const { success: statusSuccess, data: dataTransaction } = await checkTransactionStatus(transactionId);
-      //         console.log("intervalHandler -> success", statusSuccess, dataTransaction)
-      //         if (statusSuccess && dataTransaction && dataTransaction.status === 'success') {
-      //           setSuccess(true);
-      //           clearInterval(intervalHandler);
-      //         }
-      //       }, INTERVAL_CHECK);
-      //     }
-      //   }
-      // );
       setModalOpen(true)
     }
   }
@@ -93,13 +70,18 @@ const Unwrap = ({ contractMethodSendWrapper, account: origin }) => {
   return (
     <>
       <Flex flexDirection="column" alignItems="stretch" py={4}>
-        <Box px={3} pt={2} pb={3} mb={2}>
-          <AmountInput
-            name="amount"
-            onChange={onWrapValueChange}
-            unit="WFIL"
-            value={formData.amount ? `${formData.amount} WFIL` : ''}
-          />
+      <Box px={4} mb={2}>
+          <Field label="Amount" fontFamily="sansSerif" width="100%" color="primary">
+            <Input
+              name="amount"
+              onChange={onWrapValueChange}
+              placeholder="Amount if FIL to wrap"
+              required={true}
+              type="number"
+              value={formData.amount}
+              width="100%"
+            />
+          </Field>
         </Box>
         <Box px={4} mb={2}>
           <Field label="FIL Address" fontFamily="sansSerif" width="100%" color="primary">

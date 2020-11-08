@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Flex, Box, Card, Heading, Field, Text, Icon, Input, Button, Modal, Loader } from 'rimble-ui';
 
 import { askForWrap, checkTransactionStatus } from '../../services/api';
 import Clipboard from '../../utilities/components/CopyToClipboard';
-import AmountInput from '../AmountInput';
 import { getWallet } from '../Wallet/db';
 
 const INTERVAL_CHECK = 5000;
