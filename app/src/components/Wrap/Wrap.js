@@ -108,7 +108,7 @@ const Wrap = () => {
             <Input
               name="destination"
               onChange={onWrapValueChange}
-              placeholder="e.g. 0xE24904d..."
+              placeholder="e.g. 0xE24904d381D075cf0c8912Bc3..."
               required={true}
               type="text"
               value={formData.destination}
@@ -122,7 +122,7 @@ const Wrap = () => {
             <Input
               name="origin"
               onChange={onWrapValueChange}
-              placeholder="e.g. t3sajrvgya2..."
+              placeholder="e.g. t3sajrvgya262eypuvzdbfc4n2me..."
               required={true}
               type="text"
               value={formData.origin}
