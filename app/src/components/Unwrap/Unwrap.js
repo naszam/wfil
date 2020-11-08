@@ -93,7 +93,7 @@ const Unwrap = () => {
     <>
       <Flex flexDirection="column" alignItems="stretch" py={4}>
       <Box px={4} mb={2}>
-          <Field position="relative" label="Amount" fontFamily="sansSerif" width="100%" color="primary">
+          <Field position="relative" label="Unwrap Amount" fontFamily="sansSerif" width="100%" color="primary">
             <Input
               name="amount"
               onChange={onWrapValueChange}
@@ -111,7 +111,7 @@ const Unwrap = () => {
             <Input
               name="destination"
               onChange={onWrapValueChange}
-              placeholder="Wallet to receive FIL"
+              placeholder="e.g. t3sajrvgya262eypuvzdbfc4n2me..."
               required={true}
               type="text"
               value={formData.destination}
