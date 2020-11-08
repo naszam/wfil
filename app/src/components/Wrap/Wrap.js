@@ -29,6 +29,7 @@ const Wrap = () => {
 
   const onWrapValueChange = ({ target }) => {
     const { name, value } = target;
+    if (name === 'amount' && Number(value) < 0) return;
     setFormData({
       ...formData,
       [name]: value
@@ -64,13 +65,18 @@ const Wrap = () => {
   return (
     <>
       <Flex flexDirection="column" alignItems="stretch" py={4}>
-        <Box px={3} pt={2} pb={3} mb={2}>
-          <AmountInput
-            name="amount"
-            onChange={onWrapValueChange}
-            unit="FIL"
-            value={formData.amount ? `${formData.amount} FIL` : ''}
-          />
+        <Box px={4} mb={1}>
+          <Field label="Amount" fontFamily="sansSerif" width="100%" color="primary">
+            <Input
+              name="amount"
+              onChange={onWrapValueChange}
+              placeholder="Amount of WFIL to unwrapp"
+              required={true}
+              type="number"
+              value={formData.amount}
+              width="100%"
+            />
+          </Field>
         </Box>
         <Box px={4} mb={1}>
           <Field label="ETH Address" fontFamily="sansSerif" width="100%" color="primary">
