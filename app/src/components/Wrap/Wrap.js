@@ -90,11 +90,11 @@ const Wrap = () => {
     <>
       <Flex flexDirection="column" alignItems="stretch" py={4}>
         <Box px={4} mb={1}>
-          <Field position="relative"  label="Amount" fontFamily="sansSerif" width="100%" color="primary">
+          <Field position="relative" label="Wrap Amount" fontFamily="sansSerif" width="100%" color="primary">
             <Input
               name="amount"
               onChange={onWrapValueChange}
-              placeholder="Amount of FIL to wrapp"
+              placeholder="Amount of FIL to wrap"
               required={true}
               type="number"
               value={formData.amount}
@@ -104,11 +104,11 @@ const Wrap = () => {
           </Field>
         </Box>
         <Box px={4} mb={1}>
-          <Field position="relative" label="ETH Address" fontFamily="sansSerif" width="100%" color="primary">
+          <Field position="relative" label="Ethereum destination address" fontFamily="sansSerif" width="100%" color="primary">
             <Input
               name="destination"
               onChange={onWrapValueChange}
-              placeholder="Wallet to receive WFIL"
+              placeholder="e.g. 0xE24904d..."
               required={true}
               type="text"
               value={formData.destination}
@@ -118,11 +118,11 @@ const Wrap = () => {
           </Field>
         </Box>
         <Box px={4} mb={2}>
-          <Field position="relative"  label="FIL Address" fontFamily="sansSerif" width="100%" color="primary">
+          <Field position="relative"  label="Filecoin Sending Address" fontFamily="sansSerif" width="100%" color="primary">
             <Input
               name="origin"
               onChange={onWrapValueChange}
-              placeholder="Wallet sending FIL"
+              placeholder="e.g. t3sajrvgya2..."
               required={true}
               type="text"
               value={formData.origin}
